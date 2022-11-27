@@ -1,4 +1,4 @@
-                                                           crystallization engine
+                                   crystallization engine
 This is an engine for Friday night funkin'
 the engine combined with many pull requests (original page)
 Build instructions!
@@ -10,11 +10,12 @@ Install Haxe 4.1.5 (Download 4.1.5 instead of 4.2.0 because 4.2.0 is broken and 
 Install HaxeFlixel after downloading Haxe
 Other installations you'd need are the additional libraries, a fully updated list will be in in the project root. Currently, these are all of the things you need to install:Project.xml
 
-flixel
-flixel-addons
-flixel-ui
-hscript
-newgrounds
+ flixel
+ flixel-addons
+ flixel-ui
+ hscript
+ newgrounds
+
 So for each of those type so shit like haxelib install [library]haxelib install newgrounds
 
 You'll also need to install a couple things that involve Gits. To do this, you need to do a few things first.
@@ -37,4 +38,4 @@ Once you have all those installed, it's pretty easy to compile the game. You jus
 
 MSVC v142 - VS 2019 C++ x64/x86 build tools
 Windows SDK (10.0.17763.0)
-Once that is done you can open up a command line in the project's directory and run . Once that command finishes (it takes forever even on a higher end PC), you can run FNF from the .exe file under export\release\windows\bin As for Mac, 'lime test mac -debug' should work, if not the internet surely has a guide on how to compile Haxe stuff for Mac.lime test windows -debug
+Only executable files can be compiled
