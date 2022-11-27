@@ -86,7 +86,7 @@ class DialogueBox extends FlxSpriteGroup
 		fportraitLeft = new FlxSprite(0, 0);
 		fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/dad');
 		fportraitLeft.animation.addByPrefix('enter', '元件', 24, false);
-		fportraitLeft.setGraphicSize(Std.int(fportraitLeft.width * PlayState.defaultCamZoom));
+		fportraitLeft.setGraphicSize(Std.int(fportraitLeft.width * 1));
 		fportraitLeft.updateHitbox();
 		fportraitLeft.scrollFactor.set();
 		add(fportraitLeft);
@@ -95,7 +95,7 @@ class DialogueBox extends FlxSpriteGroup
 		fportraitRight = new FlxSprite(0, 0);
 		fportraitRight.frames = Paths.getSparrowAtlas('dialogue/Portrait/bf');
 		fportraitRight.animation.addByPrefix('enter', 'Boyfriend portrait enter', 24, false);
-		fportraitRight.setGraphicSize(Std.int(fportraitRight.width * PlayState.defaultCamZoom));
+		fportraitRight.setGraphicSize(Std.int(fportraitRight.width * 1));
 		fportraitRight.updateHitbox();
 		fportraitRight.scrollFactor.set();
 		add(fportraitRight);
@@ -154,7 +154,7 @@ class DialogueBox extends FlxSpriteGroup
 		add(box);
 		default:
 		box.animation.play('normalOpen');
-		box.setGraphicSize(Std.int(box.width * PlayState.defaultCamZoom));
+		box.setGraphicSize(Std.int(box.width * 0.9));
 		box.updateHitbox();
 		add(box);
 		
