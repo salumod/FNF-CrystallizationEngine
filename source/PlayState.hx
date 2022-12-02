@@ -167,6 +167,8 @@ class PlayState extends MusicBeatState
 
 	public static var campaignScore:Int = 0;
 
+	private var dataSuffix:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT'];
+
 	var defaultCamZoom:Float = 1.05;
 
 	// how big to stretch the pixel art assets
@@ -229,6 +231,26 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('fresh/freshDialogue'));
 			case 'dadbattle':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('dadbattle/dadbattleDialogue'));
+			case 'spookeez':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('spookeez/spookeezDialogue'));
+			case 'south':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('south/southDialogue'));
+			case 'pico':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('pico/picoDialogue'));
+			case 'philly':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('philly/phillyDialogue'));
+			case 'blammed':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('blammed/blammedDialogue'));
+			case 'satin-panties':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('satin-panties/satin-pantiesDialogue'));
+			case 'high': 
+				dialogue = CoolUtil.coolTextFile(Paths.txt('high/highDialogue'));
+			case 'milf':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('milf/milfDialogue'));
+			case 'cocoa': 
+				dialogue = CoolUtil.coolTextFile(Paths.txt('cocoa/cocoaDialogue'));
+			case'eggnog':
+			    dialogue = CoolUtil.coolTextFile(Paths.txt('eggnog/eggnogDialogue'));
 			case 'senpai':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('senpai/senpaiDialogue'));
 			case 'roses':
@@ -534,6 +556,12 @@ class PlayState extends MusicBeatState
 								gruy.updateHitbox();
 								gruy.scale.set(100, 100);
 								add(gruy);
+								var cloud:FlxSprite = new FlxSprite(-100, -100).loadGraphic(Paths.image('weeb/cloud'));
+								cloud.setGraphicSize(widShit);
+								cloud.scrollFactor.set(0.1, 0.1);
+								cloud.updateHitbox();
+								add(cloud);
+								cloud.cameras = [camHUD];
 					        }
 								FlxG.camera.setFilters([new ShaderFilter(new PixelParityShader(170, 170))]);
 		          }
@@ -916,37 +944,10 @@ class PlayState extends MusicBeatState
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
 		FlxG.fixedTimestep = false;
-switch (curStage)
-{
-	case 'school':
-		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar-pixel'));
-		healthBarBG.screenCenter(X);
-		healthBarBG.scrollFactor.set();
-		if (PreferencesMenu.getPref('downscroll'))
-			healthBarBG.y = FlxG.height * 0.1;
 
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-			'health', 0, 2);
-		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFFFAA6F, 0xFF7BD6F6);
-		// healthBar
-		add(healthBar);
-		add(healthBarBG);
-	case 'schoolEvil':
-		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar-pixel'));
-		healthBarBG.screenCenter(X);
-		healthBarBG.scrollFactor.set();
-		if (PreferencesMenu.getPref('downscroll'))
-			healthBarBG.y = FlxG.height * 0.1;
-
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-			'health', 0, 2);
-		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFFF3C6E, 0xFF7BD6F6);
-		// healthBar
-		add(healthBar);
-		add(healthBarBG);
-		case 'philly':
+    switch(curSong)
+   {
+	case 'Test':
 		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
@@ -957,10 +958,87 @@ switch (curStage)
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFB7D855, 0xFF31B0D1);
+		healthBar.createFilledBar(0xFF7BD6F6, 0xFF31B0D1);
 		// healthBar
 		add(healthBar);
-	case 'limo':
+
+    case 'Tutorial':
+		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
+		healthBarBG.screenCenter(X);
+		healthBarBG.scrollFactor.set();
+		add(healthBarBG);
+		if (PreferencesMenu.getPref('downscroll'))
+			healthBarBG.y = FlxG.height * 0.1;
+
+		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+			'health', 0, 2);
+		healthBar.scrollFactor.set();
+		healthBar.createFilledBar(0xFFA5004D, 0xFF31B0D1);
+		// healthBar
+		add(healthBar);
+
+	case 'Bopeebo'| 'Fresh'| 'Dadbattle':
+		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
+		healthBarBG.screenCenter(X);
+		healthBarBG.scrollFactor.set();
+		add(healthBarBG);
+		if (PreferencesMenu.getPref('downscroll'))
+			healthBarBG.y = FlxG.height * 0.1;
+
+		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+			'health', 0, 2);
+		healthBar.scrollFactor.set();
+		healthBar.createFilledBar(0xFFAF66CE, 0xFF31B0D1);
+		// healthBar
+		add(healthBar);
+
+    case 'Spookeez'| 'South':
+		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
+		healthBarBG.screenCenter(X);
+		healthBarBG.scrollFactor.set();
+		add(healthBarBG);
+		if (PreferencesMenu.getPref('downscroll'))
+			healthBarBG.y = FlxG.height * 0.1;
+
+		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+			'health', 0, 2);
+		healthBar.scrollFactor.set();
+		healthBar.createFilledBar(0xFFD57E00, 0xFF31B0D1);
+		// healthBar
+		add(healthBar);
+
+    case 'Monster':
+		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
+		healthBarBG.screenCenter(X);
+		healthBarBG.scrollFactor.set();
+
+		if (PreferencesMenu.getPref('downscroll'))
+			healthBarBG.y = FlxG.height * 0.1;
+
+		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+			'health', 0, 2);
+		healthBar.scrollFactor.set();
+		healthBar.createFilledBar(0xFFFFC400, 0xFF31B0D1);
+
+        add(healthBarBG);
+		add(healthBar);
+		
+    case'Pico'|'Philly'|'Blammed':
+	healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
+	healthBarBG.screenCenter(X);
+	healthBarBG.scrollFactor.set();
+	add(healthBarBG);
+	if (PreferencesMenu.getPref('downscroll'))
+		healthBarBG.y = FlxG.height * 0.1;
+
+	healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+		'health', 0, 2);
+	healthBar.scrollFactor.set();
+	healthBar.createFilledBar(0xFFB7D855, 0xFF31B0D1);
+	// healthBar
+	add(healthBar);
+
+    case 'Satin-Panties'|'High'|'Milf':
 		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
@@ -974,22 +1052,9 @@ switch (curStage)
 		healthBar.createFilledBar(0xFFD9558E, 0xFF31B0D1);
 		// healthBar
 		add(healthBar);
-	case 'spooky':
-		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
-		healthBarBG.screenCenter(X);
-		healthBarBG.scrollFactor.set();
-		add(healthBarBG);
-		if (PreferencesMenu.getPref('downscroll'))
-			healthBarBG.y = FlxG.height * 0.1;
 
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-			'health', 0, 2);
-		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFFFC400, 0xFF31B0D1);
-		// healthBar
-		add(healthBar);
-	case 'mall':
-	    healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar-Christmas'));
+    case 'Cocoa'|'Eggnog':
+		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar-Christmas'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
 
@@ -1003,7 +1068,8 @@ switch (curStage)
 
 		add(healthBar);
 		add(healthBarBG);
-	case 'mallEvil':
+
+    case 'Winter-Horrorland':
 		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar-Christmas'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
@@ -1018,21 +1084,53 @@ switch (curStage)
 
 		add(healthBar);
 		add(healthBarBG);
-	case 'tank':
-		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
-		healthBarBG.screenCenter(X);
-		healthBarBG.scrollFactor.set();
-		add(healthBarBG);
-		if (PreferencesMenu.getPref('downscroll'))
-			healthBarBG.y = FlxG.height * 0.1;
 
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-			'health', 0, 2);
-		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFF7E7E7E, 0xFF31B0D1);
-		// healthBar
-		add(healthBar);
-		default:
+    case'Senpai'|'Roses':
+	healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar-pixel'));
+	healthBarBG.screenCenter(X);
+	healthBarBG.scrollFactor.set();
+	if (PreferencesMenu.getPref('downscroll'))
+		healthBarBG.y = FlxG.height * 0.1;
+
+	healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+		'health', 0, 2);
+	healthBar.scrollFactor.set();
+	healthBar.createFilledBar(0xFFFFAA6F, 0xFF7BD6F6);
+	// healthBar
+	add(healthBar);
+	add(healthBarBG);
+
+	case'Thorns':
+	healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar-pixel'));
+	healthBarBG.screenCenter(X);
+	healthBarBG.scrollFactor.set();
+	if (PreferencesMenu.getPref('downscroll'))
+		healthBarBG.y = FlxG.height * 0.1;
+
+	healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+		'health', 0, 2);
+	healthBar.scrollFactor.set();
+	healthBar.createFilledBar(0xFFFF3C6E, 0xFF7BD6F6);
+	// healthBar
+	add(healthBar);
+	add(healthBarBG);
+
+    case'Ugh'|'Guns'|'Stress':
+	healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
+	healthBarBG.screenCenter(X);
+	healthBarBG.scrollFactor.set();
+	add(healthBarBG);
+	if (PreferencesMenu.getPref('downscroll'))
+		healthBarBG.y = FlxG.height * 0.1;
+
+	healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+		'health', 0, 2);
+	healthBar.scrollFactor.set();
+	healthBar.createFilledBar(0xFF5B5B5B, 0xFF31B0D1);
+	// healthBar
+	add(healthBar);
+
+	default:
 		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
@@ -1046,7 +1144,8 @@ switch (curStage)
 		healthBar.createFilledBar(0xFFAF66CE, 0xFF31B0D1);
 		// healthBar
 		add(healthBar);
-}
+    }
+
 
 		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 195, healthBarBG.y + 50, 0, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
@@ -1119,6 +1218,26 @@ switch (curStage)
 					intro(doof);
 				case 'dadbattle':
 					intro(doof);
+				case 'spookeez':
+					intro(doof);
+				case 'south':
+					intro(doof);
+				case 'pico':
+					intro(doof);
+				case 'philly':
+					intro(doof);
+				case 'blammed':
+					intro(doof);
+				case 'satin-panties':
+					intro(doof);
+				case 'high':
+					intro(doof);
+				case 'milf':
+					intro(doof);
+				case 'cocoa':
+					intro(doof);
+				case 'eggnog':
+					intro(doof);
 				case 'senpai':
 					schoolIntro(doof);
 				case 'roses':
@@ -1155,7 +1274,7 @@ switch (curStage)
 			var black:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 			black.scrollFactor.set();
 			add(black);
-			new FlxVideo('music/ughCutscene.mp4').finishCallback = function()
+			new FlxVideo('video/ughCutscene.mp4').finishCallback = function()
 			{
 				remove(black);
 				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.stepCrochet / 1000) * 5, {ease: FlxEase.quadInOut});
@@ -1226,7 +1345,7 @@ switch (curStage)
 			var black:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 			black.scrollFactor.set();
 			add(black);
-			new FlxVideo('music/gunsCutscene.mp4').finishCallback = function()
+			new FlxVideo('video/gunsCutscene.mp4').finishCallback = function()
 			{
 				remove(black);
 				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.stepCrochet / 1000) * 5, {ease: FlxEase.quadInOut});
@@ -1287,7 +1406,7 @@ switch (curStage)
 			add(black);
 			if (!PreferencesMenu.getPref('censor-naughty'))
 			{
-				new FlxVideo('music/stressCutsceneCensor.mp4').finishCallback = function()
+				new FlxVideo('video/stressCutsceneCensor.mp4').finishCallback = function()
 				{
 					remove(black);
 					FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.stepCrochet / 1000) * 5, {ease: FlxEase.quadInOut});
@@ -1297,7 +1416,7 @@ switch (curStage)
 			}
 			else
 			{
-				new FlxVideo('music/stressCutscene.mp4').finishCallback = function()
+				new FlxVideo('video/stressCutscene.mp4').finishCallback = function()
 				{
 					remove(black);
 					FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.stepCrochet / 1000) * 5, {ease: FlxEase.quadInOut});
@@ -2094,25 +2213,12 @@ switch (curStage)
 	var canPause:Bool = true;
 	var cameraRightSide:Bool = false;
 
-
-
-
-
-
-
 	function truncateFloat( number : Float, precision : Int): Float {
 		var num = number;
 		num = num * Math.pow(10, precision);
 		num = Math.round( num ) / Math.pow(10, precision);
 		return num;
 		}
-
-
-
-
-
-
-
 
 	override public function update(elapsed:Float)
 	{
@@ -2122,7 +2228,7 @@ switch (curStage)
 		perfectMode = false;
 		#end
 
-		if (FlxG.keys.justPressed.NINE)
+		if (FlxG.keys.justPressed.FIVE)
 		{
 			iconP1.swapOldIcon();
 		}
@@ -2183,10 +2289,9 @@ switch (curStage)
 
 		scoreTxt.text = 'Score: ' + songScore
 		+ ' | Misses: ' + misses
-		+ ' | Fault: ' + Faults
+		+ ' | Faults: ' + Faults
 		+ '| Accuracy:' +truncateFloat(accuracy, 2) + "%"
-		+ '| Rank:' + rank
-		+ '|Song:' + SONG.song.toLowerCase();
+		+ '| Rank:' + rank;
 
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
@@ -2222,8 +2327,6 @@ switch (curStage)
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
 		}
-		if (FlxG.keys.justPressed.SIX)
-			{endSong();}
 
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
@@ -2258,10 +2361,10 @@ switch (curStage)
 		/* if (FlxG.keys.justPressed.NINE)
 			FlxG.switchState(new Charting()); */
 
-		#if debug
+		//#if debug
 		if (FlxG.keys.justPressed.EIGHT)
 			FlxG.switchState(new AnimationDebug(SONG.player2));
-		#end
+		//#end
 
 		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
 		{
@@ -2520,10 +2623,10 @@ switch (curStage)
 		if (!inCutscene)
 			keyShit();
 
-		#if debug
+		//#if debug
 		if (FlxG.keys.justPressed.ONE)
 			endSong();
-		#end
+		//#end
 	}
 
 	function sustain2(strum:Int, spr:FlxSprite, note:Note):Void
@@ -2561,7 +2664,7 @@ switch (curStage)
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
-		songTime = 0;
+		camHUD.visible = false;
 		if (SONG.validScore)
 		{
 			#if !switch
@@ -2670,9 +2773,11 @@ switch (curStage)
 		//
 
 		var rating:FlxSprite = new FlxSprite();
+		var ranumber:FlxSprite = new FlxSprite();
 		var score:Int = 350;
 
 		var daRating:String = "sick";
+		var daRanum:String = "great";
 		var doSplash:Bool = true;
 
 		if (noteDiff > Conductor.safeZoneOffset * 0.9)
@@ -2714,14 +2819,14 @@ switch (curStage)
 		if (!practiceMode)
 			songScore += score;
 
-		/* if (combo > 60)
-				daRating = 'sick';
+		 /*if (combo > 60)
+				daRanum = 'great';
 			else if (combo > 12)
-				daRating = 'good'
+				daRanum = 'more'
 			else if (combo > 4)
-				daRating = 'bad';
+				daRanum = 'less';
 		 */
-
+		 
 		var pixelShitPart1:String = "";
 		var pixelShitPart2:String = '';
 
@@ -2739,6 +2844,15 @@ switch (curStage)
 		rating.velocity.y -= FlxG.random.int(140, 175);
 		rating.velocity.x -= FlxG.random.int(0, 10);
 
+		/*ranumber.loadGraphic(Paths.image(pixelShitPart1 + daRanum + pixelShitPart2));
+		ranumber.screenCenter();
+		ranumber.x = coolText.x - 80;
+		ranumber.y -= 120;
+		ranumber.acceleration.y = 550;
+		ranumber.velocity.y -= FlxG.random.int(140, 175);
+		ranumber.velocity.x -= FlxG.random.int(0, 10);
+        add(ranumber);*/
+
 		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
 		comboSpr.screenCenter();
 		comboSpr.x = coolText.x;
@@ -2752,17 +2866,21 @@ switch (curStage)
 		{
 			rating.setGraphicSize(Std.int(rating.width * 0.7));
 			rating.antialiasing = true;
+			/*ranumber.setGraphicSize(Std.int(ranumber.width * 0.7));
+			ranumber.antialiasing = true;*/
 			comboSpr.setGraphicSize(Std.int(comboSpr.width * 0.7));
 			comboSpr.antialiasing = true;
 		}
 		else
 		{
 			rating.setGraphicSize(Std.int(rating.width * daPixelZoom * 0.7));
+			ranumber.setGraphicSize(Std.int(ranumber.width * daPixelZoom * 0.7));
 			comboSpr.setGraphicSize(Std.int(comboSpr.width * daPixelZoom * 0.7));
 		}
 
 		comboSpr.updateHitbox();
 		rating.updateHitbox();
+		//ranumber.updateHitbox();
 
 		var seperatedScore:Array<Int> = [];
 
@@ -3019,17 +3137,7 @@ switch (curStage)
 				boyfriend.stunned = false;
 			});
 
-			switch (direction)
-			{
-				case 0:
-					boyfriend.playAnim('singLEFTmiss', true);
-				case 1:
-					boyfriend.playAnim('singDOWNmiss', true);
-				case 2:
-					boyfriend.playAnim('singUPmiss', true);
-				case 3:
-					boyfriend.playAnim('singRIGHTmiss', true);
-			}
+			boyfriend.playAnim('sing' + dataSuffix[direction] + 'miss', true);
 		}
 	}
 
@@ -3082,17 +3190,7 @@ function noteCheck(keyP:Bool, note:Note):Void
 			else
 				health += 0.004;
 
-			switch (note.noteData)
-			{
-				case 0:
-					boyfriend.playAnim('singLEFT', true);
-				case 1:
-					boyfriend.playAnim('singDOWN', true);
-				case 2:
-					boyfriend.playAnim('singUP', true);
-				case 3:
-					boyfriend.playAnim('singRIGHT', true);
-			}
+			boyfriend.playAnim('sing' + dataSuffix[note.noteData], true);
 
 			playerStrums.forEach(function(spr:FlxSprite)
 			{

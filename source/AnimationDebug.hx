@@ -8,6 +8,7 @@ import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import Song.SwagSong;
 
 /**
 	*DEBUG MODE
@@ -24,6 +25,7 @@ class AnimationDebug extends FlxState
 	var isDad:Bool = true;
 	var daAnim:String = 'spooky';
 	var camFollow:FlxObject;
+	var _song:SwagSong;
 
 	public function new(daAnim:String = 'spooky')
 	{
@@ -62,6 +64,9 @@ class AnimationDebug extends FlxState
 			char = bf;
 			bf.flipX = false;
 		}
+
+        if (PlayState.SONG != null)
+			_song = PlayState.SONG;
 
 		dumbTexts = new FlxTypedGroup<FlxText>();
 		add(dumbTexts);
@@ -189,6 +194,12 @@ class AnimationDebug extends FlxState
 			genBoyOffsets(false);
 			char.playAnim(animList[curAnim]);
 		}
+
+		if (FlxG.keys.justPressed.ENTER)
+			{
+				PlayState.SONG = _song;
+				FlxG.switchState(new PlayState());
+			}
 
 		super.update(elapsed);
 	}

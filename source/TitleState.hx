@@ -500,7 +500,8 @@ class TitleState extends MusicBeatState
 					"week3" => "week3",
 					"week4" => "week4",
 					"week5" => "week5",
-					"week6" => "week6"
+					"week6" => "week6",
+					"week7" => "week7"
 				]
 			}
 		});

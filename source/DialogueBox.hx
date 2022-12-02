@@ -42,14 +42,17 @@ class DialogueBox extends FlxSpriteGroup
 
 		switch (PlayState.SONG.song.toLowerCase())
 		{
-			case 'bopeebo':
-				FlxG.sound.playMusic(Paths.music('breakfast'), 0);
-				FlxG.sound.music.fadeIn(1, 0, 0.8);
 			case 'senpai':
 				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
+			case 'roses':
+			    FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
+			    FlxG.sound.music.fadeIn(1, 0, 0.8);
 			case 'thorns':
 				FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
+				FlxG.sound.music.fadeIn(1, 0, 0.8);
+			default:
+				FlxG.sound.playMusic(Paths.music('dailogue'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
 		}
 
@@ -136,6 +139,8 @@ class DialogueBox extends FlxSpriteGroup
 				hasDialog = true;
 				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
 				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
+				box.animation.addByPrefix('continued', 'speech bubble normal', 24, true);
+				box.animation.addByPrefix('loudOpen', 'speech bubble loud open', 24, false);
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
 
 		}
@@ -208,12 +213,12 @@ class DialogueBox extends FlxSpriteGroup
 		add(swagDialogue);
 		default:
 		dropText = new FlxText(242, 502, Std.int(FlxG.width * 0.6), "", 32);
-		dropText.font = 'Pixel Arial 11 Bold';
+		dropText.font = 'VCR OSD Mono';
 		dropText.color = 0xFF000000;
 		add(dropText);
 
 		swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 32);
-		swagDialogue.font = 'Pixel Arial 11 Bold';
+		swagDialogue.font = 'VCR OSD Mono';
 		swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		swagDialogue.color = 0xFFA5A5A5;
 		add(swagDialogue);
@@ -240,7 +245,9 @@ class DialogueBox extends FlxSpriteGroup
 		}
 
 		dropText.text = swagDialogue.text;
-
+    switch (PlayState.SONG.song.toLowerCase())
+	{
+	case 'senpai' | 'roses' | 'thorns':
 		if (box.animation.curAnim != null)
 		{
 			if (box.animation.curAnim.name == 'normalOpen' && box.animation.curAnim.finished)
@@ -249,14 +256,23 @@ class DialogueBox extends FlxSpriteGroup
 				dialogueOpened = true;
 			}
 		}
-
+	default:
+		if (box.animation.curAnim != null)
+			{
+				if (box.animation.curAnim.name == 'normalOpen' && box.animation.curAnim.finished)
+				{
+					box.animation.play('continued');
+					dialogueOpened = true;
+				}
+			}
+		}
 		if (dialogueOpened && !dialogueStarted)
 		{
 			startDialogue();
 			dialogueStarted = true;
 		}
 
-		if (FlxG.keys.justPressed.ANY && dialogueEnded)
+		if (FlxG.keys.justPressed.ENTER && dialogueEnded)
 		{
 			remove(dialogue);
 				
@@ -365,6 +381,97 @@ class DialogueBox extends FlxSpriteGroup
 					fportraitLeft.y = 120;
 					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/gf');
 		            fportraitLeft.animation.addByPrefix('enter', '元件', 24, false);
+					fportraitLeft.visible = true;
+					fportraitLeft.animation.play('enter');
+					box.flipX = true;
+				}
+			case 'spooky':
+				fportraitLeft.visible = false;
+		        fportraitRight.visible = false;
+				if (!fportraitLeft.visible)
+				{
+					fportraitLeft.x = 60;
+					fportraitLeft.y = 120;
+					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/spooky');
+		            fportraitLeft.animation.addByPrefix('enter', '元件', 24, false);
+					fportraitLeft.visible = true;
+					fportraitLeft.animation.play('enter');
+					box.flipX = true;
+				}
+			case 'pico':
+				fportraitLeft.visible = false;
+		        fportraitRight.visible = false;
+				if (!fportraitLeft.visible)
+				{
+					fportraitLeft.x = 60;
+					fportraitLeft.y = 120;
+					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/pico');
+		            fportraitLeft.animation.addByPrefix('enter', 'Pico Idle Dance 实例', 24, false);
+					fportraitLeft.visible = true;
+					fportraitLeft.animation.play('enter');
+					box.flipX = true;
+				}
+			case 'mom-hair-blowing':
+				fportraitLeft.visible = false;
+		        fportraitRight.visible = false;
+				if (!fportraitLeft.visible)
+				{
+					fportraitLeft.x = 60;
+					fportraitLeft.y = 120;
+					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/mom-hair-blowing');
+		            fportraitLeft.animation.addByPrefix('enter', '元件', 24, false);
+					fportraitLeft.visible = true;
+					fportraitLeft.animation.play('enter');
+					box.flipX = true;
+				}
+			case 'bf-hair-blowing':
+				fportraitLeft.visible = false;
+		        fportraitRight.visible = false;
+				if (!fportraitRight.visible)
+				{
+					fportraitRight.x = 800;
+					fportraitRight.y = 200;
+					fportraitRight.frames = Paths.getSparrowAtlas('dialogue/Portrait/bf-hair-blowing');
+		            fportraitRight.animation.addByPrefix('enter', 'BF idle 实例', 24, false);
+					fportraitRight.visible = true;
+					fportraitRight.animation.play('enter');
+					box.flipX = false;
+				}
+			case 'bf-c':
+				fportraitLeft.visible = false;
+		        fportraitRight.visible = false;
+				if (!fportraitRight.visible)
+				{
+					fportraitRight.x = 800;
+					fportraitRight.y = 200;
+					fportraitRight.frames = Paths.getSparrowAtlas('dialogue/Portrait/bf-c');
+		            fportraitRight.animation.addByPrefix('enter', 'BF idle dance 实例', 24, false);
+					fportraitRight.visible = true;
+					fportraitRight.animation.play('enter');
+					box.flipX = false;
+				}
+			case 'mom-c':
+				fportraitLeft.visible = false;
+		        fportraitRight.visible = false;
+				if (!fportraitLeft.visible)
+				{
+					fportraitLeft.x = 100;
+					fportraitLeft.y = 120;
+					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/mom_dad');
+		            fportraitLeft.animation.addByPrefix('enter', 'Parent Christmas Idle 实例', 24, false);
+					fportraitLeft.visible = true;
+					fportraitLeft.animation.play('enter');
+					box.flipX = true;
+				}
+			case 'dad-c':
+				fportraitLeft.visible = false;
+		        fportraitRight.visible = false;
+				if (!fportraitLeft.visible)
+				{
+					fportraitLeft.x = 100;
+					fportraitLeft.y = 120;
+					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/dad_mom');
+		            fportraitLeft.animation.addByPrefix('enter', 'Parent Christmas Idle 实例', 24, false);
 					fportraitLeft.visible = true;
 					fportraitLeft.animation.play('enter');
 					box.flipX = true;
