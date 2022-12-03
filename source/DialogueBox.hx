@@ -142,7 +142,7 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByPrefix('continued', 'speech bubble normal', 24, true);
 				box.animation.addByPrefix('loudOpen', 'speech bubble loud open', 24, false);
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
-
+				box.flipX = true;
 		}
 
 		this.dialogueList = dialogueList;
@@ -272,7 +272,7 @@ class DialogueBox extends FlxSpriteGroup
 			dialogueStarted = true;
 		}
 
-		if (FlxG.keys.justPressed.ENTER && dialogueEnded)
+		if (FlxG.keys.justPressed.ANY && dialogueEnded)
 		{
 			remove(dialogue);
 				
@@ -313,7 +313,7 @@ class DialogueBox extends FlxSpriteGroup
 				startDialogue();
 			}
 		}
-		else if (FlxG.keys.justPressed.ENTER && dialogueStarted)
+		else if (FlxG.keys.justPressed.ANY && dialogueStarted)
 		{
 			swagDialogue.skip();
 		}
