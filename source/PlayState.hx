@@ -1607,12 +1607,36 @@ class PlayState extends MusicBeatState
 	}
 
 	function intro(?dialogueBox:DialogueBox):Void
+		//This is a new event for fact dialogue.
 		{
-		        add(dialogueBox);
+			var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+			black.scrollFactor.set();
+			add(black);
+	
+			camFollow.setPosition(camPos.x, camPos.y);
+	
+			new FlxTimer().start(0.1, function(tmr:FlxTimer)
+			{
+				black.alpha -= 0.15;
+	
+				if (black.alpha > 0)
+				{
+					tmr.reset(0.1);
+				}
+				else
+				{
+					if (dialogueBox != null)
+					{
+						inCutscene = true;
+						add(dialogueBox);
+					}
+
+					else
+						startCountdown();
+	
+				}
+			});
 		}
-
-
-
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
