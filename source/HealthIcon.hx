@@ -48,7 +48,7 @@ class HealthIcon extends FlxSprite
 			if (animation.getByName(char) == null)
 			{
 				loadGraphic(Paths.image('icons/icon-' + char), true, 150, 150);
-				animation.add(char, [0, 1, 2], 0, false, isPlayer);
+				animation.add(char, [0, 1, 2, 3, 4], 0, false, isPlayer);
 			}
 			animation.play(char);
 			this.char = char;

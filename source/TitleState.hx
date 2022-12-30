@@ -176,7 +176,7 @@ class TitleState extends MusicBeatState
 
 
 		crystallization = new FlxSprite(-150, -160);
-		crystallization.frames = Paths.getSparrowAtlas('Start_Screen_Assets');
+		crystallization.frames = Paths.getSparrowAtlas('log');
 		crystallization.antialiasing = true;
 		crystallization.animation.addByPrefix('bump', '结晶引擎', 24);
 		crystallization.animation.play('bump');

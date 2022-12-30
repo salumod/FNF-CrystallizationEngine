@@ -31,6 +31,10 @@ class PreferencesMenu extends Page
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
+		createPrefItem('Mirror', 'mirror-mode', false);
+		createPrefItem('HUD display', 'hud-display', false);
+		createPrefItem('Pixel Shader', 'pixel-shader', true);
+
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
 		{
@@ -97,6 +101,15 @@ class PreferencesMenu extends Page
 			preferenceCheck('fps-counter', true);
 		}
 
+		if(FlxG.save.data.fpsCounter != null)
+			{
+				preferenceCheck('fps-counter', FlxG.save.data.fpsCounter);
+			}
+			else
+			{
+				preferenceCheck('fps-counter', true);
+			}
+
 		if(FlxG.save.data.autoPause != null)
 		{
 			preferenceCheck('auto-pause', FlxG.save.data.autoPause);
@@ -105,6 +118,33 @@ class PreferencesMenu extends Page
 		{
 			preferenceCheck('auto-pause', false);
 		}
+
+		if(FlxG.save.data.mirrorMode != null)
+			{
+				preferenceCheck('mirror-mode', FlxG.save.data.mirrorMode);
+			}
+			else
+			{
+				preferenceCheck('mirror-mode', false);
+			}
+
+		if(FlxG.save.data.hudDisplay != null)
+			{
+				preferenceCheck('hud-display', FlxG.save.data.hudDisplay);
+			}
+			else
+			{
+				preferenceCheck('hud-display', true);
+			}
+
+		if(FlxG.save.data.pixelShader != null)
+			{
+				preferenceCheck('pixel-shader', FlxG.save.data.pixelShader);
+			}
+			else
+			{
+				preferenceCheck('pixel-shader', true);
+			}
 
 		if (!getPref('fps-counter'))
 		{
@@ -172,7 +212,9 @@ class PreferencesMenu extends Page
 		FlxG.save.data.cameraZoom = getPref('camera-zoom');
 		FlxG.save.data.fpsCounter = getPref('fps-counter');
 		FlxG.save.data.autoPause = getPref('auto-pause');
-
+		FlxG.save.data.pixelShader = getPref('pixel-shader');
+		FlxG.save.data.mirrorMode = getPref('mirror-mode');
+		FlxG.save.data.hudDisplay = getPref('hud-display');
 		FlxG.save.flush();
 
 		trace('toggled? ' + Std.string(preferences.get(identifier)));

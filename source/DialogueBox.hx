@@ -46,7 +46,7 @@ class DialogueBox extends FlxSpriteGroup
 				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
 			case 'roses':
-			    FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
+			    FlxG.sound.playMusic(Paths.music('Worstbox'), 0);
 			    FlxG.sound.music.fadeIn(1, 0, 0.8);
 			case 'thorns':
 				FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);

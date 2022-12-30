@@ -72,6 +72,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			endBullshit();
 		}
 
+		
 		if (controls.BACK)
 		{
 			PlayState.deathCounter = 0;
