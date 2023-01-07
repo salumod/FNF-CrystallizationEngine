@@ -168,12 +168,6 @@ class DialogueBox extends FlxSpriteGroup
 		portraitLeft.screenCenter(X);
 		fportraitLeft.screenCenter(X);
 
-		handSelect = new FlxSprite(1042, 590).loadGraphic(Paths.image('weeb/pixelUI/hand_textbox'));
-		handSelect.setGraphicSize(Std.int(handSelect.width * PlayState.daPixelZoom * 0.9));
-		handSelect.updateHitbox();
-		handSelect.visible = false;
-		add(handSelect);
-
 		switch (PlayState.SONG.song.toLowerCase())
 		{
 		case 'senpai' | 'roses':
@@ -183,11 +177,11 @@ class DialogueBox extends FlxSpriteGroup
 		handSelect.visible = false;
 		add(handSelect);
 		case 'thorns':
-		handSelect = new FlxSprite(1042, 590).loadGraphic(Paths.image('weeb/dialogue/handSelect/hand_red'));
+		handSelect = new FlxSprite(1042, 590).loadGraphic(Paths.image('weeb/dialogue/handSelect/hand_evil'));
 		handSelect.setGraphicSize(Std.int(handSelect.width * PlayState.daPixelZoom * 0.9));
 		handSelect.updateHitbox();
 		handSelect.visible = false;
-		add(handSelect);	
+		add(handSelect);
 		default:
 		handSelect = new FlxSprite(1042, 590).loadGraphic(Paths.image('dialogue/handSelect/hand_textbox'));
 		handSelect.setGraphicSize(Std.int(handSelect.width * PlayState.daPixelZoom * 0.9));
@@ -195,7 +189,6 @@ class DialogueBox extends FlxSpriteGroup
 		handSelect.visible = false;
 		add(handSelect);
 		}
-
 
 		talkingRight = !talkingRight;
 

@@ -32,7 +32,7 @@ class PreferencesMenu extends Page
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
 		createPrefItem('Mirror', 'mirror-mode', false);
-		createPrefItem('HUD display', 'hud-display', false);
+		createPrefItem('Game console mode', 'game-console-mode', false);
 		createPrefItem('Pixel Shader', 'pixel-shader', true);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
@@ -128,13 +128,13 @@ class PreferencesMenu extends Page
 				preferenceCheck('mirror-mode', false);
 			}
 
-		if(FlxG.save.data.hudDisplay != null)
+		if(FlxG.save.data.gameConsoleMmode != null)
 			{
-				preferenceCheck('hud-display', FlxG.save.data.hudDisplay);
+				preferenceCheck('game-console-mode', FlxG.save.data.gameConsoleMmode);
 			}
 			else
 			{
-				preferenceCheck('hud-display', true);
+				preferenceCheck('game-console-mode', false);
 			}
 
 		if(FlxG.save.data.pixelShader != null)
@@ -214,7 +214,7 @@ class PreferencesMenu extends Page
 		FlxG.save.data.autoPause = getPref('auto-pause');
 		FlxG.save.data.pixelShader = getPref('pixel-shader');
 		FlxG.save.data.mirrorMode = getPref('mirror-mode');
-		FlxG.save.data.hudDisplay = getPref('hud-display');
+		FlxG.save.data.gameConsoleMmode = getPref('game-console-mode');
 		FlxG.save.flush();
 
 		trace('toggled? ' + Std.string(preferences.get(identifier)));
