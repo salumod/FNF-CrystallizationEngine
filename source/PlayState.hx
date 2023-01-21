@@ -131,7 +131,7 @@ class PlayState extends MusicBeatState
 	var bgGirls:BackgroundGirls;
 	var bgGirlevil:BackgroundGirlsEvil;
 	var wiggleShit:WiggleEffect = new WiggleEffect();
-
+	var wiggleShitBg:WiggleEffect = new WiggleEffect();
 	var tankSky:BGSprite;
 	var tankWatchtower:BGSprite;
 	var tankGround:BGSprite;
@@ -146,7 +146,7 @@ class PlayState extends MusicBeatState
 
 	var talking:Bool = true;
 	var misses:Int = 0;
-	var Faults:Int = 0;
+	var faults:Int = 0;
 	var songScore:Int = 0;
 	var scoreTxt:FlxText;
 	var effectTween:FlxTween;
@@ -365,7 +365,7 @@ class PlayState extends MusicBeatState
 
 		                  var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.image('philly/street'));
 	                          add(street);
-		          }
+						}
 		          case 'milf' | 'satin-panties' | 'high':
 		          {
 		                  curStage = 'limo';
@@ -646,84 +646,89 @@ class PlayState extends MusicBeatState
 		          }
 		          case 'thorns':
 		          {
-		                  curStage = 'schoolEvil';
-
+					curStage = 'schoolEvil';
+					
+                    if (PreferencesMenu.getPref('game-console-mode'))
+						{
 		                  var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
 		                  var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
 
 		                  var posX = 400;
 	                      var posY = 200;
-
-		                  var bg:FlxSprite = new FlxSprite(posX, posY);
-		                  bg.frames = Paths.getSparrowAtlas('weeb/animatedEvilSchool');
-		                  bg.animation.addByPrefix('idle', 'background 2', 24);
-		                  bg.animation.play('idle');
-		                  bg.scrollFactor.set(0.8, 0.9);
-		                  bg.scale.set(6, 6);
-		                  add(bg);
+						
+							var bg:FlxSprite = new FlxSprite(posX, posY);
+							bg.frames = Paths.getSparrowAtlas('erectweeb/animatedEvilSchool');
+							bg.animation.addByPrefix('idle', 'background 2', 60);
+							bg.animation.play('idle');
+							bg.scrollFactor.set(0.8, 0.9);
+							bg.scale.set(6, 6);
+							add(bg);
 
 						  bgGirlevil = new BackgroundGirlsEvil(400, 400);
 		                  bgGirlevil.scrollFactor.set(0.8, 0.8);
 						  bgGirlevil.scale.set(6, 6);
 						  add(bgGirlevil);
 
-						  var effect = new MosaicEffect();
-						  bg.shader = effect.shader;
-						  effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 1.5, 1.5, {type: PINGPONG}, function(v)
+						  if (PreferencesMenu.getPref('pixel-shader'))
 							{
-								effect.setStrength(v, v);
-							});
+							    FlxG.camera.setFilters([new ShaderFilter(new PixelParityShader(170, 170))]);
+								
+							    var effect = new MosaicEffect();
+							    bg.shader = effect.shader;
+							    effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 1.5, 1.5, {type: PINGPONG}, function(v)
+							    {
+								  effect.setStrength(v, v);
+							    });
+  
+							    var effect = new MosaicEffect();
+							    bgGirlevil.shader = effect.shader;
+							    effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 1.5, 1.5, {type: PINGPONG}, function(v)
+							    {
+								  effect.setStrength(v, v);
+							    });
+							}
+						}
+						else
+						{
+						  var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
+		                  var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
 
-						  var effect = new MosaicEffect();
-						  bgGirlevil.shader = effect.shader;
-						  effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 1.5, 1.5, {type: PINGPONG}, function(v)
+		                  var posX = 400;
+	                      var posY = 200;
+
+						  var bg:FlxSprite = new FlxSprite(posX, posY);
+		                  bg.frames = Paths.getSparrowAtlas('weeb/animatedEvilSchool');
+		                  bg.animation.addByPrefix('idle', 'background 2', 24);
+		                  bg.animation.play('idle');
+		                  bg.scrollFactor.set(0.8, 0.9);
+		                  bg.scale.set(6, 6);
+		                  add(bg);
+						  
+						  bgGirlevil = new BackgroundGirlsEvil(400, 400);
+		                  bgGirlevil.scrollFactor.set(0.8, 0.8);
+						  bgGirlevil.scale.set(6, 6);
+						  add(bgGirlevil);
+
+						  if (PreferencesMenu.getPref('pixel-shader'))
 							{
-								effect.setStrength(v, v);
-							});
-		                  /* 
-		                           var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolBG'));
-		                           bg.scale.set(6, 6);
-		                           // bg.setGraphicSize(Std.int(bg.width * 6));
-		                           // bg.updateHitbox();
-		                           add(bg);
+							    FlxG.camera.setFilters([new ShaderFilter(new PixelParityShader(170, 170))]);
+								
+							    var effect = new MosaicEffect();
+							    bg.shader = effect.shader;
+							    effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 1.5, 1.5, {type: PINGPONG}, function(v)
+							    {
+								  effect.setStrength(v, v);
+							    });
+  
+							    var effect = new MosaicEffect();
+							    bgGirlevil.shader = effect.shader;
+							    effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 1.5, 1.5, {type: PINGPONG}, function(v)
+							    {
+								  effect.setStrength(v, v);
+							    });
+							}
+						}
 
-		                           var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolFG'));
-		                           fg.scale.set(6, 6);
-		                           // fg.setGraphicSize(Std.int(fg.width * 6));
-		                           // fg.updateHitbox();
-		                           add(fg);
-
-		                           wiggleShit.effectType = WiggleEffectType.DREAMY;
-		                           wiggleShit.waveAmplitude = 0.01;
-		                           wiggleShit.waveFrequency = 60;
-		                           wiggleShit.waveSpeed = 0.8;
-		                    */
-
-		                  // bg.shader = wiggleShit.shader;
-		                  // fg.shader = wiggleShit.shader;
-
-		                  /* 
-		                            var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
-		                            var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
-
-		                            // Using scale since setGraphicSize() doesnt work???
-		                            waveSprite.scale.set(6, 6);
-		                            waveSpriteFG.scale.set(6, 6);
-		                            waveSprite.setPosition(posX, posY);
-		                            waveSpriteFG.setPosition(posX, posY);
-
-		                            waveSprite.scrollFactor.set(0.7, 0.8);
-		                            waveSpriteFG.scrollFactor.set(0.9, 0.8);
-
-		                            // waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
-		                            // waveSprite.updateHitbox();
-		                            // waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
-		                            // waveSpriteFG.updateHitbox();
-
-		                            add(waveSprite);
-		                            add(waveSpriteFG);
-		                    */
-							FlxG.camera.setFilters([new ShaderFilter(new PixelParityShader(170, 170))]);
 		          }
 				  case 'guns' | 'stress' | 'ugh':
 				  {
@@ -1075,7 +1080,7 @@ class PlayState extends MusicBeatState
 
 		add(timeBarBG);
         add(timeTxt);
-		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 195, healthBarBG.y + 50, 0, "", 20);
+		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 270, healthBarBG.y + 50, 0, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
@@ -2270,11 +2275,14 @@ class PlayState extends MusicBeatState
 		scoreTxt.text = 
 		'Score: ' + songScore
 		+ ' | Misses: ' + misses
-		+ ' | Faults: ' + Faults
+		+ ' | Faults: ' + faults
 		+ '| Accuracy:' +truncateFloat(accuracy, 2) + "%"
-		+ "(" + rank + ")";
+		+  '| Rank:' + rank;
+		if (PreferencesMenu.getPref('game-console-mode'))
+		    timeTxt.text = 'curBeat:' + curBeat;
+		else
+		    timeTxt.text = 'SongTime:' + FlxG.sound.music.time / 1000 + "s";
 
-		timeTxt.text = 'SongTime:' + FlxG.sound.music.time;
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
@@ -2313,8 +2321,8 @@ class PlayState extends MusicBeatState
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
-		iconP1.setGraphicSize(Std.int(FlxMath.lerp(125, iconP1.width, 0.85)));
-		iconP2.setGraphicSize(Std.int(FlxMath.lerp(125, iconP2.width, 0.85)));
+		iconP1.setGraphicSize(Std.int(FlxMath.lerp(140, iconP1.width, 0.85)));
+		iconP2.setGraphicSize(Std.int(FlxMath.lerp(140, iconP2.width, 0.85)));
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
@@ -2342,11 +2350,20 @@ class PlayState extends MusicBeatState
 					iconP1.animation.curAnim.curFrame = 2;
 				    iconP2.animation.curAnim.curFrame = 1;
 					}
-					
+				else if (healthBar.percent < 25)
+					{
+					iconP1.animation.curAnim.curFrame = 4;
+					iconP2.animation.curAnim.curFrame = 3;
+					}
 				else if (healthBar.percent > 80)
 					{
 					iconP1.animation.curAnim.curFrame = 1;
 				    iconP2.animation.curAnim.curFrame = 2;
+					}
+				else if (healthBar.percent > 75)
+					{
+					iconP1.animation.curAnim.curFrame = 3;
+					iconP2.animation.curAnim.curFrame = 4;
 					}
 				else
 					{
@@ -2361,18 +2378,26 @@ class PlayState extends MusicBeatState
 					iconP1.animation.curAnim.curFrame = 1;
 				    iconP2.animation.curAnim.curFrame = 2;
 					}
-					
+				else if (healthBar.percent < 25)
+					{
+					iconP1.animation.curAnim.curFrame = 3;
+					iconP2.animation.curAnim.curFrame = 4;
+					}
 				else if (healthBar.percent > 80)
 					{
 					iconP1.animation.curAnim.curFrame = 2;
 				    iconP2.animation.curAnim.curFrame = 1;
+					}
+				else if (healthBar.percent > 75)
+					{
+					iconP1.animation.curAnim.curFrame = 4;
+					iconP2.animation.curAnim.curFrame = 3;
 					}
 				else
 					{
 					iconP2.animation.curAnim.curFrame = 0;
 				    iconP1.animation.curAnim.curFrame = 0;
 					}
-				
 			}
 		/* if (FlxG.keys.justPressed.NINE)
 			FlxG.switchState(new Charting()); */
@@ -2578,7 +2603,6 @@ class PlayState extends MusicBeatState
 								{
 									boyfriend.playAnim('singDOWN' + altAnim, true);
 								}
-										
 							else
 								{
 									dad.playAnim('singDOWN' + altAnim, true);
@@ -2611,8 +2635,10 @@ class PlayState extends MusicBeatState
 								sustain2(spr.ID, spr, daNote);
 							}
 						});
-	
 
+					if (!(PreferencesMenu.getPref('mirror-mode')))
+                        dad.holdTimer = 0;
+					
 					if (SONG.needsVoices)
 						vocals.volume = 1;
 					daNote.kill();
@@ -2668,10 +2694,8 @@ class PlayState extends MusicBeatState
 		if (!inCutscene)
 			keyShit();
 
-		//#if debug
 		if (FlxG.keys.justPressed.ONE)
 			endSong();
-		//#end
 	}
 
 	function sustain2(strum:Int, spr:FlxSprite, note:Note):Void
@@ -2709,7 +2733,6 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
-		camHUD.visible = false;
 		if (SONG.validScore)
 		{
 			#if !switch
@@ -2866,12 +2889,12 @@ class PlayState extends MusicBeatState
 
 		 /*if (combo > 60)
 				daRanum = 'great';
-			else if (combo > 12)
+			else if (combo > 20)
 				daRanum = 'more'
-			else if (combo > 4)
+			else if (combo > 0)
 				daRanum = 'less';
-		 */
-		 
+		else
+			daRanum = 'less';*/
 		var pixelShitPart1:String = "";
 		var pixelShitPart2:String = '';
 
@@ -2881,7 +2904,7 @@ class PlayState extends MusicBeatState
 			    pixelShitPart1 = 'erectweeb/pixelUI/';
 			else
 			    pixelShitPart1 = 'weeb/pixelUI/';
-			pixelShitPart2 = '-pixel';
+			    pixelShitPart2 = '-pixel';
 		}
 
 		rating.loadGraphic(Paths.image(pixelShitPart1 + daRating + pixelShitPart2));
@@ -2935,7 +2958,7 @@ class PlayState extends MusicBeatState
 		seperatedScore.push(Math.floor(combo / 100));
 		seperatedScore.push(Math.floor((combo - (seperatedScore[0] * 100)) / 10));
 		seperatedScore.push(combo % 10);
-		if (combo >= 5)
+		if (combo >= 4)
         add(comboSpr);
 		var daLoop:Int = 0;
 		for (i in seperatedScore)
@@ -2985,12 +3008,16 @@ class PlayState extends MusicBeatState
 			startDelay: Conductor.crochet * 0.001
 		});
 
+		/*FlxTween.tween(ranumber, {alpha: 0}, 0.2, {
+			startDelay: Conductor.crochet * 0.001
+		});*/
+
 		FlxTween.tween(comboSpr, {alpha: 0}, 0.2, {
 			onComplete: function(tween:FlxTween)
 			{
 				coolText.destroy();
 				comboSpr.destroy();
-
+                //ranumber.destroy();
 				rating.destroy();
 			},
 			startDelay: Conductor.crochet * 0.001
@@ -3066,16 +3093,11 @@ class PlayState extends MusicBeatState
 		}
 		if (controlArray.contains(true) && generatedMusic)
 		{
-
 			if (PreferencesMenu.getPref('mirror-mode'))
-				{
-					dad.holdTimer = 0;
-				}
-			else
-				{
-					boyfriend.holdTimer = 0;
-				}
-				
+			    dad.holdTimer = 0;
+
+			boyfriend.holdTimer = 0;
+
 			var possibleNotes:Array<Note> = [];
 
 			var ignoreList:Array<Int> = [];
@@ -3149,21 +3171,14 @@ class PlayState extends MusicBeatState
 			{
 				if (dad.holdTimer > 0.004 * Conductor.stepCrochet && !holdingArray.contains(true) && dad.animation.curAnim.name.startsWith('sing'))
 					{
-						if (dad.animation.curAnim.name.startsWith('sing'))
 						dad.dance();
-					}
-				if (boyfriend.holdTimer > 0.004 * Conductor.stepCrochet && !holdingArray.contains(true) && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
-					{
-						if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
-						boyfriend.dance();
 					}
 			}
 		else
 			{
 				if (boyfriend.holdTimer > 0.004 * Conductor.stepCrochet && !holdingArray.contains(true) && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
 					{
-						if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
-						boyfriend.dance();
+						boyfriend.playAnim('idle');
 					}
 			}
 			
@@ -3197,14 +3212,20 @@ class PlayState extends MusicBeatState
 			combo = 0;
 
 			if (!practiceMode)
-				songScore -= 10;
-                Faults += 1;
+				songScore -= (songScore - 10) >= 0 ? 10 : songScore;
+                faults += 1;
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 			// FlxG.sound.play(Paths.sound('missnote1'), 1, false);
 			// FlxG.log.add('played imss note');
-
-			boyfriend.stunned = true;
-
+			if (PreferencesMenu.getPref('mirror-mode'))
+				{
+				  //hey!
+				}
+			else
+				{
+					boyfriend.stunned = true;
+				}
+			
 			// get stunned for 5 seconds
 			new FlxTimer().start(5 / 60, function(tmr:FlxTimer)
 			{
@@ -3262,6 +3283,7 @@ class PlayState extends MusicBeatState
 
 	function badNoteHit()
 	{
+		// badNoteCheck is intentional for now, but maybe it can be some option later down the line
 		// just double pasting this shit cuz fuk u
 		// REDO THIS SYSTEM!
 		var leftP = controls.NOTE_LEFT_P;
@@ -3518,11 +3540,13 @@ function noteCheck(keyP:Bool, note:Note):Void
 
 		if (curBeat % 2 == 0)
 		{
-			if (!boyfriend.animation.curAnim.name.startsWith('sing'))
-				boyfriend.dance();
-			if (!dad.animation.curAnim.name.startsWith('sing')
+			    if (!dad.animation.curAnim.name.startsWith('sing')
 				|| (FlxG.save.data.mirrorMode && dad.animation.curAnim.name.startsWith('sing') && dad.animation.curAnim.finished))
 				dad.dance();
+
+				if (!boyfriend.animation.curAnim.name.startsWith('sing')
+				|| (boyfriend.animation.curAnim.name.startsWith('sing') && boyfriend.animation.curAnim.finished))
+				boyfriend.playAnim('idle');
 		}
 		else if (dad.curCharacter == 'spooky')
 		{
@@ -3549,7 +3573,68 @@ function noteCheck(keyP:Bool, note:Note):Void
 			spr.dance();
 		});
 
-		
+		if (curSong =='Blammed')
+	{
+		switch (curBeat)
+		{
+		case 97:
+			dad.color = 0xFFFF7676;//red
+		case 101:
+			dad.color = 0xFFE092FB;//purple
+		case 104:
+			dad.color = 0xFF62FF56;//green
+		case 109:
+			dad.color = 0xFF7A7CFF;//blue
+		case 112:
+			dad.color = 0x00FFFFFF;
+		case 113:
+			boyfriend.color = 0xFFFF7676;
+		case 116:
+			boyfriend.color = 0xFFFFA36D;//orange
+		case 120:
+			boyfriend.color = 0xFF7A7CFF;
+		case 124:
+			boyfriend.color = 0xFFFF7676;
+		case 128:
+			boyfriend.color = 0x00FFFFFF;
+		case 129:
+			dad.color = 0xFFE092FB;
+		case 130:
+			dad.color = 0xFF62FF56;
+		case 133:
+			dad.color = 0xFFFFA36D;
+		case 136:
+			dad.color = 0xFF7A7CFF;
+		case 140:
+			dad.color = 0xFF7A7CFF;
+		case 147:
+			dad.color = 0x00FFFFFF;
+		case 148:
+			boyfriend.color = 0xFF62FF56;
+		case 152:
+			boyfriend.color = 0xFFFF7676;
+		case 156:
+			boyfriend.color = 0xFFFFA36D;
+		case 159:
+			boyfriend.color = 0x00FFFFFF;
+		case 160:
+			dad.color = 0xFF78F5FD;
+		case 164:
+			dad.color = 0xFFFFA36D;
+		case 172:
+			dad.color =0xFFE092FB;
+		case 175:
+			dad.color = 0x00FFFFFF;
+		case 176:
+			boyfriend.color = 0xFF62FF56;
+		case 184:
+			boyfriend.color = 0xFF7A7CFF;
+		case 189:
+			boyfriend.color = 0xFFFF7676;
+		case 192:
+			boyfriend.color = 0x00FFFFFF;
+		}
+	}
 if (curSong =='Thorns')
 	{
 		switch (curBeat)

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="senpai-angry.png">
+	<!-- Created with Adobe Animate version 22.0.1.105 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="元件 20000" x="0" y="0" width="55" height="60" frameX="0" frameY="0" frameWidth="71" frameHeight="60"/>
+	<SubTexture name="元件 20001" x="55" y="0" width="55" height="60" frameX="-4" frameY="0" frameWidth="71" frameHeight="60"/>
+	<SubTexture name="元件 20002" x="110" y="0" width="55" height="60" frameX="-7" frameY="0" frameWidth="71" frameHeight="60"/>
+	<SubTexture name="元件 20003" x="165" y="0" width="55" height="60" frameX="-10" frameY="0" frameWidth="71" frameHeight="60"/>
+	<SubTexture name="元件 20004" x="0" y="60" width="55" height="60" frameX="-13" frameY="0" frameWidth="71" frameHeight="60"/>
+	<SubTexture name="元件 20005" x="55" y="60" width="55" height="60" frameX="-16" frameY="0" frameWidth="71" frameHeight="60"/>
+	<SubTexture name="元件 20006" x="55" y="60" width="55" height="60" frameX="-16" frameY="0" frameWidth="71" frameHeight="60"/>
+	<SubTexture name="元件 20007" x="55" y="60" width="55" height="60" frameX="-16" frameY="0" frameWidth="71" frameHeight="60"/>
+	<SubTexture name="元件 20008" x="55" y="60" width="55" height="60" frameX="-16" frameY="0" frameWidth="71" frameHeight="60"/>
+</TextureAtlas>

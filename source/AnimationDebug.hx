@@ -10,10 +10,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import Song.SwagSong;
 
-/**
-	*DEBUG MODE
- */
-class AnimationDebug extends FlxState
+class AnimationDebug extends MusicBeatState
 {
 	var bf:Boyfriend;
 	var dad:Character;
@@ -52,7 +49,6 @@ class AnimationDebug extends FlxState
 			add(dad);
 
 			char = dad;
-			dad.flipX = false;
 		}
 		else
 		{
@@ -168,6 +164,8 @@ class AnimationDebug extends FlxState
 			genBoyOffsets(false);
 		}
 
+		
+
 		var upP = FlxG.keys.anyJustPressed([UP]);
 		var rightP = FlxG.keys.anyJustPressed([RIGHT]);
 		var downP = FlxG.keys.anyJustPressed([DOWN]);
@@ -200,7 +198,10 @@ class AnimationDebug extends FlxState
 				PlayState.SONG = _song;
 				FlxG.switchState(new PlayState());
 			}
-
+        /*if (controls.ACCEPT)
+			{
+				FlxG.switchState(new MainMenuState());
+			}*/
 		super.update(elapsed);
 	}
 }

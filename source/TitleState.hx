@@ -56,10 +56,6 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		if(FlxG.save.data.mods == null)
-			FlxG.save.data.mods = [];
-
-		reloadMods();
 		FlxG.game.focusLostFramerate = 60;
 
 		swagShader = new ColorSwap();
@@ -157,7 +153,7 @@ class TitleState extends MusicBeatState
 		logoBl = new FlxSprite(-150, -100);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = true;
-		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
+		logoBl.animation.addByPrefix('bump', 'crys', 24);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
 		// logoBl.screenCenter();
@@ -171,20 +167,7 @@ class TitleState extends MusicBeatState
 		gfDance.antialiasing = true;
 		add(gfDance);
 		gfDance.shader = swagShader.shader;
-		//add(logoBl);
-
-
-
-		crystallization = new FlxSprite(-150, -160);
-		crystallization.frames = Paths.getSparrowAtlas('log');
-		crystallization.antialiasing = true;
-		crystallization.animation.addByPrefix('bump', '结晶引擎', 24);
-		crystallization.animation.play('bump');
-		crystallization.updateHitbox();
-		add(crystallization);
-		// logoBl.screenCenter();
-		// logoBl.color = FlxColor.BLACK;
-		logoBl.shader = swagShader.shader;
+		add(logoBl);
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
@@ -466,45 +449,5 @@ class TitleState extends MusicBeatState
 			remove(credGroup);
 			skippedIntro = true;
 		}
-	}
-	public static var mod_dirs:Array<String> = [];
-
-	public static function reloadMods()
-	{
-		#if polymod
-		mod_dirs = FlxG.save.data.mods;
-
-		var new_dirs:Array<String> = [];
-
-		for(dir in mod_dirs)
-		{
-			new_dirs.push(dir);
-		}
-
-		polymod.Polymod.init({
-			modRoot: "mods",
-			dirs: new_dirs,
-			framework: OPENFL,
-			errorCallback: function(error:polymod.Polymod.PolymodError)
-			{
-				#if debug
-				trace(error.message);
-				#end
-			},
-			frameworkParams: {
-				assetLibraryPaths: [
-					"songs" => "songs",
-					"shared" => "shared",
-					"week1" => "week1",
-					"week2" => "week2",
-					"week3" => "week3",
-					"week4" => "week4",
-					"week5" => "week5",
-					"week6" => "week6",
-					"week7" => "week7"
-				]
-			}
-		});
-		#end
 	}
 }

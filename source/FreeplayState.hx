@@ -58,9 +58,6 @@ class FreeplayState extends MusicBeatState
 		}
 
 		if (StoryMenuState.weekUnlocked[2])
-			addWeek(['Test'], 1, ['bf-pixel']);
-
-		if (StoryMenuState.weekUnlocked[2])
 			addWeek(['Tutorial'], 1, ['gf']);
 
 		if (StoryMenuState.weekUnlocked[2])

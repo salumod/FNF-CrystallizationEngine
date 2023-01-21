@@ -54,7 +54,8 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.camera.target = null;
 
 		bf.playAnim('firstDeath');
-
+		FlxG.sound.cache(Paths.music('gameOver' + stageSuffix));
+		FlxG.sound.cache(Paths.music('gameOverEnd' + stageSuffix));
 		var exclude = [];
 		if (!PreferencesMenu.getPref('censor-naughty'))
 		{
@@ -78,7 +79,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.deathCounter = 0;
 			PlayState.seenCutscene = false;
 
-			FlxG.sound.music.stop();
+			FlxG.sound.music.fadeOut(0.1);
 
 			if (PlayState.isStoryMode)
 				FlxG.switchState(new StoryMenuState());
