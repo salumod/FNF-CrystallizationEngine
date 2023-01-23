@@ -165,8 +165,6 @@ class PlayState extends MusicBeatState
 	private var player2Strums:FlxTypedGroup<FlxSprite>;
 	private var strumming2:Array<Bool> = [false, false, false, false];
 
-
-
 	public static var campaignScore:Int = 0;
 
 	private var dataSuffix:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT'];
@@ -565,11 +563,6 @@ class PlayState extends MusicBeatState
 		                  bgGirls.setGraphicSize(Std.int(bgGirls.width * daPixelZoom));
 		                  bgGirls.updateHitbox();
 		                  add(bgGirls);
-						  
-						 var schoolrxt:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('erectweeb/schoolrxt'));
-						 //schoolrxt.alpha = 0.3;
-		                 add(schoolrxt);
-						 schoolrxt.cameras = [camHUD];
 
 						  if (SONG.song.toLowerCase() == 'roses')
 							{
@@ -581,7 +574,7 @@ class PlayState extends MusicBeatState
 						}
 						else
 						{
-						var bgSky = new FlxSprite().loadGraphic(Paths.image('weeb/weebSky'));
+						  var bgSky = new FlxSprite().loadGraphic(Paths.image('weeb/weebSky'));
 		                  bgSky.scrollFactor.set(0.1, 0.1);
 		                  add(bgSky);
 
@@ -641,7 +634,7 @@ class PlayState extends MusicBeatState
 								bgGirls.getScared();					
 					        }
 							if (PreferencesMenu.getPref('pixel-shader'))
-								FlxG.camera.setFilters([new ShaderFilter(new PixelParityShader(170, 170))]);
+								FlxG.camera.setFilters([new ShaderFilter(new PixelParityShader(175, 175))]);
 						}
 		          }
 		          case 'thorns':
@@ -671,7 +664,7 @@ class PlayState extends MusicBeatState
 
 						  if (PreferencesMenu.getPref('pixel-shader'))
 							{
-							    FlxG.camera.setFilters([new ShaderFilter(new PixelParityShader(170, 170))]);
+							    FlxG.camera.setFilters([new ShaderFilter(new PixelParityShader(200, 200))]);
 								
 							    var effect = new MosaicEffect();
 							    bg.shader = effect.shader;
@@ -711,7 +704,7 @@ class PlayState extends MusicBeatState
 
 						  if (PreferencesMenu.getPref('pixel-shader'))
 							{
-							    FlxG.camera.setFilters([new ShaderFilter(new PixelParityShader(170, 170))]);
+							    FlxG.camera.setFilters([new ShaderFilter(new PixelParityShader(175, 175))]);
 								
 							    var effect = new MosaicEffect();
 							    bg.shader = effect.shader;
@@ -2278,8 +2271,8 @@ class PlayState extends MusicBeatState
 		+ ' | Faults: ' + faults
 		+ '| Accuracy:' +truncateFloat(accuracy, 2) + "%"
 		+  '| Rank:' + rank;
-		if (PreferencesMenu.getPref('game-console-mode'))
-		    timeTxt.text = 'curBeat:' + curBeat;
+		if (PreferencesMenu.getPref('curbeat'))
+		    timeTxt.text = '  curBeat:' + curBeat;
 		else
 		    timeTxt.text = 'SongTime:' + FlxG.sound.music.time / 1000 + "s";
 
@@ -2638,7 +2631,9 @@ class PlayState extends MusicBeatState
 
 					if (!(PreferencesMenu.getPref('mirror-mode')))
                         dad.holdTimer = 0;
-					
+					else
+						boyfriend.holdTimer = 0;
+
 					if (SONG.needsVoices)
 						vocals.volume = 1;
 					daNote.kill();
@@ -3095,8 +3090,8 @@ class PlayState extends MusicBeatState
 		{
 			if (PreferencesMenu.getPref('mirror-mode'))
 			    dad.holdTimer = 0;
-
-			boyfriend.holdTimer = 0;
+            else
+			    boyfriend.holdTimer = 0;
 
 			var possibleNotes:Array<Note> = [];
 
@@ -3167,20 +3162,10 @@ class PlayState extends MusicBeatState
 			else
 				badNoteHit();
 		}
-		if (PreferencesMenu.getPref('mirror-mode'))
-			{
-				if (dad.holdTimer > 0.004 * Conductor.stepCrochet && !holdingArray.contains(true) && dad.animation.curAnim.name.startsWith('sing'))
-					{
-						dad.dance();
-					}
-			}
-		else
-			{
 				if (boyfriend.holdTimer > 0.004 * Conductor.stepCrochet && !holdingArray.contains(true) && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
 					{
 						boyfriend.playAnim('idle');
 					}
-			}
 			
 		playerStrums.forEach(function(spr:FlxSprite)
 		{
@@ -3217,14 +3202,8 @@ class PlayState extends MusicBeatState
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 			// FlxG.sound.play(Paths.sound('missnote1'), 1, false);
 			// FlxG.log.add('played imss note');
-			if (PreferencesMenu.getPref('mirror-mode'))
-				{
-				  //hey!
-				}
-			else
-				{
-					boyfriend.stunned = true;
-				}
+			if (!(PreferencesMenu.getPref('mirror-mode')))
+				boyfriend.stunned = true;
 			
 			// get stunned for 5 seconds
 			new FlxTimer().start(5 / 60, function(tmr:FlxTimer)

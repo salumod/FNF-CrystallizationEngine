@@ -32,7 +32,8 @@ class PreferencesMenu extends Page
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
 		createPrefItem('Mirror', 'mirror-mode', false);
-		createPrefItem('Game console mode', 'game-console-mode', false);
+		createPrefItem('week six erect stage', 'game-console-mode', false);
+		createPrefItem('curBEAT show', 'curbeat', false);
 		createPrefItem('Pixel Shader', 'pixel-shader', true);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
@@ -128,13 +129,22 @@ class PreferencesMenu extends Page
 				preferenceCheck('mirror-mode', false);
 			}
 
-		if(FlxG.save.data.gameConsoleMmode != null)
+		if(FlxG.save.data.gameConsoleMode != null)
 			{
-				preferenceCheck('game-console-mode', FlxG.save.data.gameConsoleMmode);
+				preferenceCheck('game-console-mode', FlxG.save.data.gameConsoleMode);
 			}
 			else
 			{
 				preferenceCheck('game-console-mode', false);
+			}
+
+		if(FlxG.save.data.curBeat != null)
+			{
+				preferenceCheck('curbeat', FlxG.save.data.curBeat);
+			}
+			else
+			{
+				preferenceCheck('curbeat', false);
 			}
 
 		if(FlxG.save.data.pixelShader != null)
