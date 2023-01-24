@@ -31,7 +31,7 @@ class PreferencesMenu extends Page
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
-		createPrefItem('Mirror', 'mirror-mode', false);
+		createPrefItem('Mirror-Mode', 'mirror-mode', false);
 		createPrefItem('week six erect stage', 'game-console-mode', false);
 		createPrefItem('curBEAT show', 'curbeat', false);
 		createPrefItem('Pixel Shader', 'pixel-shader', true);

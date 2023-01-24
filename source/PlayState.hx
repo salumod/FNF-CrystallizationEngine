@@ -393,7 +393,6 @@ class PlayState extends MusicBeatState
 		                  var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay'));
 						  overlayShit.alpha = 0.3;
 		                  add(overlayShit);
-						  overlayShit.cameras = [camHUD];
 		                  // var shaderBullshit = new BlendModeEffect(new OverlayShader(), FlxColor.RED);
 
 		                  // FlxG.camera.setFilters([new ShaderFilter(cast shaderBullshit.shader)]);
@@ -464,12 +463,6 @@ class PlayState extends MusicBeatState
 		                  santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
 		                  santa.antialiasing = true;
 		                  add(santa);
-
-						 var bgrxt:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('christmas/bgrxt'));
-						 //bgrxt.alpha = 0.3;
-		                 add(bgrxt);
-						 bgrxt.cameras = [camHUD];
-						  
 		          }
 		          case 'winter-horrorland':
 		          {
@@ -972,7 +965,20 @@ class PlayState extends MusicBeatState
 
 		add(dad);
 		add(boyfriend);
+		
+		if (curStage == 'limo')
+			{
+				var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay'));
+		        overlayShit.alpha = 0.3;
+		        add(overlayShit);
+			}
 
+		if(curStage == 'mall')
+			{
+				var bgrxt:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('christmas/bgrxt'));
+				//bgrxt.alpha = 0.3;
+				add(bgrxt);
+			}
 		add(foregroundSprites);
 
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
@@ -1022,39 +1028,29 @@ class PlayState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 
-		switch (SONG.song.toLowerCase())
-		{
-			case 'senpai' | 'roses' | 'thorns':
-				healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar-pixel'));
-				healthBarBG.screenCenter(X);
-				healthBarBG.scrollFactor.set();
-				if (PreferencesMenu.getPref('downscroll'))
-					healthBarBG.y = FlxG.height * 0.1;
-				healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+		    healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
+			healthBarBG.screenCenter(X);
+			healthBarBG.scrollFactor.set();
+			if (PreferencesMenu.getPref('downscroll'))
+				healthBarBG.y = FlxG.height * 0.1;
+
+			add(healthBarBG);
+
+			healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 				'health', 0, 2);
 				if (PreferencesMenu.getPref('mirror-mode'))
 				healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, LEFT_TO_RIGHT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 				'health', 0, 2);
 			healthBar.scrollFactor.set();
+
+		switch (SONG.song.toLowerCase())
+		{
+			case 'senpai' | 'roses' | 'thorns':
 			healthBar.createFilledBar(0xFFFF7777, 0xFFACFF77);
-			add(healthBar);
-	        add(healthBarBG);
 		    default:
-			healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
-			healthBarBG.screenCenter(X);
-			healthBarBG.scrollFactor.set();
-			if (PreferencesMenu.getPref('downscroll'))
-				healthBarBG.y = FlxG.height * 0.1;
-			healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-			'health', 0, 2);
-			if (PreferencesMenu.getPref('mirror-mode'))
-				healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, LEFT_TO_RIGHT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-				'health', 0, 2);
-		    healthBar.scrollFactor.set();
 	        healthBar.createFilledBar(0xFFFF0000, 0xFF00FF00);
-	        add(healthBar);
-	        add(healthBarBG);
         }
+            add(healthBar);
 
 		timeTxt = new FlxText(500, FlxG.height * 0, "", 20);
 		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
@@ -2666,6 +2662,21 @@ class PlayState extends MusicBeatState
 					notes.remove(daNote, true);
 					daNote.destroy();
 				}
+
+				var missNote:Bool = daNote.y < -daNote.height;
+				if (FlxG.save.data.downscroll)
+				{
+					missNote = daNote.y > FlxG.height;
+				}
+				if (missNote && daNote.mustPress)
+					{
+						if (daNote.tooLate || !daNote.wasGoodHit)
+						{
+							noteMiss(daNote.noteData);
+	
+							vocals.volume = 0;
+						}
+					}
 			});
 			player2Strums.forEach(function(spr:FlxSprite)
 			{
@@ -2909,7 +2920,7 @@ class PlayState extends MusicBeatState
 		rating.acceleration.y = 550;
 		rating.velocity.y -= FlxG.random.int(140, 175);
 		rating.velocity.x -= FlxG.random.int(0, 10);
-
+		
 		/*ranumber.loadGraphic(Paths.image(pixelShitPart1 + daRanum + pixelShitPart2));
 		ranumber.screenCenter();
 		ranumber.x = coolText.x - 80;
@@ -3017,6 +3028,12 @@ class PlayState extends MusicBeatState
 			},
 			startDelay: Conductor.crochet * 0.001
 		});
+
+		if(curStage == 'limo')
+			{
+				rating.color = 0xAAFD9578;
+				comboSpr.color = 0xAAFD9578;
+			}
 
 		curSection += 1;
 	}
@@ -3195,7 +3212,6 @@ class PlayState extends MusicBeatState
 				gf.playAnim('sad');
 			}
 			combo = 0;
-
 			if (!practiceMode)
 				songScore -= (songScore - 10) >= 0 ? 10 : songScore;
                 faults += 1;

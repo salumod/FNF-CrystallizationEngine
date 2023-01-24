@@ -1,6 +1,5 @@
 package;
 
-import flixel.math.FlxMath;
 import lime.app.Promise;
 import lime.app.Future;
 import flixel.FlxG;
@@ -8,6 +7,7 @@ import flixel.FlxState;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxTimer;
+import flixel.math.FlxMath;
 
 import openfl.utils.Assets;
 import lime.utils.Assets as LimeAssets;
@@ -18,6 +18,8 @@ import haxe.io.Path;
 
 class LoadingState extends MusicBeatState
 {
+	inline static var MIN_TIME = 1.0;
+	
 	var target:FlxState;
 	var targetShit:Float = 0;
 	var stopMusic = false;
@@ -26,11 +28,6 @@ class LoadingState extends MusicBeatState
 	var logo:FlxSprite;
 	var gfDance:FlxSprite;
 	var danceLeft = false;
-
-	var funkay:FlxSprite;
-	var loadBar:FlxSprite;
-
-	public static var MIN_TIME = 1;
 	
 	function new(target:FlxState, stopMusic:Bool)
 	{
@@ -39,22 +36,24 @@ class LoadingState extends MusicBeatState
 		this.stopMusic = stopMusic;
 	}
 	
+	var funkay:FlxSprite;
+	var loadBar:FlxSprite;
 	override function create()
 	{
-		var bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFFCAFF4D);
+		var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xffcaff4d);
 		add(bg);
-
-		funkay = new FlxSprite();
-		funkay.loadGraphic(Paths.image('funkay'));
+		
+		funkay = new FlxSprite(0, 0).loadGraphic(Paths.image('funkay'));
 		funkay.setGraphicSize(0, FlxG.height);
 		funkay.updateHitbox();
 		funkay.antialiasing = true;
-		add(funkay);
 		funkay.scrollFactor.set();
 		funkay.screenCenter();
+		add(funkay);
 
-		loadBar = new FlxSprite(0, FlxG.height - 20).makeGraphic(FlxG.width, 10, 0xFFFF16D2);
+		loadBar = new FlxSprite(0, FlxG.height - 20).makeGraphic(FlxG.width, 10, 0xffff16d2);
 		loadBar.screenCenter(X);
+		loadBar.antialiasing = true;
 		add(loadBar);
 		
 		initSongsManifest().onComplete
@@ -72,8 +71,9 @@ class LoadingState extends MusicBeatState
 				else
 					checkLibrary("tutorial");
 				
-				FlxG.camera.fade(FlxG.camera.bgColor, 0.5, true);
-				new FlxTimer().start(1.5, function(_) introComplete());
+				var fadeTime = 0.5;
+				FlxG.camera.fade(FlxG.camera.bgColor, fadeTime, true);
+				new FlxTimer().start(fadeTime + MIN_TIME, function(_) introComplete());
 			}
 		);
 	}
@@ -107,29 +107,20 @@ class LoadingState extends MusicBeatState
 		}
 	}
 	
-	override function beatHit()
-	{
-		super.beatHit();
-		
-		danceLeft = !danceLeft;
-	}
-	
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		var wacky = FlxG.width * 0.88;
-		funkay.setGraphicSize(Std.int(wacky + 0.9 * (funkay.width - wacky)));
+		
+		funkay.setGraphicSize(Std.int(0.88 * FlxG.width + 0.9 * (funkay.width - 0.88 * FlxG.width)));
 		funkay.updateHitbox();
-		if (controls.ACCEPT)
+		if(controls.ACCEPT)
 		{
 			funkay.setGraphicSize(Std.int(funkay.width + 60));
 			funkay.updateHitbox();
-			#if debug
-			if (callbacks != null) trace('fired: ' + callbacks.getFired() + " unfired:" + callbacks.getUnfired());
-			#end
 		}
-		if (callbacks != null)
-		{
+
+		if(callbacks != null) {
 			targetShit = FlxMath.remapToRange(callbacks.numRemaining / callbacks.length, 1, 0, 0, 1);
 			loadBar.scale.x += 0.5 * (targetShit - loadBar.scale.x);
 		}
@@ -161,21 +152,18 @@ class LoadingState extends MusicBeatState
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
 		Paths.setCurrentLevel("week" + PlayState.storyWeek);
-		#if NO_PRELOAD_ALL
 		var loaded = isSoundLoaded(getSongPath())
 			&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))
 			&& isLibraryLoaded("shared");
 		
 		if (!loaded)
 			return new LoadingState(target, stopMusic);
-		#end
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 		
 		return target;
 	}
 	
-	#if NO_PRELOAD_ALL
 	static function isSoundLoaded(path:String):Bool
 	{
 		return Assets.cache.hasSound(path);
@@ -185,7 +173,6 @@ class LoadingState extends MusicBeatState
 	{
 		return Assets.getLibrary(library) != null;
 	}
-	#end
 	
 	override function destroy()
 	{
