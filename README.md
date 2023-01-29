@@ -22,9 +22,3 @@ Similarly, you also need to expose the source code on github
 Now you can add libraries according to the official readme file.
 That's all
 Good luck
--------------------------------------------------
-if you from the Mods
-Mods is not use yet.
-Don't try more
-Or help me to fix it!
-Thank you!
