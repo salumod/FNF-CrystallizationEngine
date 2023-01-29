@@ -18,3 +18,7 @@ spirit
 tankman
 pico-speaker
 bf-holding-gf
+bft
+picot
+bf-pixel-event
+spirit-event

@@ -47,6 +47,8 @@ import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
 import openfl.utils.Assets as OpenFlAssets;
+import charting.ChartingState;
+import charting.AnimationDebug;
 
 using StringTools;
 
@@ -55,6 +57,7 @@ class PlayState extends MusicBeatState
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
 	public static var isStoryMode:Bool = false;
+	public static var isFreePlay:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
@@ -406,7 +409,6 @@ class PlayState extends MusicBeatState
 		                  limo.antialiasing = true;
 
 		                  fastCar = new FlxSprite(-300, 160).loadGraphic(Paths.image('limo/fastCarLol'));
-		                  add(limo);
 		          }
 		          case 'cocoa' | 'eggnog':
 		          {
@@ -633,7 +635,7 @@ class PlayState extends MusicBeatState
 		          case 'thorns':
 		          {
 					curStage = 'schoolEvil';
-					
+
                     if (PreferencesMenu.getPref('game-console-mode'))
 						{
 		                  var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
@@ -965,20 +967,29 @@ class PlayState extends MusicBeatState
 
 		add(dad);
 		add(boyfriend);
-		
-		if (curStage == 'limo')
+		if(curStage == 'tank')
 			{
-				var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay'));
-		        overlayShit.alpha = 0.3;
-		        add(overlayShit);
-			}
-
-		if(curStage == 'mall')
-			{
-				var bgrxt:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('christmas/bgrxt'));
+				var bgrxt:FlxSprite = new FlxSprite(-400, -400).loadGraphic(Paths.image('rtx/bgrxt'));
 				//bgrxt.alpha = 0.3;
 				add(bgrxt);
 			}
+
+		switch (curStage)
+		{
+			case 'limo':
+				{
+					var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay'));
+		            overlayShit.alpha = 0.3;
+		            add(overlayShit);
+				}	
+			case 'mall' | 'mallEvil':
+				{
+                    var bgrxt:FlxSprite = new FlxSprite(-400, -600).loadGraphic(Paths.image('christmas/bgrxt'));
+				    //bgrxt.alpha = 0.3;
+				    add(bgrxt);
+				}				
+		}
+
 		add(foregroundSprites);
 
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
@@ -1065,14 +1076,14 @@ class PlayState extends MusicBeatState
 			{
 				timeBarBG.y = FlxG.height * 0.95;
 				timeBarBG.flipY = true;
-			}
+			}	
 
 		add(timeBarBG);
         add(timeTxt);
-		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 270, healthBarBG.y + 50, 0, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
+
+		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 380, healthBarBG.y + 40, 0, "", 20);
+		scoreTxt.setFormat(Paths.font("funkin.otf"), 30, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
-		add(scoreTxt);
 
 		iconP1 = new HealthIcon(SONG.player1, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
@@ -1081,6 +1092,7 @@ class PlayState extends MusicBeatState
 		iconP2 = new HealthIcon(SONG.player2, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
+		add(scoreTxt);
 
 		grpNoteSplashes.cameras = [camHUD];
 		strumLineNotes.cameras = [camHUD];
@@ -1088,9 +1100,9 @@ class PlayState extends MusicBeatState
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
 		timeBarBG.cameras = [camHUD];
+		scoreTxt.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
-		scoreTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
 		
@@ -3214,7 +3226,7 @@ class PlayState extends MusicBeatState
 			combo = 0;
 			if (!practiceMode)
 				songScore -= (songScore - 10) >= 0 ? 10 : songScore;
-                faults += 1;
+                
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 			// FlxG.sound.play(Paths.sound('missnote1'), 1, false);
 			// FlxG.log.add('played imss note');
@@ -3228,38 +3240,32 @@ class PlayState extends MusicBeatState
 			});
 
 			if (PreferencesMenu.getPref('mirror-mode'))
+			{
+				dad.playAnim('sing' + dataSuffix[direction], true);
+
+				switch (SONG.player2)
 				{
-					dad.playAnim('sing' + dataSuffix[direction], true);
-					
-					if (dad.curCharacter == 'pico')
-						{
+					case 'pico':	
                             dad.playAnim('sing' + dataSuffix[direction] + 'miss', true);
-						}
-					else if (dad.curCharacter == 'senpai')
-						{
+					case 'senpai':
 							dad.color = 0xFFA59CCF;
 					        new FlxTimer().start(15 / 60, function(tmr:FlxTimer)
 						    {
 							dad.color = 0x00FFFFFF;
 						    });
-						}
-					else if (dad.curCharacter == 'senpai-angry')
-						{
-							dad.color = 0xFFA59CCF;
-					        new FlxTimer().start(15 / 60, function(tmr:FlxTimer)
+					case 'senpai-angry':
+						    dad.color = 0xFFA59CCF;
+						    new FlxTimer().start(15 / 60, function(tmr:FlxTimer)
 						    {
-							dad.color = 0x00FFFFFF;
+						    dad.color = 0x00FFFFFF;
 						    });
-						}
-					else if (dad.curCharacter == 'spirit')
-						{
-							dad.color = 0xFFA59CCF;
-							new FlxTimer().start(15 / 60, function(tmr:FlxTimer)
-							{
-							dad.color = 0x00FFFFFF;
-							});
-							}
-					else
+					case 'spirit':
+						    dad.color = 0xFFA59CCF;
+						    new FlxTimer().start(15 / 60, function(tmr:FlxTimer)
+						    {
+						    dad.color = 0x00FFFFFF;
+						    });
+					default:
 						{
 							dad.color = 0xFF7C89FF;
 					        new FlxTimer().start(15 / 60, function(tmr:FlxTimer)
@@ -3269,10 +3275,9 @@ class PlayState extends MusicBeatState
 						}
 					
 				}
+			}
 			else
-				{
-					boyfriend.playAnim('sing' + dataSuffix[direction] + 'miss', true);
-				}
+			boyfriend.playAnim('sing' + dataSuffix[direction] + 'miss', true);	
 		}
 	}
 
@@ -3281,6 +3286,7 @@ class PlayState extends MusicBeatState
 		// badNoteCheck is intentional for now, but maybe it can be some option later down the line
 		// just double pasting this shit cuz fuk u
 		// REDO THIS SYSTEM!
+		faults += 1;
 		var leftP = controls.NOTE_LEFT_P;
 		var downP = controls.NOTE_DOWN_P;
 		var upP = controls.NOTE_UP_P;
@@ -3481,6 +3487,80 @@ function noteCheck(keyP:Bool, note:Note):Void
 	{
 		super.beatHit();
 
+    //event list
+	    //event of weeks
+        function errorEvent() {
+			/*just for week 6
+              if you use it to onter weeks
+			  it'll be a real error.*/
+			var error = new FlxSprite(500, 400).loadGraphic(Paths.image('weeb/error'));
+			error.scrollFactor.set(0, 0);
+		    add(error);
+
+			FlxG.sound.play(Paths.sound('WindowsXP_Error_Sounds'));
+
+			error.setGraphicSize(600, 150);
+
+			error.updateHitbox();
+		}
+
+		function thornscharEvent()
+		{
+			//hey,do you have a idea as event as this.
+			remove(dad);
+
+            dad = new Character(100, 100, 'spirit-event');
+			dad.x -= 150;
+			dad.y += 100;
+            add(dad);
+
+			remove(boyfriend);
+
+            boyfriend = new Boyfriend(770, 450, 'bf-pixel-event');
+			boyfriend.x += 200;
+			boyfriend.y += 220;
+            add(boyfriend);
+
+			remove(gf);
+
+			gf = new Character(400, 130, 'gf-pixel-event');
+			gf.x += 180;
+			gf.y += 300;
+			add(gf);
+
+			gf.playAnim('danceRight');
+		}
+
+		function blammedlighton()
+		{
+			//I don't think about this.
+			remove(dad);
+            dad = new Character(100, 400, 'picot');
+            add(dad);
+
+			remove(boyfriend);
+            boyfriend = new Boyfriend(770, 450, 'bft');
+            add(boyfriend);
+			
+			FlxG.camera.flash(FlxColor.WHITE, 1);
+		}
+
+		function blammedlightend()
+			{
+				/*I can't let them be a event.
+				But,there was no event,right?!*/
+				FlxG.camera.flash(FlxColor.BLACK, 1);
+
+				remove(dad);
+				dad = new Character(100, 400, 'pico');
+				add(dad);
+	
+				remove(boyfriend);
+				boyfriend = new Boyfriend(770, 450, 'bf');
+				add(boyfriend);
+			}
+//end list
+
 		if (generatedMusic)
 		{
 			notes.members.sort(function(note1:Note, note2:Note)
@@ -3573,6 +3653,7 @@ function noteCheck(keyP:Bool, note:Note):Void
 		switch (curBeat)
 		{
 		case 97:
+			blammedlighton();
 			dad.color = 0xFFFF7676;//red
 		case 101:
 			dad.color = 0xFFE092FB;//purple
@@ -3582,7 +3663,6 @@ function noteCheck(keyP:Bool, note:Note):Void
 			dad.color = 0xFF7A7CFF;//blue
 		case 112:
 			dad.color = 0x00FFFFFF;
-		case 113:
 			boyfriend.color = 0xFFFF7676;
 		case 116:
 			boyfriend.color = 0xFFFFA36D;//orange
@@ -3592,18 +3672,16 @@ function noteCheck(keyP:Bool, note:Note):Void
 			boyfriend.color = 0xFFFF7676;
 		case 128:
 			boyfriend.color = 0x00FFFFFF;
-		case 129:
 			dad.color = 0xFFE092FB;
-		case 130:
+		case 132:
 			dad.color = 0xFF62FF56;
-		case 133:
-			dad.color = 0xFFFFA36D;
 		case 136:
 			dad.color = 0xFF7A7CFF;
 		case 140:
 			dad.color = 0xFF7A7CFF;
-		case 147:
+		case 144:
 			dad.color = 0x00FFFFFF;
+			boyfriend.color = 0xFF62FF56;
 		case 148:
 			boyfriend.color = 0xFF62FF56;
 		case 152:
@@ -3614,19 +3692,24 @@ function noteCheck(keyP:Bool, note:Note):Void
 			boyfriend.color = 0x00FFFFFF;
 		case 160:
 			dad.color = 0xFF78F5FD;
-		case 164:
+		case 165:
 			dad.color = 0xFFFFA36D;
+		case 168:
+			dad.color = 0xFFFF7676;
 		case 172:
 			dad.color =0xFFE092FB;
 		case 175:
 			dad.color = 0x00FFFFFF;
 		case 176:
 			boyfriend.color = 0xFF62FF56;
+		case 180:
+			boyfriend.color = 0xFF62FF56;
 		case 184:
 			boyfriend.color = 0xFF7A7CFF;
-		case 189:
+		case 188:
 			boyfriend.color = 0xFFFF7676;
 		case 192:
+			blammedlightend();
 			boyfriend.color = 0x00FFFFFF;
 		}
 	}
@@ -3656,6 +3739,10 @@ if (curSong =='Thorns')
 		case 183:bgGirlevil.hey();
 		case 186:bgGirlevil.hey();
 		case 189:bgGirlevil.hey();
+		case 256:
+			bgGirlevil.hey();
+		    thornscharEvent();
+		case 259:bgGirlevil.hey();
 		case 262:bgGirlevil.hey();
 		case 265:bgGirlevil.hey();
 		case 267:bgGirlevil.hey();
@@ -3667,6 +3754,7 @@ if (curSong =='Thorns')
 		case 283:bgGirlevil.hey();
 		case 285:bgGirlevil.hey();
 		case 288:bgGirlevil.hey();
+        case 290:errorEvent();
 		case 296:remove(bgGirlevil);
 		}
 	}

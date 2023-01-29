@@ -39,6 +39,7 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
+		PlayState.isFreePlay = true;
 		/* 
 			if (FlxG.sound.music != null)
 			{

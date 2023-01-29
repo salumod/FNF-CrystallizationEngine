@@ -1,4 +1,4 @@
-package;
+package charting;
 
 import flixel.FlxG;
 import flixel.FlxObject;

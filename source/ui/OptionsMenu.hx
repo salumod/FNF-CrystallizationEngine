@@ -1,13 +1,26 @@
 package ui;
 
 import flixel.FlxG;
+import Song.SwagSong;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.addons.display.FlxGridOverlay;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
 
 class OptionsMenu extends Page
 {
+	public static var mod_dirs:Array<String> = [];
 	var items:TextMenuList;
+    var _song:SwagSong;
 
 	override public function new(showDonate:Bool)
 	{
+		if (PlayState.SONG != null)
+			_song = PlayState.SONG;
+
 		super();
 		add(items = new TextMenuList());
 		createItem('preferences', function()
@@ -18,10 +31,7 @@ class OptionsMenu extends Page
 		{
 			onSwitch.dispatch(PageName.Controls);
 		});
-		if (showDonate)
-		{
-			createItem('donate', selectDonate, true);
-		}
+		createItem('donate', selectDonate, true);
 		// if (NG.core != null && NG.core.loggedIn)
 		// {
 		// 	createItem('logout', selectLogout);
@@ -30,7 +40,12 @@ class OptionsMenu extends Page
 		// {
 		// 	createItem('login', selectLogin);
 		// }
-		createItem('exit', exit);
+		if (PlayState.isStoryMode)
+		    createItem('back', backsong, true);
+		else if (PlayState.isFreePlay)
+		    createItem('back', backsong, true);
+		else
+		    createItem('exit', exit, true);
 	}
 
 	public function createItem(label:String, callback:Dynamic, ?fireInstantly:Bool = false)
@@ -60,6 +75,13 @@ class OptionsMenu extends Page
 		FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
 		#end
 	}
+
+	function backsong() 
+	{
+		PlayState.SONG = _song;
+		FlxG.switchState(new PlayState());
+	}
+}
 
 	// function selectLogin()
 	// {
@@ -104,4 +126,3 @@ class OptionsMenu extends Page
 	// 		}
 	// 	}
 	// }
-}

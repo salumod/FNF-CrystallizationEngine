@@ -1,4 +1,4 @@
-package;
+package charting;
 
 import Conductor.BPMChangeEvent;
 import Section.SwagSection;
@@ -118,7 +118,7 @@ class ChartingState extends MusicBeatState
 				bpm: 150,
 				needsVoices: true,
 				player1: 'bf',
-				player2: 'dad',
+				player2: 'bf-pixel',
 				speed: 1,
 				validScore: false
 			};

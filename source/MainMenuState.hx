@@ -30,7 +30,7 @@ class MainMenuState extends MusicBeatState
 	var menuItems:MainMenuList;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'kickstarter', 'options'];
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -99,7 +99,9 @@ class MainMenuState extends MusicBeatState
 		{
 			startExitState(new FreeplayState());
 		});
-		menuItems.createItem(null, null, "donate", selectDonate, true);
+		
+		menuItems.createItem(null, null, "kickstarter", selectKickstarter, true);
+
 		menuItems.createItem(0, 0, "options", function()
 		{
 			startExitState(new OptionsState());
@@ -120,7 +122,7 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		var ceversionShit:FlxText = new FlxText(5, FlxG.height - 35, 0, "CrystallizationEngine v0.3.9" );
+		var ceversionShit:FlxText = new FlxText(5, FlxG.height - 35, 0, "CrystallizationEngine v0.4" );
 		ceversionShit.scrollFactor.set();
 		ceversionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(ceversionShit);
@@ -141,13 +143,22 @@ class MainMenuState extends MusicBeatState
 	
 	function selectDonate()
 	{
-		#if linux
-		Sys.command('/usr/bin/xdg-open', ["https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game/", "&"]);
-		#else
-		FlxG.openURL('https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game/');
-		#end
+			#if linux
+			Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
+			#else
+			FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
+			#end
 	}
 
+	function selectKickstarter()
+		{
+			#if linux
+			Sys.command('/usr/bin/xdg-open', ["https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game/", "&"]);
+			#else
+			FlxG.openURL('https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game/');
+			#end
+		}
+		
 	function startExitState(nextState:FlxState)
 	{
 		menuItems.enabled = false;

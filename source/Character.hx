@@ -107,6 +107,21 @@ class Character extends FlxSprite
 				updateHitbox();
 				antialiasing = false;
 
+			case 'gf-pixel-event':
+				tex = Paths.getSparrowAtlas('characters/gpe');
+				frames = tex;
+				animation.addByIndices('singUP', 'GF IDLE', [2], "", 24, false);
+				animation.addByIndices('danceLeft', 'GF IDLE', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				animation.addByIndices('danceRight', 'GF IDLE', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+
+				loadOffsetFile(curCharacter);
+
+				playAnim('danceRight');
+
+				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
+				updateHitbox();
+				antialiasing = false;
+				
 			case 'gf-tankmen':
 				frames = Paths.getSparrowAtlas('characters/gfTankmen');
 				animation.addByIndices('sad', 'GF Crying at Gunpoint', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, true);
@@ -228,6 +243,37 @@ class Character extends FlxSprite
 
 				flipX = true;
 
+			case 'picot':
+				tex = Paths.getSparrowAtlas('characters/picot');
+				frames = tex;
+				quickAnimAdd('idle', "Pico Idle Dance");
+				quickAnimAdd('singUP', 'pico Up note0');
+				quickAnimAdd('singDOWN', 'Pico Down Note0');
+				if (isPlayer)
+				{
+					quickAnimAdd('singLEFT', 'Pico NOTE LEFT0');
+					quickAnimAdd('singRIGHT', 'Pico Note Right0');
+					quickAnimAdd('singRIGHTmiss', 'Pico Note Right Miss');
+					quickAnimAdd('singLEFTmiss', 'Pico NOTE LEFT miss');
+				}
+				else
+				{
+					// Need to be flipped! REDO THIS LATER!
+					quickAnimAdd('singLEFT', 'Pico Note Right0');
+					quickAnimAdd('singRIGHT', 'Pico NOTE LEFT0');
+					quickAnimAdd('singRIGHTmiss', 'Pico NOTE LEFT miss');
+					quickAnimAdd('singLEFTmiss', 'Pico Note Right Miss');
+				}
+
+				quickAnimAdd('singUPmiss', 'pico Up note miss');
+				quickAnimAdd('singDOWNmiss', 'Pico Down Note MISS');
+
+				loadOffsetFile(curCharacter);
+
+				playAnim('idle');
+
+				flipX = true;
+
 			case 'pico-speaker':
 				frames = Paths.getSparrowAtlas('characters/picoSpeaker');
 				quickAnimAdd('shoot1', 'Pico shoot 1');
@@ -243,6 +289,34 @@ class Character extends FlxSprite
 
 			case 'bf':
 				tex = Paths.getSparrowAtlas('characters/BOYFRIEND');
+				frames = tex;
+				quickAnimAdd('idle', 'BF idle dance');
+				quickAnimAdd('singUP', 'BF NOTE UP0');
+				quickAnimAdd('singLEFT', 'BF NOTE LEFT0');
+				quickAnimAdd('singRIGHT', 'BF NOTE RIGHT0');
+				quickAnimAdd('singDOWN', 'BF NOTE DOWN0');
+				quickAnimAdd('singUPmiss', 'BF NOTE UP MISS');
+				quickAnimAdd('singLEFTmiss', 'BF NOTE LEFT MISS');
+				quickAnimAdd('singRIGHTmiss', 'BF NOTE RIGHT MISS');
+				quickAnimAdd('singDOWNmiss', 'BF NOTE DOWN MISS');
+				quickAnimAdd('hey', 'BF HEY');
+
+				quickAnimAdd('firstDeath', "BF dies");
+				animation.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
+				quickAnimAdd('deathConfirm', "BF Dead confirm");
+
+				animation.addByPrefix('scared', 'BF idle shaking', 24, true);
+
+				loadOffsetFile(curCharacter);
+
+				playAnim('idle');
+
+				flipX = true;
+				
+				loadOffsetFile(curCharacter);
+
+			case 'bft':
+				tex = Paths.getSparrowAtlas('characters/BOYFRIENDT');
 				frames = tex;
 				quickAnimAdd('idle', 'BF idle dance');
 				quickAnimAdd('singUP', 'BF NOTE UP0');
@@ -333,6 +407,31 @@ class Character extends FlxSprite
 				antialiasing = false;
 
 				flipX = true;
+			case 'bf-pixel-event':
+					frames = Paths.getSparrowAtlas('characters/bpe');
+					quickAnimAdd('idle', 'BF IDLE');
+					quickAnimAdd('singUP', 'BF UP NOTE');
+					quickAnimAdd('singLEFT', 'BF LEFT NOTE');
+					quickAnimAdd('singRIGHT', 'BF RIGHT NOTE');
+					quickAnimAdd('singDOWN', 'BF DOWN NOTE');
+					quickAnimAdd('singUPmiss', 'BF UP MISS');
+					quickAnimAdd('singLEFTmiss', 'BF LEFT MISS');
+					quickAnimAdd('singRIGHTmiss', 'BF RIGHT MISS');
+					quickAnimAdd('singDOWNmiss', 'BF DOWN MISS');
+	
+					loadOffsetFile(curCharacter);
+	
+					setGraphicSize(Std.int(width * 6));
+					updateHitbox();
+	
+					playAnim('idle');
+	
+					width -= 100;
+					height -= 100;
+	
+					antialiasing = false;
+	
+					flipX = true;
 			case 'bf-pixel-dead':
 				frames = Paths.getSparrowAtlas('characters/bfPixelsDEAD');
 				quickAnimAdd('singUP', "BF Dies pixel");
@@ -414,6 +513,23 @@ class Character extends FlxSprite
 
 			case 'spirit':
 				frames = Paths.getPackerAtlas('characters/spirit');
+				quickAnimAdd('idle', "idle spirit_");
+				quickAnimAdd('singUP', "up_");
+				quickAnimAdd('singRIGHT', "right_");
+				quickAnimAdd('singLEFT', "left_");
+				quickAnimAdd('singDOWN', "spirit down_");
+
+				loadOffsetFile(curCharacter);
+
+				setGraphicSize(Std.int(width * 6));
+				updateHitbox();
+
+				playAnim('idle');
+
+				antialiasing = false;
+				
+			case 'spirit-event':
+				frames = Paths.getPackerAtlas('characters/se');
 				quickAnimAdd('idle', "idle spirit_");
 				quickAnimAdd('singUP', "up_");
 				quickAnimAdd('singRIGHT', "right_");

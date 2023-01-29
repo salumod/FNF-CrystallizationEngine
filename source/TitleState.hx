@@ -31,6 +31,7 @@ import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
 import openfl.Lib;
+import polymod.Polymod;
 
 using StringTools;
 
@@ -54,8 +55,8 @@ class TitleState extends MusicBeatState
 	var swagShader:ColorSwap;
 	var alphaShader:BuildingShaders;
 
-	override public function create():Void
-	{
+override public function create():Void
+	{		
 		FlxG.game.focusLostFramerate = 60;
 
 		swagShader = new ColorSwap();
