@@ -2279,6 +2279,7 @@ class PlayState extends MusicBeatState
 		+ ' | Faults: ' + faults
 		+ '| Accuracy:' +truncateFloat(accuracy, 2) + "%"
 		+  '| Rank:' + rank;
+		// I don't have the copyright
 		if (PreferencesMenu.getPref('curbeat'))
 		    timeTxt.text = '  curBeat:' + curBeat;
 		else
