@@ -51,7 +51,10 @@ class DialogueBox extends FlxSpriteGroup
 			case 'thorns':
 				FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			default:
+			case 'tutorial' | 'pico' | 'philly': 
+			    FlxG.sound.playMusic(Paths.music('breakfast'), 0);
+				FlxG.sound.music.fadeIn(1, 0, 0.8);
+			case 'bopeebo' |'fresh' | 'blammed':
 				FlxG.sound.playMusic(Paths.music('dailogue'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
 		}
@@ -205,12 +208,12 @@ class DialogueBox extends FlxSpriteGroup
 		swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		add(swagDialogue);
 		default:
-		dropText = new FlxText(242, 502, Std.int(FlxG.width * 0.6), "", 32);
+		dropText = new FlxText(242, 502, Std.int(FlxG.width * 0.6), "", 60);
 		dropText.font = 'Funkin';
 		dropText.color = 0xFF000000;
 		add(dropText);
 
-		swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 1), "", 32);
+		swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 60);
 		swagDialogue.font = 'Funkin';
 		swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		swagDialogue.color = 0xFFA5A5A5;

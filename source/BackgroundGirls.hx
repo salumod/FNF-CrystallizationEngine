@@ -2,7 +2,7 @@ package;
 
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
-import ui.PreferencesMenu;
+import flixel.FlxG;
 
 class BackgroundGirls extends FlxSprite
 {
@@ -11,7 +11,7 @@ class BackgroundGirls extends FlxSprite
 		super(x, y);
 
 		// BG fangirls dissuaded
-		if (PreferencesMenu.getPref('game-console-mode'))
+		if (FlxG.save.data.exquisiteStage)
 			frames = Paths.getSparrowAtlas('erectweeb/bgFreaks');
         else
 			frames = Paths.getSparrowAtlas('weeb/bgFreaks');

@@ -2489,7 +2489,7 @@ class PlayState extends MusicBeatState
 			// 	trace("User is cheating!");
 			// }
 	
-			if (health <= 0 && !practiceMode && canDie)
+			if (health <= 0 && !practiceMode && canDie && !PreferencesMenu.getPref('mirror-mode'))
 			{
 				boyfriend.stunned = true;
 	
@@ -3054,12 +3054,6 @@ class PlayState extends MusicBeatState
 			},
 			startDelay: Conductor.crochet * 0.001
 		});
-
-		if(curStage == 'limo')
-			{
-				rating.color = 0xAAFD9578;
-				comboSpr.color = 0xAAFD9578;
-			}
 
 		curSection += 1;
 	}
