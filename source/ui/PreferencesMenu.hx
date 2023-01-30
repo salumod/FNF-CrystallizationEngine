@@ -31,10 +31,10 @@ class PreferencesMenu extends Page
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
-		createPrefItem('Mirror-Mode', 'mirror-mode', false);
-		createPrefItem('week six erect stage', 'game-console-mode', false);
+		createPrefItem('Mirror Mode', 'mirror-mode', false);
+		createPrefItem('Exquisite stage', 'exquisite-stage', false);
 		createPrefItem('curBEAT show', 'curbeat', false);
-		createPrefItem('Pixel Shader', 'pixel-shader', true);
+		createPrefItem('Pixel Shader', 'pixel-shader', false);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
@@ -129,13 +129,13 @@ class PreferencesMenu extends Page
 				preferenceCheck('mirror-mode', false);
 			}
 
-		if(FlxG.save.data.gameConsoleMode != null)
+		if(FlxG.save.data.exquisiteStage != null)
 			{
-				preferenceCheck('game-console-mode', FlxG.save.data.gameConsoleMode);
+				preferenceCheck('exquisite-stage', FlxG.save.data.exquisiteStage);
 			}
 			else
 			{
-				preferenceCheck('game-console-mode', false);
+				preferenceCheck('exquisite-stage', false);
 			}
 
 		if(FlxG.save.data.curBeat != null)
@@ -153,7 +153,7 @@ class PreferencesMenu extends Page
 			}
 			else
 			{
-				preferenceCheck('pixel-shader', true);
+				preferenceCheck('pixel-shader', false);
 			}
 
 		if (!getPref('fps-counter'))
@@ -224,7 +224,8 @@ class PreferencesMenu extends Page
 		FlxG.save.data.autoPause = getPref('auto-pause');
 		FlxG.save.data.pixelShader = getPref('pixel-shader');
 		FlxG.save.data.mirrorMode = getPref('mirror-mode');
-		FlxG.save.data.gameConsoleMmode = getPref('game-console-mode');
+		FlxG.save.data.exquisiteStage = getPref('exquisite-stage');
+		FlxG.save.data.curBeat = getPref('curbeat');
 		FlxG.save.flush();
 
 		trace('toggled? ' + Std.string(preferences.get(identifier)));

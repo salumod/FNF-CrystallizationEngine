@@ -40,12 +40,7 @@ class OptionsMenu extends Page
 		// {
 		// 	createItem('login', selectLogin);
 		// }
-		if (PlayState.isStoryMode)
-		    createItem('back', backsong, true);
-		else if (PlayState.isFreePlay)
-		    createItem('back', backsong, true);
-		else
-		    createItem('exit', exit, true);
+		createItem('exit', exit, true);
 	}
 
 	public function createItem(label:String, callback:Dynamic, ?fireInstantly:Bool = false)

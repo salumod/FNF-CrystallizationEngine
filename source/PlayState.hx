@@ -492,7 +492,7 @@ class PlayState extends MusicBeatState
 
 		                  // defaultCamZoom = 0.9;
 
-						  if (PreferencesMenu.getPref('game-console-mode'))
+						if (FlxG.save.data.exquisiteStage)
 						{
 		                  var bgSky = new FlxSprite().loadGraphic(Paths.image('erectweeb/weebSky'));
 		                  bgSky.scrollFactor.set(0.1, 0.1);
@@ -636,7 +636,7 @@ class PlayState extends MusicBeatState
 		          {
 					curStage = 'schoolEvil';
 
-                    if (PreferencesMenu.getPref('game-console-mode'))
+					if (FlxG.save.data.exquisiteStage)
 						{
 		                  var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
 		                  var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
@@ -967,15 +967,21 @@ class PlayState extends MusicBeatState
 
 		add(dad);
 		add(boyfriend);
-		if(curStage == 'tank')
-			{
-				var bgrxt:FlxSprite = new FlxSprite(-400, -400).loadGraphic(Paths.image('rtx/bgrxt'));
-				//bgrxt.alpha = 0.3;
-				add(bgrxt);
-			}
-
-		switch (curStage)
+        if (FlxG.save.data.exquisiteStage)
 		{
+			switch (curStage)
+		    {
+			case 'spooky':
+				{
+					var bgrtx:FlxSprite = new FlxSprite(-200, 10).loadGraphic(Paths.image('rtx/bgrtx'));
+				    add(bgrtx);
+				}
+			case 'philly':
+				{
+					var bgrtx:FlxSprite = new FlxSprite(-200, 10).loadGraphic(Paths.image('philly/rtx/bgrtx'));
+				    bgrtx.alpha = 0.3;
+				    add(bgrtx);
+				}		
 			case 'limo':
 				{
 					var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay'));
@@ -984,11 +990,18 @@ class PlayState extends MusicBeatState
 				}	
 			case 'mall' | 'mallEvil':
 				{
-                    var bgrxt:FlxSprite = new FlxSprite(-400, -600).loadGraphic(Paths.image('christmas/bgrxt'));
-				    //bgrxt.alpha = 0.3;
-				    add(bgrxt);
-				}				
+                    var bgrtx:FlxSprite = new FlxSprite(-790, -600).loadGraphic(Paths.image('christmas/bgrtx'));
+				    add(bgrtx);
+				}
+			case 'tank':
+				{
+					var bgrtx:FlxSprite = new FlxSprite(-400, 10).loadGraphic(Paths.image('rtx/bgrtx'));
+				    add(bgrtx);
+				}
+			
+		   }
 		}
+		
 
 		add(foregroundSprites);
 
