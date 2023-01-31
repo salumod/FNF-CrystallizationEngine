@@ -32,7 +32,7 @@ class PreferencesMenu extends Page
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
 		createPrefItem('Mirror Mode', 'mirror-mode', false);
-		createPrefItem('Exquisite stage', 'exquisite-stage', false);
+		createPrefItem('Exquisite stage', 'exquisite-stage', true);
 		createPrefItem('curBEAT show', 'curbeat', false);
 		createPrefItem('Pixel Shader', 'pixel-shader', false);
 
@@ -135,7 +135,7 @@ class PreferencesMenu extends Page
 			}
 			else
 			{
-				preferenceCheck('exquisite-stage', false);
+				preferenceCheck('exquisite-stage', true);
 			}
 
 		if(FlxG.save.data.curBeat != null)

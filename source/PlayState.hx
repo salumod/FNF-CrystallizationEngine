@@ -1108,7 +1108,7 @@ class PlayState extends MusicBeatState
             add(healthBarBG);
 
 		timeTxt = new FlxText(500, FlxG.height * 0, "", 20);
-		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
+		timeTxt.setFormat(Paths.font("funkin.otf"), 42, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
 		timeTxt.scrollFactor.set();
 		if (PreferencesMenu.getPref('downscroll'))
 			timeTxt.y = FlxG.height * 0.95;
@@ -2321,7 +2321,7 @@ class PlayState extends MusicBeatState
 		'Score: ' + songScore
 		+ ' | Misses: ' + misses
 		+ ' | Faults: ' + faults
-		+ '| Accuracy:' +truncateFloat(accuracy, 2) + "%"
+		+ '| Accuracy:' + truncateFloat(accuracy, 2) + "%"
 		+  '| Rank:' + rank;
 		// I don't have the copyright
 		if (PreferencesMenu.getPref('curbeat'))
@@ -2963,9 +2963,6 @@ class PlayState extends MusicBeatState
 
 		if (curStage.startsWith('school'))
 		{
-			if (PreferencesMenu.getPref('game-console-mode'))
-			    pixelShitPart1 = 'erectweeb/pixelUI/';
-			else
 			    pixelShitPart1 = 'weeb/pixelUI/';
 			    pixelShitPart2 = '-pixel';
 		}
