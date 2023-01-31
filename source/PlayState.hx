@@ -964,7 +964,15 @@ class PlayState extends MusicBeatState
 		// Shitty layering but whatev it works LOL
 		if (curStage == 'limo')
 			add(limo);
-
+		if (FlxG.save.data.exquisiteStage)
+			{
+				switch (curStage)
+				{
+					case 'tack':
+						var backrtx:FlxSprite = new FlxSprite(-400, 10).loadGraphic(Paths.image('rtx/backrtx'));
+				        add(backrtx);
+				}
+			}
 		add(dad);
 		add(boyfriend);
         if (FlxG.save.data.exquisiteStage)
@@ -979,7 +987,7 @@ class PlayState extends MusicBeatState
 			case 'philly':
 				{
 					var bgrtx:FlxSprite = new FlxSprite(-200, 10).loadGraphic(Paths.image('philly/rtx/bgrtx'));
-				    bgrtx.alpha = 0.3;
+				    bgrtx.alpha = 0.4;
 				    add(bgrtx);
 				}		
 			case 'limo':
@@ -996,9 +1004,33 @@ class PlayState extends MusicBeatState
 			case 'tank':
 				{
 					var bgrtx:FlxSprite = new FlxSprite(-400, 10).loadGraphic(Paths.image('rtx/bgrtx'));
+					bgrtx.alpha = 0.9;
 				    add(bgrtx);
 				}
-			
+			default:
+				{
+					switch(SONG.song.toLowerCase())
+					{
+					case 'tutorial':
+						{
+							var bgrtx:BGSprite = new BGSprite('T-stagertx', -600, -200, 0.9, 0.9);
+					        bgrtx.alpha = 0.2;
+				            add(bgrtx);
+						}
+					case 'bopeebo' | 'fresh' |'dadbattle':
+						{
+                            var bgrtx:BGSprite = new BGSprite('D-stagertx', -600, -200, 0.9, 0.9);
+					        bgrtx.alpha = 0.2;
+				            add(bgrtx);
+						}
+			        case 'senpai':
+						{
+                            var bgrtx:BGSprite = new BGSprite('D-stagertx', -600, -200, 0.9, 0.9);
+					        bgrtx.alpha = 0.2;
+				            add(bgrtx);
+						}
+					}
+				}
 		   }
 		}
 		
@@ -1058,8 +1090,6 @@ class PlayState extends MusicBeatState
 			if (PreferencesMenu.getPref('downscroll'))
 				healthBarBG.y = FlxG.height * 0.1;
 
-			add(healthBarBG);
-
 			healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 				'health', 0, 2);
 				if (PreferencesMenu.getPref('mirror-mode'))
@@ -1075,6 +1105,7 @@ class PlayState extends MusicBeatState
 	        healthBar.createFilledBar(0xFFFF0000, 0xFF00FF00);
         }
             add(healthBar);
+            add(healthBarBG);
 
 		timeTxt = new FlxText(500, FlxG.height * 0, "", 20);
 		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);

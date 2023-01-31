@@ -39,7 +39,8 @@ class DialogueBox extends FlxSpriteGroup
 	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>)
 	{
 		super();
-
+	if (PlayState.isStoryMode)
+{
 		switch (PlayState.SONG.song.toLowerCase())
 		{
 			case 'senpai':
@@ -58,7 +59,7 @@ class DialogueBox extends FlxSpriteGroup
 				FlxG.sound.playMusic(Paths.music('dailogue'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
 		}
-
+	}
 		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
 		bgFade.scrollFactor.set();
 		bgFade.alpha = 0;
