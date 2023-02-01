@@ -260,6 +260,10 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('roses/rosesDialogue'));
 			case 'thorns':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
+			case 'score':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('week8/first_dialogue'));
+			case '2hot':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('week8/second_dialogue'));
 		}
 
 		#if desktop
@@ -786,6 +790,13 @@ class PlayState extends MusicBeatState
 						var tankdude3:BGSprite = new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']);
 						foregroundSprites.add(tankdude3);
 				  }
+				case 'score' | 'lit-up' | '2hot':
+					      defaultCamZoom = 0.8;
+						  curStage = 'april';
+
+						  var bg:FlxSprite = new FlxSprite(-1600).loadGraphic(Paths.image('bg'));
+		                  bg.scrollFactor.set(0.9, 0.9);
+		                  add(bg);
 		          default:
 		          {
 		                  defaultCamZoom = 0.9;
@@ -826,6 +837,8 @@ class PlayState extends MusicBeatState
 				gfVersion = 'gf-pixel';
 			case 'tank':
 				gfVersion = 'gf-tankmen';
+			case 'april':
+				gfVersion = 'nene';
 		}
 
 		if (SONG.song.toLowerCase() == 'stress')
@@ -895,6 +908,8 @@ class PlayState extends MusicBeatState
 				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
 			case "tankman":
 				dad.y += 180;
+			case "darnell":
+				dad.y += 600;
 		}
 
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
@@ -945,6 +960,9 @@ class PlayState extends MusicBeatState
 					gf.x -= 170;
 					gf.y -= 75;
 				}
+			case 'april':
+				gf.y += 240;
+				boyfriend.y += 130;
 		}
 
 		add(gf);
@@ -1006,6 +1024,13 @@ class PlayState extends MusicBeatState
 					var bgrtx:FlxSprite = new FlxSprite(-400, 10).loadGraphic(Paths.image('rtx/bgrtx'));
 					bgrtx.alpha = 0.9;
 				    add(bgrtx);
+				}
+			case 'april':
+				{
+					var bg:FlxSprite = new FlxSprite(-1600).loadGraphic(Paths.image('bgrtx'));
+		            bg.scrollFactor.set(0.9, 0.9);
+					bg.alpha = 0.7;
+		            add(bg);
 				}
 			default:
 				{
@@ -1125,7 +1150,7 @@ class PlayState extends MusicBeatState
 		add(timeBarBG);
         add(timeTxt);
 
-		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 380, healthBarBG.y + 40, 0, "", 20);
+		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 310, healthBarBG.y + 40, 0, "", 20);
 		scoreTxt.setFormat(Paths.font("funkin.otf"), 30, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 
@@ -1231,6 +1256,10 @@ class PlayState extends MusicBeatState
 					gunsIntro();
 				case 'stress':
 					stressIntro();
+				case 'score':
+					intro(doof);
+				case '2hot':
+					intro(doof);
 				default:
 					startCountdown();
 			}
@@ -2320,7 +2349,6 @@ class PlayState extends MusicBeatState
 		scoreTxt.text = 
 		'Score: ' + songScore
 		+ ' | Misses: ' + misses
-		+ ' | Faults: ' + faults
 		+ '| Accuracy:' + truncateFloat(accuracy, 2) + "%"
 		+  '| Rank:' + rank;
 		// I don't have the copyright
@@ -3322,21 +3350,21 @@ class PlayState extends MusicBeatState
 		// badNoteCheck is intentional for now, but maybe it can be some option later down the line
 		// just double pasting this shit cuz fuk u
 		// REDO THIS SYSTEM!
-		faults += 1;
-		var leftP = controls.NOTE_LEFT_P;
-		var downP = controls.NOTE_DOWN_P;
-		var upP = controls.NOTE_UP_P;
-		var rightP = controls.NOTE_RIGHT_P;
+		// faults += 1;
+		// var leftP = controls.NOTE_LEFT_P;
+		// var downP = controls.NOTE_DOWN_P;
+		// var upP = controls.NOTE_UP_P;
+		// var rightP = controls.NOTE_RIGHT_P;
 
-		if (leftP)
-			noteMiss(0);
-		if (downP)
-			noteMiss(1);
-		if (upP)
-			noteMiss(2);
-		if (rightP)
-			noteMiss(3);
-		updateAccuracy();
+		// if (leftP)
+		// 	noteMiss(0);
+		// if (downP)
+		// 	noteMiss(1);
+		// if (upP)
+		// 	noteMiss(2);
+		// if (rightP)
+		// 	noteMiss(3);
+		// updateAccuracy();
 	}
 		
 function noteCheck(keyP:Bool, note:Note):Void

@@ -61,6 +61,15 @@ class Character extends FlxSprite
 
 				playAnim('danceRight');
 
+			case 'nene':
+					tex = Paths.getSparrowAtlas('characters/stup-id');
+					frames = tex;
+					animation.addByIndices('danceLeft', 'danceleft', [0, 1, 2, 3, 4, 5, 6, 7], "", 24, false);
+					animation.addByIndices('danceRight', 'danceright', [0, 1, 2, 3, 4, 5, 6, 7], "", 24, false);
+					quickAnimAdd('hey', 'hey');
+
+					playAnim('danceRight');
+
 			case 'gf-christmas':
 				tex = Paths.getSparrowAtlas('characters/gfChristmas');
 				frames = tex;
@@ -243,6 +252,55 @@ class Character extends FlxSprite
 
 				flipX = true;
 
+				case 'pico-player':
+				tex = Paths.getSparrowAtlas('characters/Pico_FNF_assetss');
+				frames = tex;
+				quickAnimAdd('idle', "Pico Idle Dance");
+				quickAnimAdd('singUP', 'pico Up note0');
+				quickAnimAdd('singDOWN', 'Pico Down Note0');
+				quickAnimAdd('singLEFT', 'Pico Note Right0');
+				quickAnimAdd('singRIGHT', 'Pico NOTE LEFT0');
+				
+				// quickAnimAdd('singLEFT', 'Pico NOTE LEFT0');
+				// quickAnimAdd('singRIGHT', 'Pico Note Right0');
+
+				quickAnimAdd('singRIGHTmiss', 'Pico Note Right Miss');
+				quickAnimAdd('singLEFTmiss', 'Pico NOTE LEFT miss');
+				quickAnimAdd('singUPmiss', 'pico Up note miss');
+				quickAnimAdd('singDOWNmiss', 'Pico Down Note MISS');
+
+				playAnim('idle');
+
+// 				offset
+// 				idle 0 0
+// singUP -29 27
+// singRIGHT 50 -7
+// singLEFT 0 9
+// singDOWN 100 -70
+// singUPmiss -19 67
+// singRIGHTmiss 0 41
+// singLEFTmiss 0 64
+// singDOWNmiss 100 -28
+
+				loadOffsetFile(curCharacter);
+
+				flipX = true;
+
+			case 'darnell':
+					tex = Paths.getSparrowAtlas('characters/darnboy');
+					frames = tex;
+					quickAnimAdd('idle', "idle");
+					quickAnimAdd('singUP', 'up');
+					quickAnimAdd('singDOWN', 'down');
+					quickAnimAdd('singLEFT', 'left');
+					quickAnimAdd('singRIGHT', 'right');
+					quickAnimAdd('hey', 'letsgo');
+
+					addOffset('singUP', 0, 100);
+
+					playAnim('idle');
+					loadOffsetFile(curCharacter);
+					
 			case 'picot':
 				tex = Paths.getSparrowAtlas('characters/picot');
 				frames = tex;
@@ -720,7 +778,7 @@ class Character extends FlxSprite
 		{
 			switch (curCharacter)
 			{
-				case 'gf' | 'gf-car' | 'gf-christmas' | 'gf-pixel' | 'gf-tankmen':
+				case 'gf' | 'gf-car' | 'gf-christmas' | 'gf-pixel' | 'gf-tankmen' | 'gf-pixel-event' | 'nene':
 					if (!animation.curAnim.name.startsWith('hair'))
 					{
 						danced = !danced;

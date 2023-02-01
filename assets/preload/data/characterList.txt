@@ -22,3 +22,5 @@ bft
 picot
 bf-pixel-event
 spirit-event
+darnell
+pico-player
