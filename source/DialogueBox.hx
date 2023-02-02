@@ -408,6 +408,32 @@ class DialogueBox extends FlxSpriteGroup
 					fportraitLeft.animation.play('enter');
 					box.flipX = true;
 				}
+			case 'pico-player':
+				fportraitLeft.visible = false;
+				fportraitRight.visible = false;
+				if (!fportraitLeft.visible)
+				{
+					fportraitLeft.x = 800;
+					fportraitLeft.y = 120;
+					fportraitLeft.frames = Paths.getSparrowAtlas('characters/picoo');
+					fportraitLeft.animation.addByPrefix('enter', 'idle', 24, false);
+					fportraitLeft.visible = true;
+					fportraitLeft.animation.play('enter');
+					box.flipX = false;
+				}
+			case 'darnell':
+				fportraitLeft.visible = false;
+				fportraitRight.visible = false;
+				if (!fportraitLeft.visible)
+				{
+					fportraitLeft.x = 60;
+					fportraitLeft.y = 120;
+					fportraitLeft.frames = Paths.getSparrowAtlas('characters/darnboy');
+					fportraitLeft.animation.addByPrefix('enter', 'idle', 24, false);
+					fportraitLeft.visible = true;
+					fportraitLeft.animation.play('enter');
+					box.flipX = true;
+				}
 			case 'mom-hair-blowing':
 				fportraitLeft.visible = false;
 		        fportraitRight.visible = false;

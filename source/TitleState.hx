@@ -31,7 +31,6 @@ import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
 import openfl.Lib;
-import polymod.Polymod;
 
 using StringTools;
 

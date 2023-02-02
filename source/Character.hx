@@ -64,8 +64,8 @@ class Character extends FlxSprite
 			case 'nene':
 					tex = Paths.getSparrowAtlas('characters/stup-id');
 					frames = tex;
-					animation.addByIndices('danceLeft', 'danceleft', [0, 1, 2, 3, 4, 5, 6, 7], "", 24, false);
-					animation.addByIndices('danceRight', 'danceright', [0, 1, 2, 3, 4, 5, 6, 7], "", 24, false);
+					quickAnimAdd('danceLeft', 'danceleft');
+					quickAnimAdd('danceRight', 'danceright');
 					quickAnimAdd('hey', 'hey');
 
 					playAnim('danceRight');
@@ -253,34 +253,22 @@ class Character extends FlxSprite
 				flipX = true;
 
 				case 'pico-player':
-				tex = Paths.getSparrowAtlas('characters/Pico_FNF_assetss');
+				tex = Paths.getSparrowAtlas('characters/picoo');
 				frames = tex;
-				quickAnimAdd('idle', "Pico Idle Dance");
-				quickAnimAdd('singUP', 'pico Up note0');
-				quickAnimAdd('singDOWN', 'Pico Down Note0');
-				quickAnimAdd('singLEFT', 'Pico Note Right0');
-				quickAnimAdd('singRIGHT', 'Pico NOTE LEFT0');
-				
-				// quickAnimAdd('singLEFT', 'Pico NOTE LEFT0');
-				// quickAnimAdd('singRIGHT', 'Pico Note Right0');
+				quickAnimAdd('idle', "idle");
+				quickAnimAdd('singUP', 'up');
+				quickAnimAdd('singDOWN', 'down');
+				quickAnimAdd('singLEFT', 'right');
+				quickAnimAdd('singRIGHT', 'left');
 
-				quickAnimAdd('singRIGHTmiss', 'Pico Note Right Miss');
-				quickAnimAdd('singLEFTmiss', 'Pico NOTE LEFT miss');
-				quickAnimAdd('singUPmiss', 'pico Up note miss');
-				quickAnimAdd('singDOWNmiss', 'Pico Down Note MISS');
+				quickAnimAdd('singRIGHTmiss', 'missleft');
+				quickAnimAdd('singLEFTmiss', 'missright');
+				quickAnimAdd('singUPmiss', 'missup');
+				quickAnimAdd('singDOWNmiss', 'missdown');
+
+				quickAnimAdd('dead', 'dead');
 
 				playAnim('idle');
-
-// 				offset
-// 				idle 0 0
-// singUP -29 27
-// singRIGHT 50 -7
-// singLEFT 0 9
-// singDOWN 100 -70
-// singUPmiss -19 67
-// singRIGHTmiss 0 41
-// singLEFTmiss 0 64
-// singDOWNmiss 100 -28
 
 				loadOffsetFile(curCharacter);
 

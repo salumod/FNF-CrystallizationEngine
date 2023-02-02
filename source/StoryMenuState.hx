@@ -49,7 +49,7 @@ class StoryMenuState extends MusicBeatState
 		['dad', 'bf', 'gf']
 	];
 
-	var weekNames:Array<String> = ";Daddy Dearest;Spooky Month;PICO;MOMMY MUST MURDER;RED SNOW;hating simulator ft. moawling;TANKMAN;Go to the freeplay".split(";");
+	var weekNames:Array<String> = ";Daddy Dearest;Spooky Month;PICO;MOMMY MUST MURDER;RED SNOW;hating simulator ft. moawling;TANKMAN;April Fool".split(";");
 
 	var txtWeekTitle:FlxText;
 

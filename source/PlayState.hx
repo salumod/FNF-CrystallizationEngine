@@ -261,9 +261,9 @@ class PlayState extends MusicBeatState
 			case 'thorns':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 			case 'score':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('week8/first_dialogue'));
+				dialogue = CoolUtil.coolTextFile(Paths.txt('score/scoreDialogue'));
 			case '2hot':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('week8/second_dialogue'));
+				dialogue = CoolUtil.coolTextFile(Paths.txt('2hot/2hotDialogue'));
 		}
 
 		#if desktop
@@ -790,13 +790,35 @@ class PlayState extends MusicBeatState
 						var tankdude3:BGSprite = new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']);
 						foregroundSprites.add(tankdude3);
 				  }
-				case 'score' | 'lit-up' | '2hot':
-					      defaultCamZoom = 0.8;
+				case 'score' | '2hot':
+					      defaultCamZoom = 0.9;
 						  curStage = 'april';
 
-						  var bg:FlxSprite = new FlxSprite(-1600).loadGraphic(Paths.image('bg'));
+						  var bg:FlxSprite = new FlxSprite(-1600, -300).loadGraphic(Paths.image('town/bg'));
 		                  bg.scrollFactor.set(0.9, 0.9);
 		                  add(bg);
+
+						  if (SONG.song.toLowerCase() == '2hot')
+							{
+								var hot:FlxSprite = new FlxSprite(-1000, -1000);
+		                        hot.frames = Paths.getSparrowAtlas('town/hot');
+		                        hot.animation.addByPrefix('hot', 'fa', 24);
+		                        hot.animation.play('hot');
+		                        hot.scrollFactor.set(0.9, 0.9);
+		                        add(hot);
+							}
+
+						  var fg:FlxSprite = new FlxSprite(-1600, -300).loadGraphic(Paths.image('town/fg'));
+		                  fg.scrollFactor.set(0.9, 0.9);
+		                  add(fg);
+
+						  var g:FlxSprite = new FlxSprite(-1600, -300).loadGraphic(Paths.image('town/lright'));
+		                  g.scrollFactor.set(0.9, 0.9);
+		                  add(g);
+
+						  var news:FlxSprite = new FlxSprite(-1600, -300).loadGraphic(Paths.image('town/news'));
+		                  news.scrollFactor.set(0.9, 0.9);
+		                  add(news);
 		          default:
 		          {
 		                  defaultCamZoom = 0.9;
@@ -908,8 +930,6 @@ class PlayState extends MusicBeatState
 				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
 			case "tankman":
 				dad.y += 180;
-			case "darnell":
-				dad.y += 600;
 		}
 
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
@@ -960,9 +980,10 @@ class PlayState extends MusicBeatState
 					gf.x -= 170;
 					gf.y -= 75;
 				}
-			case 'april':
-				gf.y += 240;
-				boyfriend.y += 130;
+			case 'april'://week8
+				gf.y += 0;
+				boyfriend.y += 0;
+				dad.y += 290;
 		}
 
 		add(gf);
@@ -993,6 +1014,15 @@ class PlayState extends MusicBeatState
 			}
 		add(dad);
 		add(boyfriend);
+
+		switch (curStage)
+		{
+			case 'april':
+				var bgfor:FlxSprite = new FlxSprite(-1600, -400).loadGraphic(Paths.image('town/april_for'));
+		                bgfor.scrollFactor.set(0.9, 0.9);
+		                add(bgfor);
+		}
+
         if (FlxG.save.data.exquisiteStage)
 		{
 			switch (curStage)
@@ -1027,10 +1057,9 @@ class PlayState extends MusicBeatState
 				}
 			case 'april':
 				{
-					var bg:FlxSprite = new FlxSprite(-1600).loadGraphic(Paths.image('bgrtx'));
-		            bg.scrollFactor.set(0.9, 0.9);
-					bg.alpha = 0.7;
-		            add(bg);
+					var bgrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('town/bgrtx'));
+					bgrtx.alpha = 0.9;
+				    add(bgrtx);
 				}
 			default:
 				{
@@ -3700,6 +3729,11 @@ function noteCheck(keyP:Bool, note:Note):Void
 			boyfriend.playAnim('hey', true);
 			gf.playAnim('cheer', true);
 		}
+
+		if (curBeat % 8 == 7 && curSong == 'Score')
+			{
+				gf.playAnim('hey', true);
+			}
 
 		if (curBeat % 16 == 15 && SONG.song == 'Tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
 		{
