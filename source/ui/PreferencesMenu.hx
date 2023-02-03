@@ -32,6 +32,7 @@ class PreferencesMenu extends Page
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
 		createPrefItem('Mirror Mode', 'mirror-mode', false);
+		createPrefItem('BadNoteHit', 'badnotehit', false);
 		createPrefItem('Exquisite stage', 'exquisite-stage', true);
 		createPrefItem('curBEAT show', 'curbeat', false);
 		createPrefItem('Pixel Shader', 'pixel-shader', false);
@@ -124,9 +125,18 @@ class PreferencesMenu extends Page
 			{
 				preferenceCheck('mirror-mode', FlxG.save.data.mirrorMode);
 			}
-			else
+		else
 			{
 				preferenceCheck('mirror-mode', false);
+			}
+
+		if(FlxG.save.data.badnoteHit != null)
+			{
+				preferenceCheck('badnotehit', FlxG.save.data.badnoteHit);
+			}
+		else
+			{
+				preferenceCheck('badnotehit', false);
 			}
 
 		if(FlxG.save.data.exquisiteStage != null)
@@ -224,6 +234,7 @@ class PreferencesMenu extends Page
 		FlxG.save.data.autoPause = getPref('auto-pause');
 		FlxG.save.data.pixelShader = getPref('pixel-shader');
 		FlxG.save.data.mirrorMode = getPref('mirror-mode');
+		FlxG.save.data.badnoteHit = getPref('badnotehit');
 		FlxG.save.data.exquisiteStage = getPref('exquisite-stage');
 		FlxG.save.data.curBeat = getPref('curbeat');
 		FlxG.save.flush();

@@ -187,7 +187,7 @@ class PlayState extends MusicBeatState
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
 	#end
-
+   
 	override public function create()
 	{
 		if (FlxG.sound.music != null)
@@ -224,44 +224,12 @@ class PlayState extends MusicBeatState
 
 		foregroundSprites = new FlxTypedGroup<BGSprite>();
 
-		switch (SONG.song.toLowerCase())
-		{
-			case 'tutorial':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('tutorial/tutorialDialogue'));
-			case 'bopeebo':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('bopeebo/bopeeboDialogue'));
-			case 'fresh':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('fresh/freshDialogue'));
-			case 'dadbattle':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('dadbattle/dadbattleDialogue'));
-			case 'spookeez':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('spookeez/spookeezDialogue'));
-			case 'south':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('south/southDialogue'));
-			case 'pico':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('pico/picoDialogue'));
-			case 'philly':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('philly/phillyDialogue'));
-			case 'blammed':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('blammed/blammedDialogue'));
-			case 'satin-panties':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('satin-panties/satin-pantiesDialogue'));
-			case 'high': 
-				dialogue = CoolUtil.coolTextFile(Paths.txt('high/highDialogue'));
-			case 'milf':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('milf/milfDialogue'));
-			case 'cocoa': 
-				dialogue = CoolUtil.coolTextFile(Paths.txt('cocoa/cocoaDialogue'));
-			case'eggnog':
-			    dialogue = CoolUtil.coolTextFile(Paths.txt('eggnog/eggnogDialogue'));
-			case 'senpai':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('senpai/senpaiDialogue'));
-			case 'roses':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('roses/rosesDialogue'));
-			case 'thorns':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
-		}
-
+        var file:String = Paths.txt(SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase() + 'Dialogue');
+	    try {
+		    dialogue = CoolUtil.coolTextFile(file);
+	    } catch(ex:Any) {
+		    dialogue = null;
+	    }
 		#if desktop
 		// Making difficulty text for Discord Rich Presence.
 		switch (storyDifficulty)
@@ -1125,7 +1093,7 @@ class PlayState extends MusicBeatState
 		add(timeBarBG);
         add(timeTxt);
 
-		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 380, healthBarBG.y + 40, 0, "", 20);
+		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 290, healthBarBG.y + 40, 0, "", 20);
 		scoreTxt.setFormat(Paths.font("funkin.otf"), 30, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 
@@ -2316,14 +2284,24 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-
-		scoreTxt.text = 
+    // I don't have the copyright
+	if (PreferencesMenu.getPref('badnotehit'))
+		{
+			scoreTxt.text = 
 		'Score: ' + songScore
-		+ ' | Misses: ' + misses
 		+ ' | Faults: ' + faults
 		+ '| Accuracy:' + truncateFloat(accuracy, 2) + "%"
 		+  '| Rank:' + rank;
-		// I don't have the copyright
+		}
+	else
+		{
+			scoreTxt.text = 
+		'Score: ' + songScore
+		+ ' | Misses: ' + misses
+		+ '| Accuracy:' + truncateFloat(accuracy, 2) + "%"
+		+  '| Rank:' + rank;
+		}
+
 		if (PreferencesMenu.getPref('curbeat'))
 		    timeTxt.text = '  curBeat:' + curBeat;
 		else
@@ -2729,8 +2707,12 @@ class PlayState extends MusicBeatState
 					{
 						if (daNote.tooLate || !daNote.wasGoodHit)
 						{
-							noteMiss(daNote.noteData);
-	
+							if (!FlxG.save.data.badnoteHit)
+								{
+									noteMiss(daNote.noteData);
+	                                trace('Like Miss?');
+								}
+							   
 							vocals.volume = 0;
 						}
 					}
@@ -3320,23 +3302,24 @@ class PlayState extends MusicBeatState
 	function badNoteHit()
 	{
 		// badNoteCheck is intentional for now, but maybe it can be some option later down the line
-		// just double pasting this shit cuz fuk u
-		// REDO THIS SYSTEM!
-		faults += 1;
-		var leftP = controls.NOTE_LEFT_P;
-		var downP = controls.NOTE_DOWN_P;
-		var upP = controls.NOTE_UP_P;
-		var rightP = controls.NOTE_RIGHT_P;
+		if (FlxG.save.data.badnoteHit)
+			{
+				faults += 1;
+		        var leftP = controls.NOTE_LEFT_P;
+		        var downP = controls.NOTE_DOWN_P;
+		        var upP = controls.NOTE_UP_P;
+		        var rightP = controls.NOTE_RIGHT_P;
 
-		if (leftP)
-			noteMiss(0);
-		if (downP)
-			noteMiss(1);
-		if (upP)
-			noteMiss(2);
-		if (rightP)
-			noteMiss(3);
-		updateAccuracy();
+		        if (leftP)
+			        noteMiss(0);
+		        if (downP)
+			        noteMiss(1);
+		        if (upP)
+			        noteMiss(2);
+		        if (rightP)
+			        noteMiss(3);
+		        updateAccuracy();
+			}
 	}
 		
 function noteCheck(keyP:Bool, note:Note):Void
