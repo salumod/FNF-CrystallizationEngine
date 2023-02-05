@@ -122,7 +122,7 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		var ceversionShit:FlxText = new FlxText(5, FlxG.height - 35, 0, "CrystallizationEngine v0.4.1" );
+		var ceversionShit:FlxText = new FlxText(5, FlxG.height - 35, 0, "CrystallizationEngine Event perfection" );
 		ceversionShit.scrollFactor.set();
 		ceversionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(ceversionShit);

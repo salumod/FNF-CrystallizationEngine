@@ -1,5 +1,6 @@
 package;
 
+import cpp.Int16;
 import ui.Case;
 import animateatlas.AtlasFrameMaker;
 import animate.FlxAnimate;
@@ -152,6 +153,7 @@ class PlayState extends MusicBeatState
 	var faults:Int = 0;
 	var songScore:Int = 0;
 	var scoreTxt:FlxText;
+	var songDialogue:FlxText;
 	var effectTween:FlxTween;
     var timeTxt:FlxText;
 	var isFilterEnabled:Bool;
@@ -1105,7 +1107,6 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 		add(scoreTxt);
-
 		grpNoteSplashes.cameras = [camHUD];
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -1117,7 +1118,6 @@ class PlayState extends MusicBeatState
 		iconP2.cameras = [camHUD];
 		doof.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
-		
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
 		// UI_camera.zoom = 1;
@@ -3506,80 +3506,6 @@ function noteCheck(keyP:Bool, note:Note):Void
 	{
 		super.beatHit();
 
-    //event list
-	    //event of weeks
-        function errorEvent() {
-			/*just for week 6
-              if you use it to onter weeks
-			  it'll be a real error.*/
-			var error = new FlxSprite(500, 400).loadGraphic(Paths.image('weeb/error'));
-			error.scrollFactor.set(0, 0);
-		    add(error);
-
-			FlxG.sound.play(Paths.sound('WindowsXP_Error_Sounds'));
-
-			error.setGraphicSize(600, 150);
-
-			error.updateHitbox();
-		}
-
-		function thornscharEvent()
-		{
-			//hey,do you have a idea as event as this.
-			remove(dad);
-
-            dad = new Character(100, 100, 'spirit-event');
-			dad.x -= 150;
-			dad.y += 100;
-            add(dad);
-
-			remove(boyfriend);
-
-            boyfriend = new Boyfriend(770, 450, 'bf-pixel-event');
-			boyfriend.x += 200;
-			boyfriend.y += 220;
-            add(boyfriend);
-
-			remove(gf);
-
-			gf = new Character(400, 130, 'gf-pixel-event');
-			gf.x += 180;
-			gf.y += 300;
-			add(gf);
-
-			gf.playAnim('danceRight');
-		}
-
-		function blammedlighton()
-		{
-			//I don't think about this.
-			remove(dad);
-            dad = new Character(100, 400, 'picot');
-            add(dad);
-
-			remove(boyfriend);
-            boyfriend = new Boyfriend(770, 450, 'bft');
-            add(boyfriend);
-			
-			FlxG.camera.flash(FlxColor.WHITE, 1);
-		}
-
-		function blammedlightend()
-			{
-				/*I can't let them be a event.
-				But,there was no event,right?!*/
-				FlxG.camera.flash(FlxColor.BLACK, 1);
-
-				remove(dad);
-				dad = new Character(100, 400, 'pico');
-				add(dad);
-	
-				remove(boyfriend);
-				boyfriend = new Boyfriend(770, 450, 'bf');
-				add(boyfriend);
-			}
-//end list
-
 		if (generatedMusic)
 		{
 			notes.members.sort(function(note1:Note, note2:Note)
@@ -3667,6 +3593,181 @@ function noteCheck(keyP:Bool, note:Note):Void
 			spr.dance();
 		});
 
+	//event list
+	    //event for curBeat
+		 function textEvent(x:Int, y:Int, txt:String = "", time:Int)
+			{
+				songDialogue = new FlxText(x, y, 0, txt, 40);
+		        songDialogue.setFormat(Paths.font("Friday Night Funkin Font.ttf"), 40);
+		        songDialogue.scrollFactor.set();
+
+				add(songDialogue);
+				songDialogue.cameras = [camHUD];
+				new FlxTimer().start(time, function(tmr:FlxTimer)
+					{
+                        remove(songDialogue);
+					});
+			}
+
+		function flashLight(light:FlxColor, time) 
+		{
+			FlxG.camera.flash(light, time);
+		}
+
+		function playAnim(who:Character, anim:String = '', isNochr:Bool, what:FlxSprite, nochrAnimname:String = '')
+		{		   
+		    if (isNochr)
+				what.animation.play(nochrAnimname);
+			else
+				who.playAnim(anim);
+		}
+
+		function chrTrail(who:Character, length:Int, delay:Int, alpha:Float, diff:Float, trailremove:Bool, time:Int)
+			{
+				var trail = new FlxTrail(who, null, length, delay, alpha, diff);
+				add(trail);
+
+				if (trailremove)
+					{
+						new FlxTimer().start(time, function(tmr:FlxTimer)
+							{
+								remove(trail);
+							});
+					}
+			}
+
+		function camerasOn(beaton:Int, endbeat:Int)
+			{
+				if (PreferencesMenu.getPref('camera-zoom'))
+					{
+				        if (curBeat >= beaton && curBeat < endbeat && camZooming && FlxG.camera.zoom < 1.35)
+				        {
+						    FlxG.camera.zoom += 0.015;
+						    camHUD.zoom += 0.03;
+				 	    }
+			        }
+			}
+
+        function errorEvent() 
+		{
+			/*just for week 6
+              if you use it to onter weeks
+			  it'll be a real error.*/
+			var error = new FlxSprite(500, 400).loadGraphic(Paths.image('weeb/error'));
+			error.scrollFactor.set(0, 0);
+		    add(error);
+
+			FlxG.sound.play(Paths.sound('WindowsXP_Error_Sounds'));
+
+			error.setGraphicSize(600, 150);
+
+			error.updateHitbox();
+		}
+
+		function playSounds(sound:String = '')
+		{
+            FlxG.sound.play(Paths.sound(sound));
+		}
+
+		function loadAssets(x:Int, y:Int, paths:String = '', scrollx:Int, scrolly:Int, isRemove:Bool, time:Int)
+		{
+			var sprite = new FlxSprite(x, y).loadGraphic(Paths.image(paths));
+			sprite.scrollFactor.set(scrollx, scrolly);
+		    add(sprite);
+
+			if (isRemove)
+				{
+					new FlxTimer().start(time, function(tmr:FlxTimer)
+						{
+							remove(sprite);
+						});
+				}
+		}
+
+		//events for songs
+		function thornschrEvent()
+		{
+			//hey,do you have a idea as event as this.
+			remove(dad);
+
+            dad = new Character(100, 100, 'spirit-event');
+			dad.x -= 150;
+			dad.y += 100;
+            add(dad);
+
+			remove(boyfriend);
+
+            boyfriend = new Boyfriend(770, 450, 'bf-pixel-event');
+			boyfriend.x += 200;
+			boyfriend.y += 220;
+            add(boyfriend);
+
+			remove(gf);
+
+			gf = new Character(400, 130, 'gf-pixel-event');
+			gf.x += 180;
+			gf.y += 300;
+			add(gf);
+
+			gf.playAnim('danceRight');
+		}
+
+		function blammedlighton()
+		{
+			//I don't think about this.
+			remove(dad);
+            dad = new Character(100, 400, 'picot');
+            add(dad);
+
+			remove(boyfriend);
+            boyfriend = new Boyfriend(770, 450, 'bft');
+            add(boyfriend);
+			
+			FlxG.camera.flash(FlxColor.WHITE, 1);
+		}
+
+		function blammedlightend()
+			{
+				/*I can't let them be a event.
+				But,there was no event,right?!*/
+				FlxG.camera.flash(FlxColor.BLACK, 1);
+
+				remove(dad);
+				dad = new Character(100, 400, 'pico');
+				add(dad);
+	
+				remove(boyfriend);
+				boyfriend = new Boyfriend(770, 450, 'bf');
+				add(boyfriend);
+			}
+//end list
+
+        if (curSong == 'Test')
+			{
+				camerasOn(10, 70);
+
+                switch (curBeat)
+				{
+					case 1:
+					    flashLight(0xFFFFFFFF, 1);	
+					case 4:
+						playSounds('intro3');
+						loadAssets(100, 100, 'hey', 0, 0, true, 3);
+					case 5:
+						chrTrail(dad, 4, 24, 0.3, 0.069, true, 10);
+					case 6:
+						playSounds('intro2');
+					case 7:
+						playSounds('intro1');
+					case 8:
+						playSounds('introGo');
+					case 19:
+						playSounds('ANGRY');
+					case 55:
+						playAnim(boyfriend, 'hey', false, null, '');
+				}
+			}
+
 		if (curSong =='Blammed')
 	{
 		switch (curBeat)
@@ -3732,6 +3833,7 @@ function noteCheck(keyP:Bool, note:Note):Void
 			boyfriend.color = 0x00FFFFFF;
 		}
 	}
+	
 if (curSong =='Thorns')
 	{
 		switch (curBeat)
@@ -3760,7 +3862,10 @@ if (curSong =='Thorns')
 		case 189:bgGirlevil.hey();
 		case 256:
 			bgGirlevil.hey();
-		    thornscharEvent();
+		    thornschrEvent();
+			chrTrail(dad, 4, 24, 0.3, 0.069, true, 10);
+			chrTrail(gf, 4, 24, 0.3, 0.069, true, 10);
+			chrTrail(boyfriend, 4, 24, 0.3, 0.069, true, 10);
 		case 259:bgGirlevil.hey();
 		case 262:bgGirlevil.hey();
 		case 265:bgGirlevil.hey();

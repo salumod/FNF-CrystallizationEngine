@@ -146,6 +146,7 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByPrefix('continued', 'speech bubble normal', 24, true);
 				box.animation.addByPrefix('loudOpen', 'speech bubble loud open', 24, false);
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
+				box.animation.addByPrefix('angrycoutinued', 'AHH speech bubble', 24, true);
 				box.flipX = true;
 		}
 
@@ -259,6 +260,11 @@ class DialogueBox extends FlxSpriteGroup
 				if (box.animation.curAnim.name == 'normalOpen' && box.animation.curAnim.finished)
 				{
 					box.animation.play('continued');
+					dialogueOpened = true;
+				}
+				else if (box.animation.curAnim.name == 'loudOpen' && box.animation.curAnim.finished)
+				{
+					box.animation.play('angrycoutinued');
 					dialogueOpened = true;
 				}
 			}
