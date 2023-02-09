@@ -146,7 +146,15 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByPrefix('continued', 'speech bubble normal', 24, true);
 				box.animation.addByPrefix('loudOpen', 'speech bubble loud open', 24, false);
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
-				box.flipX = true;
+
+				switch (PlayState.SONG.song.toLowerCase())
+				{
+					case 'score' | '2hot':
+					box.flipX = false;
+			        default:
+				    box.flipX = true;
+				}
+					
 		}
 
 		this.dialogueList = dialogueList;

@@ -804,8 +804,10 @@ class PlayState extends MusicBeatState
 		                        hot.frames = Paths.getSparrowAtlas('town/hot');
 		                        hot.animation.addByPrefix('hot', 'fa', 24);
 		                        hot.animation.play('hot');
-		                        hot.scrollFactor.set(0.9, 0.9);
+								hot.scrollFactor.set(0.9, 0.9);
+								hot.alpha = 0.6;
 		                        add(hot);
+								
 							}
 
 						  var fg:FlxSprite = new FlxSprite(-1600, -300).loadGraphic(Paths.image('town/fg'));
@@ -1895,6 +1897,8 @@ class PlayState extends MusicBeatState
 						}
 					});
 					FlxG.sound.play(Paths.sound('introGo' + altSuffix), 0.6);
+					if (curSong == 'Score')
+						dad.playAnim('hey', true);
 				case 4:
 			}
 
@@ -3700,6 +3704,47 @@ function noteCheck(keyP:Bool, note:Note):Void
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
+
+		function camerasOn(beaton:Int, endbeat:Int)
+			{
+				if (PreferencesMenu.getPref('camera-zoom'))
+					{
+				        if (curBeat >= beaton && curBeat < endbeat && camZooming && FlxG.camera.zoom < 1.35)
+				        {
+						    FlxG.camera.zoom += 0.015;
+						    camHUD.zoom += 0.03;
+				 	    }
+			        }
+			}
+
+		function camerasIn(beaton:Int, endbeat:Int, camer:Float)
+			{
+				if (PreferencesMenu.getPref('camera-zoom'))
+					{
+				        if (curBeat >= beaton && curBeat < endbeat)
+				        {
+						    FlxG.camera.zoom += camer;
+						    camHUD.zoom += 0.03;
+				 	    }
+			        }
+			}
+
+		if (curSong == 'Score')
+			{
+				camerasIn(1, 5, 1.1);
+
+				switch (curBeat)
+				{
+				    case 1:
+						boyfriend.playAnim('singLEFT', true);
+				}
+			}
+
+		if (curSong == '2hot')
+			{
+				camerasOn(185,221);
+				camerasOn(254, 290);
+			}
 
 		if (curBeat % gfSpeed == 0)
 		{
