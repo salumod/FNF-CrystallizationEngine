@@ -9,6 +9,7 @@ import shaderslmfao.ColorSwap;
 #if desktop
 import Discord.DiscordClient;
 #end
+import openfl.filters.BitmapFilter;
 import Section.SwagSection;
 import Song.SwagSong;
 import flixel.FlxBasic;
@@ -49,7 +50,18 @@ import openfl.filters.ShaderFilter;
 import openfl.utils.Assets as OpenFlAssets;
 import charting.ChartingState;
 import charting.AnimationDebug;
-
+#if (openfl >= "8.0.0")
+import openfl8.Scanline;
+import openfl8.Grain;
+import openfl8.Hq2x;
+import openfl8.Textshader;
+#else
+import openfl3.Scanline;
+import openfl3.Grain;
+import openfl3.Hq2x;
+import openfl3.Textshader;
+#end
+import OverlayShader;
 using StringTools;
 
 class PlayState extends MusicBeatState
@@ -126,7 +138,7 @@ class PlayState extends MusicBeatState
 	var limo:FlxSprite;
 	var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
 	var fastCar:FlxSprite;
-
+ 
 	var upperBoppers:FlxSprite;
 	var bottomBoppers:FlxSprite;
 	var santa:FlxSprite;
@@ -190,6 +202,10 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		#if FLX_MOUSE
+        FlxG.mouse.visible = false;
+        #end
+
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
@@ -1020,7 +1036,7 @@ class PlayState extends MusicBeatState
 		switch (curStage)
 		{
 			case 'april':
-				var bgfor:FlxSprite = new FlxSprite(-1600, -400).loadGraphic(Paths.image('town/april_for'));
+				        var bgfor:FlxSprite = new FlxSprite(-1600, -400).loadGraphic(Paths.image('town/april_for'));
 		                bgfor.scrollFactor.set(0.9, 0.9);
 		                add(bgfor);
 		}
@@ -1045,6 +1061,7 @@ class PlayState extends MusicBeatState
 					var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay'));
 		            overlayShit.alpha = 0.3;
 		            add(overlayShit);
+					FlxG.camera.color = 0xFFFF7676;
 				}	
 			case 'mall' | 'mallEvil':
 				{
@@ -1059,9 +1076,22 @@ class PlayState extends MusicBeatState
 				}
 			case 'april':
 				{
-					var bgrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('town/bgrtx'));
-					bgrtx.alpha = 0.9;
-				    add(bgrtx);
+					if (SONG.song.toLowerCase() == '2hot')
+						{
+							var bgrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('town/hotrtx'));
+					        bgrtx.alpha = 0.9;
+				            add(bgrtx);
+						}
+					else
+						{
+							var bgrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('town/bgrtx'));
+					        bgrtx.alpha = 0.9;
+				            add(bgrtx);
+						}
+				}
+			case 'school':
+				{
+					FlxG.camera.setFilters([new ShaderFilter(new Scanline())]);
 				}
 			default:
 				{
@@ -1290,7 +1320,7 @@ class PlayState extends MusicBeatState
 				case 'score':
 					intro(doof);
 				case '2hot':
-					intro(doof);
+					hotIntro(doof);
 				default:
 					startCountdown();
 			}
@@ -1677,6 +1707,34 @@ class PlayState extends MusicBeatState
 				}
 			});
 		}
+
+		function hotIntro(?dialogueBox:DialogueBox):Void
+		{
+			camHUD.alpha = 0;
+			FlxG.camera.fade(FlxColor.BLACK, 1, true);
+			FlxG.sound.play(Paths.sound('Boom'));
+			gf.playAnim('hey', true);
+				FlxTween.tween(camHUD, {alpha: 10}, 3, {ease: FlxEase.backIn, onComplete: function(twe:FlxTween)
+					{
+								camFollow.setPosition(camPos.x, camPos.y);
+			
+								new FlxTimer().start(1, function(tmr:FlxTimer)
+								{
+										if (dialogueBox != null)
+										{
+											boyfriend.playAnim('singLEFT', true);
+											new FlxTimer().start(1, function(tmr:FlxTimer)
+												{
+                                                    inCutscene = true;
+											        add(dialogueBox);
+												});
+										}
+										else
+											startCountdown();
+								});
+					 }});
+		}
+
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
@@ -2533,6 +2591,7 @@ class PlayState extends MusicBeatState
 
 		FlxG.watch.addQuick("curBeat", curBeat);
 		FlxG.watch.addQuick("curStep", curStep);
+		FlxG.watch.addQuick("songTime", songTime);
 
 		if (curSong == 'Fresh')
 		{
@@ -2875,8 +2934,10 @@ class PlayState extends MusicBeatState
 				if (storyWeek != 7)
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
-				transIn = FlxTransitionableState.defaultTransIn;
-				transOut = FlxTransitionableState.defaultTransOut;
+				FlxG.camera.fade(FlxColor.BLACK, 0.33, true);
+
+				// transIn = FlxTransitionableState.defaultTransIn;
+				// transOut = FlxTransitionableState.defaultTransOut;
 
 				if (storyWeek == 7)
 				{
@@ -3631,6 +3692,8 @@ function noteCheck(keyP:Bool, note:Note):Void
 		function blammedlighton()
 		{
 			//I don't think about this.
+            gf.visible = false;
+
 			remove(dad);
             dad = new Character(100, 400, 'picot');
             add(dad);
@@ -3639,7 +3702,7 @@ function noteCheck(keyP:Bool, note:Note):Void
             boyfriend = new Boyfriend(770, 450, 'bft');
             add(boyfriend);
 			
-			FlxG.camera.flash(FlxColor.WHITE, 1);
+			FlxG.camera.flash(FlxColor.WHITE, 1);		
 		}
 
 		function blammedlightend()
@@ -3647,7 +3710,6 @@ function noteCheck(keyP:Bool, note:Note):Void
 				/*I can't let them be a event.
 				But,there was no event,right?!*/
 				FlxG.camera.flash(FlxColor.BLACK, 1);
-
 				remove(dad);
 				dad = new Character(100, 400, 'pico');
 				add(dad);
@@ -3655,6 +3717,8 @@ function noteCheck(keyP:Bool, note:Note):Void
 				remove(boyfriend);
 				boyfriend = new Boyfriend(770, 450, 'bf');
 				add(boyfriend);
+
+				gf.visible = true;
 			}
 //end list
 
@@ -3705,14 +3769,14 @@ function noteCheck(keyP:Bool, note:Note):Void
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
 
-		function camerasOn(beaton:Int, endbeat:Int)
+		function camerasOn(beaton:Int, endbeat:Int, cam:Float, zoom:Float)
 			{
 				if (PreferencesMenu.getPref('camera-zoom'))
 					{
 				        if (curBeat >= beaton && curBeat < endbeat && camZooming && FlxG.camera.zoom < 1.35)
 				        {
-						    FlxG.camera.zoom += 0.015;
-						    camHUD.zoom += 0.03;
+						    FlxG.camera.zoom += zoom;
+						    camHUD.zoom += cam;
 				 	    }
 			        }
 			}
@@ -3729,21 +3793,62 @@ function noteCheck(keyP:Bool, note:Note):Void
 			        }
 			}
 
+		function blammedChrlight(beaton:Int, endbeat:Int)
+		{
+			var red = 0xFFFF7676;
+			var blue = 0xFF7A7CFF;
+			var purple = 0xFFE092FB;
+			var orange = 0xFFFFA36D;
+			var green = 0xFF62FF56;
+
+        if (curBeat >= beaton && curBeat <= endbeat)
+			{
+				if (curBeat % 4 == 0)
+					{
+						if (FlxG.random.bool(20))
+				        {
+					        dad.color = red;
+					        boyfriend.color = red;
+				        }
+			            else if (FlxG.random.bool(20))
+				        {
+					        dad.color = blue;
+					        boyfriend.color = blue;
+				        }
+			            else if (FlxG.random.bool(20))
+					    {
+						    dad.color = purple;
+					        boyfriend.color = purple;
+				        }
+			            else if (FlxG.random.bool(20))
+				        {
+					        dad.color = orange;
+					        boyfriend.color = orange;
+				        }
+			            else if (FlxG.random.bool(20))
+				        {
+					        dad.color = green;
+					        boyfriend.color = green;
+				        }
+					}
+			}	
+		}
+
 		if (curSong == 'Score')
 			{
 				camerasIn(1, 5, 1.1);
 
-				switch (curBeat)
-				{
-				    case 1:
-						boyfriend.playAnim('singLEFT', true);
-				}
+				// switch (curBeat)
+				// {
+				//     case 1:
+				// 		boyfriend.playAnim('singLEFT', true);
+				// }
 			}
 
 		if (curSong == '2hot')
 			{
-				camerasOn(185,221);
-				camerasOn(254, 290);
+				camerasOn(185, 221, 0.035, 0.4);
+				camerasOn(254, 290, 0.015, 0.3);
 			}
 
 		if (curBeat % gfSpeed == 0)
@@ -3775,7 +3880,7 @@ function noteCheck(keyP:Bool, note:Note):Void
 			gf.playAnim('cheer', true);
 		}
 
-		if (curBeat % 8 == 7 && curSong == 'Score')
+		if (curBeat % 15 == 0 && curSong == 'Score')
 			{
 				gf.playAnim('hey', true);
 			}
@@ -3793,112 +3898,14 @@ function noteCheck(keyP:Bool, note:Note):Void
 
 		if (curSong =='Blammed')
 	{
+		blammedChrlight(97, 192);
+
 		switch (curBeat)
 		{
 		case 97:
 			blammedlighton();
-			dad.color = 0xFFFF7676;//red
-		case 101:
-			dad.color = 0xFFE092FB;//purple
-		case 104:
-			dad.color = 0xFF62FF56;//green
-		case 109:
-			dad.color = 0xFF7A7CFF;//blue
-		case 112:
-			dad.color = 0x00FFFFFF;
-			boyfriend.color = 0xFFFF7676;
-		case 116:
-			boyfriend.color = 0xFFFFA36D;//orange
-		case 120:
-			boyfriend.color = 0xFF7A7CFF;
-		case 124:
-			boyfriend.color = 0xFFFF7676;
-		case 128:
-			boyfriend.color = 0x00FFFFFF;
-			dad.color = 0xFFE092FB;
-		case 132:
-			dad.color = 0xFF62FF56;
-		case 136:
-			dad.color = 0xFF7A7CFF;
-		case 140:
-			dad.color = 0xFF7A7CFF;
-		case 144:
-			dad.color = 0x00FFFFFF;
-			boyfriend.color = 0xFF62FF56;
-		case 148:
-			boyfriend.color = 0xFF62FF56;
-		case 152:
-			boyfriend.color = 0xFFFF7676;
-		case 156:
-			boyfriend.color = 0xFFFFA36D;
-		case 159:
-			boyfriend.color = 0x00FFFFFF;
-		case 160:
-			dad.color = 0xFF78F5FD;
-		case 165:
-			dad.color = 0xFFFFA36D;
-		case 168:
-			dad.color = 0xFFFF7676;
-		case 172:
-			dad.color =0xFFE092FB;
-		case 175:
-			dad.color = 0x00FFFFFF;
-		case 176:
-			boyfriend.color = 0xFF62FF56;
-		case 180:
-			boyfriend.color = 0xFF62FF56;
-		case 184:
-			boyfriend.color = 0xFF7A7CFF;
-		case 188:
-			boyfriend.color = 0xFFFF7676;
 		case 192:
 			blammedlightend();
-			boyfriend.color = 0x00FFFFFF;
-		}
-	}
-if (curSong =='Thorns')
-	{
-		switch (curBeat)
-		{
-		case 1:bgGirlevil.hey();
-		case 65:bgGirlevil.hey();
-		case 68:bgGirlevil.hey();
-		case 71:bgGirlevil.hey();
-		case 74:bgGirlevil.hey();
-		case 78:bgGirlevil.hey();
-		case 81:bgGirlevil.hey();
-		case 87:bgGirlevil.hey();
-		case 90:bgGirlevil.hey();
-		case 92:bgGirlevil.hey();
-		case 163:bgGirlevil.hey();
-		case 165:bgGirlevil.hey();
-		case 167:bgGirlevil.hey();
-		case 169:bgGirlevil.hey();
-		case 171:bgGirlevil.hey();
-		case 173:bgGirlevil.hey();
-		case 175:bgGirlevil.hey();
-		case 178:bgGirlevil.hey();
-		case 180:bgGirlevil.hey();
-		case 183:bgGirlevil.hey();
-		case 186:bgGirlevil.hey();
-		case 189:bgGirlevil.hey();
-		case 256:
-			bgGirlevil.hey();
-		    thornscharEvent();
-		case 259:bgGirlevil.hey();
-		case 262:bgGirlevil.hey();
-		case 265:bgGirlevil.hey();
-		case 267:bgGirlevil.hey();
-		case 270:bgGirlevil.hey();
-		case 273:bgGirlevil.hey();
-		case 275:bgGirlevil.hey();
-		case 278:bgGirlevil.hey();
-		case 280:bgGirlevil.hey();
-		case 283:bgGirlevil.hey();
-		case 285:bgGirlevil.hey();
-		case 288:bgGirlevil.hey();
-        case 290:errorEvent();
-		case 296:remove(bgGirlevil);
 		}
 	}
 		switch (curStage)

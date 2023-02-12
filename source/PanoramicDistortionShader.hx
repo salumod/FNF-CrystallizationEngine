@@ -1,4 +1,4 @@
-package shader;
+package;
 
 import flixel.system.FlxAssets.FlxShader;
 

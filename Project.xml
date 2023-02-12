@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="April Fool" file="April Fool" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="???" company="April-Pool" />
+	<app title="PROJECT B" file="PROJECT B" packageName="com.salumod.FNF-CrystallizationEngine" package="com.salumod.FNF-CrystallizationEngine" main="Main" version="???" company="salumod" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -124,7 +124,7 @@
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="discord_rpc" if="desktop"/>
 	<haxelib name="hxcpp-debug-server" if="desktop"/>
-
+	<haxelib name="openfl"/>
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->
 

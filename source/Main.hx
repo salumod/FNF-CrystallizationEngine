@@ -8,6 +8,7 @@ import openfl.display.FPS;
 import openfl.display.Sprite;
 import ui.PreferencesMenu;
 import openfl.events.Event;
+import Fpspackshow;
 
 class Main extends Sprite
 {
@@ -73,14 +74,16 @@ class Main extends Sprite
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
-		fpsCounter = new FPS(10, 3, 0xFFFFFF);
+
+		var fps_mem:Fpspackshow = new Fpspackshow(10, 10, 0x616161);
+
 		if (PreferencesMenu.getPref('fps-counter'))
 		{
-			addChild(fpsCounter);
+            addChild (fps_mem);
 		}
 		else
 		{
-			removeChild(fpsCounter);
+			removeChild (fps_mem);
 		}
 		#end
 	}

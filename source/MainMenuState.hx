@@ -45,8 +45,7 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
+		FlxG.camera.fade(FlxColor.BLACK, 0.33, true);
 
 		if (!FlxG.sound.music.playing)
 		{
@@ -117,15 +116,15 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, null, 0.06);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Friday Night Funkin'" + Application.current.meta.get('version'), 12);
-		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
+		// var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Friday Night Funkin'" + Application.current.meta.get('version'), 12);
+		// versionShit.scrollFactor.set();
+		// versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		// add(versionShit);
 
-		var ceversionShit:FlxText = new FlxText(5, FlxG.height - 35, 0, "Happy April Fool's Day" );
-		ceversionShit.scrollFactor.set();
-		ceversionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(ceversionShit);
+		// var ceversionShit:FlxText = new FlxText(5, FlxG.height - 35, 0, "" );
+		// ceversionShit.scrollFactor.set();
+		// ceversionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		// add(ceversionShit);
 
 		super.create();
 	}

@@ -29,7 +29,7 @@ class StoryMenuState extends MusicBeatState
 		['Pico', 'Philly', "Blammed"],
 		['Satin-Panties', "High", "Milf"],
 		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
-		['Senpai', 'Roses', 'Thorns'],
+		['Senpai', 'Roses'],
 		['Ugh', 'Guns', 'Stress'],
 		['Score', '2hot']
 	];
@@ -69,8 +69,7 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
+		FlxG.camera.fade(FlxColor.BLACK, 0.33, true);
 
 		if (FlxG.sound.music != null)
 		{
@@ -80,7 +79,7 @@ class StoryMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		scoreText = new FlxText(10, 10, 0, "SCORE: 49324858", 36);
+		scoreText = new FlxText(10, 10, 0, "SCORE: 0", 36);
 		scoreText.setFormat("VCR OSD Mono", 32);
 
 		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
@@ -161,7 +160,7 @@ class StoryMenuState extends MusicBeatState
 					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.9));
 					weekCharacterThing.updateHitbox();
 				case 'pico':
-					weekCharacterThing.flipX = true;
+					weekCharacterThing.flipX = false;
 			}
 
 			grpWeekCharacters.add(weekCharacterThing);

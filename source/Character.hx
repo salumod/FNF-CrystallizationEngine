@@ -61,6 +61,26 @@ class Character extends FlxSprite
 
 				playAnim('danceRight');
 
+				case 'gf-blammed':
+				// GIRLFRIEND CODE
+				tex = Paths.getSparrowAtlas('characters/EventCharacters/gf-blammed');
+				frames = tex;
+				quickAnimAdd('cheer', 'GF Cheer');
+				quickAnimAdd('singLEFT', 'GF left note');
+				quickAnimAdd('singRIGHT', 'GF Right Note');
+				quickAnimAdd('singUP', 'GF Up Note');
+				quickAnimAdd('singDOWN', 'GF Down Note');
+				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, true);
+				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+				animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
+				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
+				animation.addByPrefix('scared', 'GF FEAR', 24, true);
+
+				loadOffsetFile("gf");
+
+				playAnim('danceRight');
+
 			case 'nene':
 					tex = Paths.getSparrowAtlas('characters/stup-id');
 					frames = tex;
@@ -266,7 +286,9 @@ class Character extends FlxSprite
 				quickAnimAdd('singUPmiss', 'missup');
 				quickAnimAdd('singDOWNmiss', 'missdown');
 
-				quickAnimAdd('dead', 'dead');
+				quickAnimAdd('firstDeath', "dead0");
+				quickAnimAdd('deathLoop', "dead1");
+				quickAnimAdd('deathConfirm', "dead3");
 
 				playAnim('idle');
 
@@ -290,7 +312,7 @@ class Character extends FlxSprite
 					loadOffsetFile(curCharacter);
 					
 			case 'picot':
-				tex = Paths.getSparrowAtlas('characters/picot');
+				tex = Paths.getSparrowAtlas('characters/EventCharacters/picot');
 				frames = tex;
 				quickAnimAdd('idle', "Pico Idle Dance");
 				quickAnimAdd('singUP', 'pico Up note0');
@@ -362,7 +384,7 @@ class Character extends FlxSprite
 				loadOffsetFile(curCharacter);
 
 			case 'bft':
-				tex = Paths.getSparrowAtlas('characters/BOYFRIENDT');
+				tex = Paths.getSparrowAtlas('characters/EventCharacters/BOYFRIENDT');
 				frames = tex;
 				quickAnimAdd('idle', 'BF idle dance');
 				quickAnimAdd('singUP', 'BF NOTE UP0');
@@ -694,7 +716,7 @@ class Character extends FlxSprite
 
 	function loadOffsetFile(char:String)
 	{
-		var offsets:Array<String> = CoolUtil.coolTextFile(Paths.getPath('images/characters/' + char + 'Offsets.txt', TEXT, null));
+		var offsets:Array<String> = CoolUtil.coolTextFile(Paths.getPath('images/characters/offsets/' + char + 'Offsets.txt', TEXT, null));
 		for (i in offsets)
 		{
 			var split = i.split(' ');
