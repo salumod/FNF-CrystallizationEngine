@@ -19,7 +19,7 @@ Similarly, you also need to expose the source code on github
             polymod -(Removed)
             newsgrounds v1.1.5
             flixel 4.11.0
-            shader tools v0.0.9(Not used yet, you can delete it from the project. hx without adding it)
+            shader tools v0.0.9(Not used yet, you can delete it from the project. xml without adding it)
 Now you can add libraries according to the official readme file.
 That's all
 Good luck
