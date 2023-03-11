@@ -108,7 +108,7 @@
 	<!-- <template path='mods' /> -->
 	
 	<assets path="CHANGELOG.md" rename='changelog.txt'/>
-    <assets path="Modding.md" rename='Readme to making mod.txt'/>
+    <assets path="Modding.md" rename='Modding.txt'/>
 	<!-- NOTE FOR FUTURE SELF SINCE FONTS ARE ALWAYS FUCKY 
 		TO FIX ONE OF THEM, I CONVERTED IT TO OTF. DUNNO IF YOU NEED TO
 		THEN UHHH I USED THE NAME OF THE FONT WITH SETFORMAT() ON THE TEXT!!!
@@ -131,8 +131,8 @@
 	<haxelib name="polymod"/>
 	<haxelib name="newgrounds"/>
 	<haxelib name="hxcpp-debug-server" if="desktop debug"/>
-	<haxelib name="hxCodec" if="desktop || mobile" />
-	<haxelib name="linc_luajit" if="desktop || mobile" />
+	<haxelib name="hxCodec" if="desktop" />
+	<haxelib name="linc_luajit" if="desktop" />
 	
 	<!-- <haxelib name="flixel-animate" /> -->
 	<!-- <haxelib name="spinehaxe" /> -->
