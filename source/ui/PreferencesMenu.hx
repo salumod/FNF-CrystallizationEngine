@@ -1,260 +1,218 @@
 package ui;
 
-import openfl.Lib;
-import flixel.FlxG;
-import flixel.util.FlxSave;
-import flixel.FlxObject;
 import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
-import haxe.ds.StringMap;
+import ui.AtlasText.AtlasFont;
+import ui.TextMenuList.TextMenuItem;
 
-class PreferencesMenu extends Page
+class PreferencesMenu extends ui.OptionsState.Page
 {
-	public static var preferences:StringMap<Dynamic> = new StringMap<Dynamic>();
+	public static var preferences:Map<String, Dynamic> = new Map();
+
+	var items:TextMenuList;
 
 	var checkboxes:Array<CheckboxThingie> = [];
 	var menuCamera:FlxCamera;
-	var items:TextMenuList;
 	var camFollow:FlxObject;
 
-	override public function new()
+	public function new()
 	{
 		super();
-		menuCamera = new FlxCamera();
+
+		menuCamera = new SwagCamera();
 		FlxG.cameras.add(menuCamera, false);
-		menuCamera.bgColor = FlxColor.TRANSPARENT;
+		menuCamera.bgColor = 0x0;
 		camera = menuCamera;
+
 		add(items = new TextMenuList());
+
 		createPrefItem('naughtyness', 'censor-naughty', true);
 		createPrefItem('downscroll', 'downscroll', false);
 		createPrefItem('flashing menu', 'flashing-menu', true);
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
-		createPrefItem('Mirror Mode', 'mirror-mode', false);
-		createPrefItem('Exquisite stage', 'exquisite-stage', true);
-		createPrefItem('curBEAT show', 'curbeat', false);
-		createPrefItem('Pixel Shader', 'pixel-shader', false);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
-		{
-			camFollow.y = items.members[items.selectedIndex].y;
-		}
+			camFollow.y = items.selectedItem.y;
+
 		menuCamera.follow(camFollow, null, 0.06);
-		menuCamera.deadzone.set(0, 160, menuCamera.width, 40);
+		var margin = 160;
+		menuCamera.deadzone.set(0, margin, menuCamera.width, 40);
 		menuCamera.minScrollY = 0;
-		items.onChange.add(function(item:TextMenuItem)
+
+		items.onChange.add(function(selected)
 		{
-			camFollow.y = item.y;
+			camFollow.y = selected.y;
 		});
 	}
 
-	public static function getPref(pref:String)
+	public static function getPref(pref:String):Dynamic
 	{
 		return preferences.get(pref);
 	}
 
-	public static function initPrefs()
+	// easy shorthand?
+	public static function setPref(pref:String, value:Dynamic):Void
 	{
-		if(FlxG.save.data.censorNaughty != null)
-		{
-			preferenceCheck('censor-naughty', FlxG.save.data.censorNaughty);
-		}
-		else
-		{
-			preferenceCheck('censor-naughty', true);
-		}
+		preferences.set(pref, value);
+	}
 
-		if(FlxG.save.data.downscroll != null)
-		{
-			preferenceCheck('downscroll', FlxG.save.data.downscroll);
-		}
-		else
-		{
-			preferenceCheck('downscroll', false);
-		}
+	public static function initPrefs():Void
+	{
+		preferenceCheck('censor-naughty', true);
+		preferenceCheck('downscroll', false);
+		preferenceCheck('flashing-menu', true);
+		preferenceCheck('camera-zoom', true);
+		preferenceCheck('fps-counter', true);
+		preferenceCheck('auto-pause', false);
+		preferenceCheck('master-volume', 1);
 
-		if(FlxG.save.data.flashingMenu != null)
-		{
-			preferenceCheck('flashing-menu', FlxG.save.data.flashingMenu);
-		}
-		else
-		{
-			preferenceCheck('flashing-menu', true);
-		}
-
-		if(FlxG.save.data.cameraZoom != null)
-		{
-			preferenceCheck('camera-zoom', FlxG.save.data.cameraZoom);
-		}
-		else
-		{
-			preferenceCheck('camera-zoom', true);
-		}
-
-		if(FlxG.save.data.fpsCounter != null)
-		{
-			preferenceCheck('fps-counter', FlxG.save.data.fpsCounter);
-		}
-		else
-		{
-			preferenceCheck('fps-counter', true);
-		}
-
-		if(FlxG.save.data.fpsCounter != null)
-			{
-				preferenceCheck('fps-counter', FlxG.save.data.fpsCounter);
-			}
-			else
-			{
-				preferenceCheck('fps-counter', true);
-			}
-
-		if(FlxG.save.data.autoPause != null)
-		{
-			preferenceCheck('auto-pause', FlxG.save.data.autoPause);
-		}
-		else
-		{
-			preferenceCheck('auto-pause', false);
-		}
-
-		if(FlxG.save.data.mirrorMode != null)
-			{
-				preferenceCheck('mirror-mode', FlxG.save.data.mirrorMode);
-			}
-			else
-			{
-				preferenceCheck('mirror-mode', false);
-			}
-
-		if(FlxG.save.data.exquisiteStage != null)
-			{
-				preferenceCheck('exquisite-stage', FlxG.save.data.exquisiteStage);
-			}
-			else
-			{
-				preferenceCheck('exquisite-stage', true);
-			}
-
-		if(FlxG.save.data.curBeat != null)
-			{
-				preferenceCheck('curbeat', FlxG.save.data.curBeat);
-			}
-			else
-			{
-				preferenceCheck('curbeat', false);
-			}
-
-		if(FlxG.save.data.pixelShader != null)
-			{
-				preferenceCheck('pixel-shader', FlxG.save.data.pixelShader);
-			}
-			else
-			{
-				preferenceCheck('pixel-shader', false);
-			}
+		#if muted
+		setPref('master-volume', 0);
+		FlxG.sound.muted = true;
+		#end
 
 		if (!getPref('fps-counter'))
-		{
-			Lib.current.stage.removeChild(Main.fpsCounter);
-		}
+			FlxG.stage.removeChild(Main.fpsCounter);
 
 		FlxG.autoPause = getPref('auto-pause');
 	}
 
-	public static function preferenceCheck(identifier:String, defaultValue:Dynamic)
+	private function createPrefItem(prefName:String, prefString:String, prefValue:Dynamic):Void
 	{
-		if (preferences.get(identifier) == null)
+		items.createItem(120, (120 * items.length) + 30, prefName, AtlasFont.Bold, function()
 		{
-			preferences.set(identifier, defaultValue);
-			trace('set preference!');
-		}
-		else
-		{
-			trace('found preference: ' + Std.string(preferences.get(identifier)));
-		}
-	}
+			preferenceCheck(prefString, prefValue);
 
-	public function createPrefItem(label:String, identifier:String, value:Dynamic)
-	{
-		items.createItem(120, 120 * items.length + 30, label, Bold, function()
-		{
-			preferenceCheck(identifier, value);
-			if (Type.typeof(value) == TBool)
+			switch (Type.typeof(prefValue).getName())
 			{
-				prefToggle(identifier);
-			}
-			else
-			{
-				trace('swag');
+				case 'TBool':
+					prefToggle(prefString);
+
+				default:
+					trace('swag');
 			}
 		});
-		if (Type.typeof(value) == TBool)
+
+		switch (Type.typeof(prefValue).getName())
 		{
-			createCheckbox(identifier);
+			case 'TBool':
+				createCheckbox(prefString);
+
+			default:
+				trace('swag');
 		}
-		else
-		{
-			trace('swag');
-		}
-		trace(Type.typeof(value));
+
+		trace(Type.typeof(prefValue).getName());
 	}
 
-	public function createCheckbox(identifier:String)
+	function createCheckbox(prefString:String)
 	{
-		var box:CheckboxThingie = new CheckboxThingie(0, 120 * (items.length - 1), preferences.get(identifier));
-		checkboxes.push(box);
-		add(box);
+		var checkbox:CheckboxThingie = new CheckboxThingie(0, 120 * (items.length - 1), preferences.get(prefString));
+		checkboxes.push(checkbox);
+		add(checkbox);
 	}
 
-	public function prefToggle(identifier:String)
+	/**
+	 * Assumes that the preference has already been checked/set?
+	 */
+	private function prefToggle(prefName:String)
 	{
-		var value:Bool = preferences.get(identifier);
-		value = !value;
-		preferences.set(identifier, value);
-		checkboxes[items.selectedIndex].daValue = value;
+		var daSwap:Bool = preferences.get(prefName);
+		daSwap = !daSwap;
+		preferences.set(prefName, daSwap);
+		checkboxes[items.selectedIndex].daValue = daSwap;
+		trace('toggled? ' + preferences.get(prefName));
 
-		FlxG.save.data.censorNaughty = getPref('censor-naughty');
-		FlxG.save.data.downscroll = getPref('downscroll');
-		FlxG.save.data.flashingMenu = getPref('flashing-menu');
-		FlxG.save.data.cameraZoom = getPref('camera-zoom');
-		FlxG.save.data.fpsCounter = getPref('fps-counter');
-		FlxG.save.data.autoPause = getPref('auto-pause');
-		FlxG.save.data.pixelShader = getPref('pixel-shader');
-		FlxG.save.data.mirrorMode = getPref('mirror-mode');
-		FlxG.save.data.exquisiteStage = getPref('exquisite-stage');
-		FlxG.save.data.curBeat = getPref('curbeat');
-		FlxG.save.flush();
-
-		trace('toggled? ' + Std.string(preferences.get(identifier)));
-		switch (identifier)
+		switch (prefName)
 		{
+			case 'fps-counter':
+				if (getPref('fps-counter'))
+					FlxG.stage.addChild(Main.fpsCounter);
+				else
+					FlxG.stage.removeChild(Main.fpsCounter);
 			case 'auto-pause':
 				FlxG.autoPause = getPref('auto-pause');
-			case 'fps-counter':
-				if (!getPref('fps-counter'))
-				{
-					Lib.current.stage.removeChild(Main.fpsCounter);
-				}
-				else
-				{
-					Lib.current.stage.addChild(Main.fpsCounter);
-				}
 		}
+
+		if (prefName == 'fps-counter') {}
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		menuCamera.followLerp = CoolUtil.camLerpShit(0.02);
-		items.forEach(function(item:MenuItem)
+
+		// menuCamera.followLerp = CoolUtil.camLerpShit(0.05);
+
+		items.forEach(function(daItem:TextMenuItem)
 		{
-			if (item == items.members[items.selectedIndex])
-				item.x = 150;
+			if (items.selectedItem == daItem)
+				daItem.x = 150;
 			else
-				item.x = 120;
+				daItem.x = 120;
 		});
+	}
+
+	private static function preferenceCheck(prefString:String, prefValue:Dynamic):Void
+	{
+		if (preferences.get(prefString) == null)
+		{
+			preferences.set(prefString, prefValue);
+			trace('set preference!');
+		}
+		else
+		{
+			trace('found preference: ' + preferences.get(prefString));
+		}
+	}
+}
+
+class CheckboxThingie extends FlxSprite
+{
+	public var daValue(default, set):Bool;
+
+	public function new(x:Float, y:Float, daValue:Bool = false)
+	{
+		super(x, y);
+
+		frames = Paths.getSparrowAtlas('checkboxThingie');
+		animation.addByPrefix('static', 'Check Box unselected', 24, false);
+		animation.addByPrefix('checked', 'Check Box selecting animation', 24, false);
+
+		antialiasing = true;
+
+		setGraphicSize(Std.int(width * 0.7));
+		updateHitbox();
+
+		this.daValue = daValue;
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		switch (animation.curAnim.name)
+		{
+			case 'static':
+				offset.set();
+			case 'checked':
+				offset.set(17, 70);
+		}
+	}
+
+	function set_daValue(value:Bool):Bool
+	{
+		if (value)
+			animation.play('checked', true);
+		else
+			animation.play('static');
+
+		return value;
 	}
 }

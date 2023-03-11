@@ -1,8 +1,8 @@
 package;
 
-import ui.PreferencesMenu;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import haxe.display.Display.Package;
 
 class TankmenBG extends FlxSprite
 {
@@ -12,77 +12,79 @@ class TankmenBG extends FlxSprite
 	public var goingRight:Bool = false;
 	public var tankSpeed:Float = 0.7;
 
-	var endingOffset:Float;
+	public var endingOffset:Float;
 
-	override public function new(x:Float, y:Float, uhh:Bool)
+	public function new(x:Float, y:Float, isGoingRight:Bool)
 	{
 		super(x, y);
-		if (!PreferencesMenu.getPref('censor-naughty'))
-		{
-			frames = Paths.getSparrowAtlas('tankmanKilled1NoBlood');
-		}
-		else
-		{
-			frames = Paths.getSparrowAtlas('tankmanKilled1');
-		}
+
+		// makeGraphic(200, 200);
+
+		frames = Paths.getSparrowAtlas('tankmanKilled1');
 		antialiasing = true;
 		animation.addByPrefix('run', 'tankman running', 24, true);
 		animation.addByPrefix('shot', 'John Shot ' + FlxG.random.int(1, 2), 24, false);
+
 		animation.play('run');
-		animation.curAnim.curFrame = FlxG.random.int(0, animation.curAnim.frames.length - 1);
+		animation.curAnim.curFrame = FlxG.random.int(0, animation.curAnim.numFrames - 1);
+
 		updateHitbox();
+
 		setGraphicSize(Std.int(width * 0.8));
 		updateHitbox();
 	}
 
-	public function resetShit(x:Float, y:Float, goRight:Bool)
+	public function resetShit(x:Float, y:Float, isGoingRight:Bool)
 	{
 		setPosition(x, y);
-		goingRight = goRight;
+		goingRight = isGoingRight;
 		endingOffset = FlxG.random.float(50, 200);
 		tankSpeed = FlxG.random.float(0.6, 1);
+
 		if (goingRight)
 			flipX = true;
 	}
 
-	override public function update(elapsed:Float)
+	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		
+
 		if (x >= FlxG.width * 1.2 || x <= FlxG.width * -0.5)
-		{
 			visible = false;
-		}
 		else
-		{
 			visible = true;
-		}
 
 		if (animation.curAnim.name == 'run')
 		{
-			var wackyShit:Float = FlxG.width * 0.74 + endingOffset;
+			var endDirection:Float = (FlxG.width * 0.74) + endingOffset;
+
 			if (goingRight)
 			{
-				wackyShit = FlxG.width * 0.02 - endingOffset;
-				x = wackyShit + (Conductor.songPosition - strumTime) * tankSpeed;
+				endDirection = (FlxG.width * 0.02) - endingOffset;
+
+				x = (endDirection + (Conductor.songPosition - strumTime) * tankSpeed);
 			}
 			else
 			{
-				x = wackyShit - (Conductor.songPosition - strumTime) * tankSpeed;
+				x = (endDirection - (Conductor.songPosition - strumTime) * tankSpeed);
 			}
 		}
-		
+
 		if (Conductor.songPosition > strumTime)
 		{
+			// kill();
 			animation.play('shot');
+
 			if (goingRight)
 			{
 				offset.y = 200;
 				offset.x = 300;
 			}
 		}
-		
+
 		if (animation.curAnim.name == 'shot' && animation.curAnim.curFrame >= animation.curAnim.frames.length - 1)
+		{
 			kill();
+		}
 	}
 }

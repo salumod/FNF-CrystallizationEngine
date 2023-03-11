@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="bf-c.png">
+	<!-- Created with Adobe Animate version 22.0.1.105 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="BF idle dance 实例 10000" x="0" y="0" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10001" x="0" y="0" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10002" x="410" y="0" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10003" x="820" y="0" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10004" x="1230" y="0" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10005" x="1230" y="0" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10006" x="0" y="417" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10007" x="0" y="417" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10008" x="410" y="417" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10009" x="410" y="417" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10010" x="410" y="417" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10011" x="410" y="417" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10012" x="410" y="417" width="410" height="417"/>
+	<SubTexture name="BF idle dance 实例 10013" x="410" y="417" width="410" height="417"/>
+</TextureAtlas>

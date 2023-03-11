@@ -1,83 +1,79 @@
 package;
 
 import flixel.FlxSprite;
-import flixel.math.FlxPoint;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import haxe.ds.StringMap;
+import flixel.math.FlxPoint;
 
 using StringTools;
 
-class CutsceneCharacter extends FlxTypedGroup<Dynamic>
+class CutsceneCharacter extends FlxTypedGroup<FlxSprite>
 {
-	var coolPos:FlxPoint = FlxPoint.get();
-	var animShit:StringMap<FlxPoint> = new StringMap<FlxPoint>();
-	var arrayLMFAOOOO:Array<String> = [];
-	var imageShit:String;
+	public var coolPos:FlxPoint = FlxPoint.get();
+	public var animShit:Map<String, FlxPoint> = new Map();
 
-	public var onFinish:Dynamic;
+	private var imageShit:String;
 
-	override public function new(x:Float, y:Float, image:String)
+	public function new(x:Float, y:Float, imageShit:String)
 	{
 		super();
 
 		coolPos.set(x, y);
-		imageShit = image;
+
+		this.imageShit = imageShit;
 		parseOffsets();
 		createCutscene(0);
 	}
 
+	// shitshow, oh well
+	var arrayLMFAOOOO:Array<String> = [];
+
 	function parseOffsets()
 	{
-		var swag:Array<String> = CoolUtil.coolTextFile(Paths.getPath('images/cutsceneStuff/' + imageShit + 'CutscenOffsets.txt', TEXT, null));
-		for (stuff in swag)
+		var splitShit:Array<String> = CoolUtil.coolTextFile(Paths.file('images/cutsceneStuff/' + imageShit + "CutsceneOffsets.txt"));
+
+		for (i in splitShit)
 		{
-			var point:FlxPoint = FlxPoint.get();
-			var coords:Array<String> = stuff.split('---')[1].trim().split(' ');
-			
-			trace('cool split: ' + stuff.split('---')[1]);
-			trace(coords);
-			
-			point.set(Std.parseFloat(coords[0]), Std.parseFloat(coords[1]));
-			
-			var name:String = stuff.split('---')[0].trim();
-			animShit.set(name, point);
-			
-			arrayLMFAOOOO.push(stuff.split('---')[0].trim());
+			var xAndY:FlxPoint = FlxPoint.get();
+			var dumbSplit:Array<String> = i.split('---')[1].trim().split(' ');
+			trace('cool split: ' + i.split('---')[1]);
+			trace(dumbSplit);
+			xAndY.set(Std.parseFloat(dumbSplit[0]), Std.parseFloat(dumbSplit[1]));
+
+			animShit.set(i.split('---')[0].trim(), xAndY);
+			arrayLMFAOOOO.push(i.split('---')[0].trim());
 		}
 
-		trace(animShit == null ? 'null' : animShit.toString());
+		trace(animShit);
 	}
 
-	function createCutscene(num:Int = 0)
+	public function createCutscene(daNum:Int = 0)
 	{
-		var spr:FlxSprite = new FlxSprite(coolPos.x + animShit.get(arrayLMFAOOOO[num]).x, coolPos.y + animShit.get(arrayLMFAOOOO[num]).y);
-		var path:String = 'cutsceneStuff/' + imageShit + '-' + num;
-		spr.frames = Paths.getSparrowAtlas(path);
-		spr.animation.addByPrefix('weed', arrayLMFAOOOO[num], 24, false);
-		spr.animation.play('weed');
-		spr.antialiasing = true;
-		spr.animation.finishCallback = function(name:String)
+		var cutScene:FlxSprite = new FlxSprite(coolPos.x + animShit.get(arrayLMFAOOOO[daNum]).x, coolPos.y + animShit.get(arrayLMFAOOOO[daNum]).y);
+		cutScene.frames = Paths.getSparrowAtlas('cutsceneStuff/' + imageShit + "-" + daNum);
+		cutScene.animation.addByPrefix('weed', arrayLMFAOOOO[daNum], 24, false);
+		cutScene.animation.play('weed');
+		cutScene.antialiasing = true;
+
+		cutScene.animation.finishCallback = function(anim:String)
 		{
-			spr.kill();
-			spr.destroy();
-			spr = null;
-			
-			if (num + 1 < arrayLMFAOOOO.length)
-			{
-				createCutscene(num + 1);
-			}
+			cutScene.kill();
+			cutScene.destroy();
+			cutScene = null;
+
+			if (daNum + 1 < arrayLMFAOOOO.length)
+				createCutscene(daNum + 1);
 			else
-			{
 				ended();
-			}
 		};
+
+		add(cutScene);
 	}
 
-	function ended()
+	public var onFinish:Void->Void;
+
+	public function ended():Void
 	{
 		if (onFinish != null)
-		{
 			onFinish();
-		}
 	}
 }

@@ -9,14 +9,14 @@ class Paths
 {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 
-	public static var currentLevel:String;
+	static var currentLevel:String;
 
 	static public function setCurrentLevel(name:String)
 	{
 		currentLevel = name.toLowerCase();
 	}
 
-	static public function getPath(file:String, type:AssetType, library:Null<String>)
+	static function getPath(file:String, type:AssetType, library:Null<String>)
 	{
 		if (library != null)
 			return getLibraryPath(file, library);
@@ -103,11 +103,6 @@ class Paths
 	inline static public function font(key:String)
 	{
 		return 'assets/fonts/$key';
-	}
-
-	inline static public function video(key:String, ?library:String)
-	{
-		return getPath('videos/$key.mp4', TEXT, library);
 	}
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)

@@ -1,7 +1,25 @@
 package;
 
 import flixel.FlxG;
+import flixel.util.FlxColor;
+import flixel.util.FlxColor;
+import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
+import flixel.system.FlxAssets.FlxGraphicAsset;
+import haxe.Json;
+import lime.math.Rectangle;
 import lime.utils.Assets;
+#if desktop
+import sys.FileSystem;
+import sys.io.File;
+#end
+#if desktop
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 using StringTools;
 
@@ -26,6 +44,18 @@ class CoolUtil
 		return daList;
 	}
 
+	public static function hotTextFile(path:String):Array<String>
+	{
+		var daList:Array<String> = File.getContent(path).trim().split('\n');
+
+		for (i in 0...daList.length)
+		{
+			daList[i] = daList[i].trim();
+		}
+
+		return daList;
+	}
+	
 	public static function numberArray(max:Int, ?min = 0):Array<Int>
 	{
 		var dumbArray:Array<Int> = [];
@@ -36,13 +66,23 @@ class CoolUtil
 		return dumbArray;
 	}
 
-	public static function camLerpShit(ratio:Float)
+	/**
+		Lerps camera, but accountsfor framerate shit?
+		Right now it's simply for use to change the followLerp variable of a camera during update
+		TODO LATER MAYBE:
+			Actually make and modify the scroll and lerp shit in it's own function
+			instead of solely relying on changing the lerp on the fly
+	 */
+	public static function camLerpShit(lerp:Float):Float
 	{
-		return FlxG.elapsed / (1 / 60) * ratio;
+		return lerp * (FlxG.elapsed / (1 / 60));
 	}
 
-	public static function coolLerp(a:Float, b:Float, ratio:Float)
+	/*
+	* just lerp that does camLerpShit for u so u dont have to do it every time
+	*/
+	public static function coolLerp(a:Float, b:Float, ratio:Float):Float
 	{
-		return a + camLerpShit(ratio) * (b - a);
+		return FlxMath.lerp(a, b, camLerpShit(ratio));
 	}
 }

@@ -1,62 +1,62 @@
 package;
 
-import openfl.net.NetStream;
-import openfl.net.NetConnection;
-import flixel.FlxG;
-import openfl.media.Video;
 import flixel.FlxBasic;
-
-using StringTools;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import openfl.events.NetStatusEvent;
+import openfl.media.Video;
+import openfl.net.NetConnection;
+import openfl.net.NetStream;
 
 class FlxVideo extends FlxBasic
 {
 	var video:Video;
 	var netStream:NetStream;
 
-	public var finishCallback:Dynamic;
+	public var finishCallback:Void->Void;
 
-	override public function new(VideoAsset:String)
+	/**
+	 * Doesn't actually interact with Flixel shit, only just a pleasant to use class    
+	 */
+	public function new(vidSrc:String)
 	{
 		super();
 
 		video = new Video();
 		video.x = 0;
 		video.y = 0;
+
 		FlxG.addChildBelowMouse(video);
 
-		var netConnection:NetConnection = new NetConnection();
+		var netConnection = new NetConnection();
 		netConnection.connect(null);
+
 		netStream = new NetStream(netConnection);
 		netStream.client = {onMetaData: client_onMetaData};
-		netConnection.addEventListener('netStatus', netConnection_onNetStatus);
-		netStream.play(Paths.getPath(VideoAsset, TEXT, null));
+		netConnection.addEventListener(NetStatusEvent.NET_STATUS, netConnection_onNetStatus);
+		netStream.play(Paths.file(vidSrc));
 	}
 
-	public function finishVideo()
+	public function finishVideo():Void
 	{
 		netStream.dispose();
-		if (FlxG.game.contains(video))
-		{
-			FlxG.game.removeChild(video);
-		}
+		FlxG.removeChild(video);
+
 		if (finishCallback != null)
-		{
 			finishCallback();
-		}
 	}
 
-	private function client_onMetaData(e)
+	public function client_onMetaData(metaData:Dynamic)
 	{
 		video.attachNetStream(netStream);
+
 		video.width = FlxG.width;
 		video.height = FlxG.height;
 	}
 
-	private function netConnection_onNetStatus(e)
+	private function netConnection_onNetStatus(event:NetStatusEvent):Void
 	{
-		if (e.info.code == 'NetStream.Play.Complete')
-		{
+		if (event.info.code == 'NetStream.Play.Complete')
 			finishVideo();
-		}
 	}
 }

@@ -1,124 +1,220 @@
-package;
+package ;
 
-import Controls.Device;
+import Controls;
+
 import flixel.FlxG;
+import flixel.input.gamepad.FlxGamepad;
+import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
+
+using flixel.util.FlxStringUtil;
 
 class InputFormatter
 {
-	static var dirReg:EReg = new EReg("^(l|r).?-(left|right|down|up)$", "");
+    static public function format(id:Int, device:Device):String
+    {
+        return switch (device)
+        {
+            case Keys: getKeyName(id);
+            case Gamepad(gamepadID): getButtonName(id, FlxG.gamepads.getByID(gamepadID));
+        }
+    }
+    
+    static public function getKeyName(id:Int):String
+    {
+        return switch(id)
+        {
+            case ZERO          : "0";
+            case ONE           : "1";
+            case TWO           : "2";
+            case THREE         : "3";
+            case FOUR          : "4";
+            case FIVE          : "5";
+            case SIX           : "6";
+            case SEVEN         : "7";
+            case EIGHT         : "8";
+            case NINE          : "9";
+            case PAGEUP        : "PgUp";
+            case PAGEDOWN      : "PgDown";
+            // case HOME          : "Hm";
+            // case END           : "End";
+            // case INSERT        : "Ins";
+            // case ESCAPE        : "Esc";
+            // case MINUS         : "-";
+            // case PLUS          : "+";
+            // case DELETE        : "Del";
+            case BACKSPACE     : "BckSpc";
+            case LBRACKET      : "[";
+            case RBRACKET      : "]";
+            case BACKSLASH     : "\\";
+            case CAPSLOCK      : "Caps";
+            case SEMICOLON     : ";";
+            case QUOTE         : "'";
+            // case ENTER         : "Ent";
+            // case SHIFT         : "Shf";
+            case COMMA         : ",";
+            case PERIOD        : ".";
+            case SLASH         : "/";
+            case GRAVEACCENT   : "`";
+            case CONTROL       : "Ctrl";
+            case ALT           : "Alt";
+            // case SPACE         : "Spc";
+            // case UP            : "Up";
+            // case DOWN          : "Dn";
+            // case LEFT          : "Lf";
+            // case RIGHT         : "Rt";
+            // case TAB           : "Tab";
+            case PRINTSCREEN   : "PrtScrn";
+            case NUMPADZERO    : "#0";
+            case NUMPADONE     : "#1";
+            case NUMPADTWO     : "#2";
+            case NUMPADTHREE   : "#3";
+            case NUMPADFOUR    : "#4";
+            case NUMPADFIVE    : "#5";
+            case NUMPADSIX     : "#6";
+            case NUMPADSEVEN   : "#7";
+            case NUMPADEIGHT   : "#8";
+            case NUMPADNINE    : "#9";
+            case NUMPADMINUS   : "#-";
+            case NUMPADPLUS    : "#+";
+            case NUMPADPERIOD  : "#.";
+            case NUMPADMULTIPLY: "#*";
+            default: titleCase(FlxKey.toStringMap[id]);
+        }
+    }
+    
+    static var dirReg = ~/^(l|r).?-(left|right|down|up)$/;
+    inline static public function getButtonName(id:Int, gamepad:FlxGamepad):String
+    {
+        return switch(gamepad.getInputLabel(id))
+        {
+            // case null | "": shortenButtonName(FlxGamepadInputID.toStringMap[id]);
+            case label: shortenButtonName(label);
+        }
+    }
+    
+    static function shortenButtonName(name:String)
+    {
+        return switch (name == null ? "" : name.toLowerCase())
+        {
+            case "": "[?]";
+            // case "square"  : "[]";
+            // case "circle"  : "()";
+            // case "triangle": "/\\";
+            // case "plus"    : "+";
+            // case "minus"   : "-";
+            // case "home"    : "Hm";
+            // case "guide"   : "Gd";
+            // case "back"    : "Bk";
+            // case "select"  : "Bk";
+            // case "start"   : "St";
+            // case "left"    : "Lf";
+            // case "right"   : "Rt";
+            // case "down"    : "Dn";
+            // case "up"      : "Up";
+            case dir if (dirReg.match(dir)):
+                dirReg.matched(1).toUpperCase() + " " + titleCase(dirReg.matched(2));
+            case label: titleCase(label);
+        }
+    }
+    
+    inline static function titleCaseTrim(str:String, length = 8)
+    {
+        return str.charAt(0).toUpperCase() + str.substr(1, length - 1).toLowerCase();
+    }
+    
+    inline static function titleCase(str:String)
+    {
+        return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
+    }
+    
+    inline static public function parsePadName(name:String):ControllerName
+    {
+        return ControllerName.parseName(name);
+    }
+    
+    inline static public function getPadName(gamepad:FlxGamepad):ControllerName
+    {
+        return ControllerName.getName(gamepad);
+    }
+    
+    inline static public function getPadNameById(id:Int):ControllerName
+    {
+        return ControllerName.getNameById(id);
+    }
+}
 
-	public static function format(input:Int, dev:Device):String
-	{
-		switch (dev)
-		{
-			case Keys:
-				return getKeyName(input);
-			case Gamepad(id):
-				return shortenButtonName(FlxG.gamepads.getByID(id).mapping.getInputLabel(input));
-		}
-	}
-
-	public static function getKeyName(key:FlxKey):String
-	{
-		switch (key)
-		{
-			case FlxKey.BACKSPACE:
-				return 'BckSpc';
-			case FlxKey.CONTROL:
-				return 'Ctrl';
-			case FlxKey.ALT:
-				return 'Alt';
-			case FlxKey.CAPSLOCK:
-				return 'Caps';
-			case FlxKey.PAGEUP:
-				return 'PgUp';
-			case FlxKey.PAGEDOWN:
-				return 'PgDown';
-			case FlxKey.ZERO:
-				return '0';
-			case FlxKey.ONE:
-				return '1';
-			case FlxKey.TWO:
-				return '2';
-			case FlxKey.THREE:
-				return '3';
-			case FlxKey.FOUR:
-				return '4';
-			case FlxKey.FIVE:
-				return '5';
-			case FlxKey.SIX:
-				return '6';
-			case FlxKey.SEVEN:
-				return '7';
-			case FlxKey.EIGHT:
-				return '8';
-			case FlxKey.NINE:
-				return '9';
-			case FlxKey.NUMPADZERO:
-				return '#0';
-			case FlxKey.NUMPADONE:
-				return '#1';
-			case FlxKey.NUMPADTWO:
-				return '#2';
-			case FlxKey.NUMPADTHREE:
-				return '#3';
-			case FlxKey.NUMPADFOUR:
-				return '#4';
-			case FlxKey.NUMPADFIVE:
-				return '#5';
-			case FlxKey.NUMPADSIX:
-				return '#6';
-			case FlxKey.NUMPADSEVEN:
-				return '#7';
-			case FlxKey.NUMPADEIGHT:
-				return '#8';
-			case FlxKey.NUMPADNINE:
-				return '#9';
-			case FlxKey.NUMPADMULTIPLY:
-				return '#*';
-			case FlxKey.NUMPADPLUS:
-				return '#+';
-			case FlxKey.NUMPADMINUS:
-				return '#-';
-			case FlxKey.NUMPADPERIOD:
-				return '#.';
-			case FlxKey.SEMICOLON:
-				return ';';
-			case FlxKey.COMMA:
-				return ',';
-			case FlxKey.PERIOD:
-				return '.';
-			case FlxKey.SLASH:
-				return '/';
-			case FlxKey.GRAVEACCENT:
-				return '`';
-			case FlxKey.LBRACKET:
-				return '[';
-			case FlxKey.BACKSLASH:
-				return '\\';
-			case FlxKey.RBRACKET:
-				return ']';
-			case FlxKey.QUOTE:
-				return '\'';
-			case FlxKey.PRINTSCREEN:
-				return 'PrtScrn';
-			default:
-				var name:String = FlxKey.toStringMap.get(key);
-				return name.charAt(0).toUpperCase() + name.substr(1).toLowerCase();
-		}
-	}
-
-	public static function shortenButtonName(button:String = '')
-	{
-		button = button.toLowerCase();
-		if (button == '') return '[?]';
-		if (dirReg.match(button))
-		{
-			var a = dirReg.matched(1).toUpperCase() + ' ';
-			var b = dirReg.matched(2);
-			return a + (b.charAt(0).toUpperCase() + b.substr(1).toLowerCase());
-		}
-		return button.charAt(0).toUpperCase() + button.substr(1).toLowerCase();
-	}
+@:forward
+@:enum abstract ControllerName(String) from String to String
+{
+    var OUYA     = "Ouya"    ;
+    var PS4      = "PS4"     ;
+    var LOGI     = "Logi"    ;
+    var XBOX     = "XBox"    ;
+    var XINPUT   = "XInput"  ;
+    var WII      = "Wii"     ;
+    var PRO_CON  = "Pro_Con" ;
+    var JOYCONS  = "Joycons" ;
+    var JOYCON_L = "Joycon_L";
+    var JOYCON_R = "Joycon_R";
+    var MFI      = "MFI"     ;
+    var PAD      = "Pad"     ;
+    
+    static public function getAssetByDevice(device:Device):String
+    {
+        return switch (device)
+        {
+            case Keys: getAsset(null);
+            case Gamepad(id): getAsset(FlxG.gamepads.getByID(id));
+        }
+    }
+    
+    static public function getAsset(gamepad:FlxGamepad):String
+    {
+        if (gamepad == null)
+            return 'assets/images/ui/devices/Keys.png';
+        
+        final name = parseName(gamepad.name);
+        var path = 'assets/images/ui/devices/$name.png';
+        if (openfl.utils.Assets.exists(path))
+            return path;
+        
+        return 'assets/images/ui/devices/Pad.png';
+    }
+    
+    
+    
+    inline static public function getNameById(id:Int):ControllerName return getName(FlxG.gamepads.getByID(id));
+    inline static public function getName(gamepad:FlxGamepad):ControllerName return parseName(gamepad.name);
+    static public function parseName(name:String):ControllerName
+    {
+        name = name.toLowerCase().remove("-").remove("_");
+        return
+            if (name.contains("ouya"))
+                OUYA;
+            else if (name.contains("wireless controller") || name.contains("ps4"))
+                PS4;
+            else if (name.contains("logitech"))
+                LOGI;
+            else if (name.contains("xbox"))
+                XBOX
+            else if (name.contains("xinput"))
+                XINPUT;
+            else if (name.contains("nintendo rvlcnt01tr") || name.contains("nintendo rvlcnt01"))
+                WII;
+            else if (name.contains("mayflash wiimote pc adapter"))
+                WII;
+            else if (name.contains("pro controller"))
+                PRO_CON;
+            else if (name.contains("joycon l+r"))
+                JOYCONS;
+            else if (name.contains("joycon (l)"))
+                JOYCON_L;
+            else if (name.contains("joycon (r)"))
+                JOYCON_R;
+            else if (name.contains("mfi"))
+                MFI;
+            else
+                PAD;
+    }
 }

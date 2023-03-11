@@ -1,13 +1,19 @@
 package;
 
-import ui.PreferencesMenu;
-import shaderslmfao.ColorSwap;
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
+import shaderslmfao.ColorSwap;
+import ui.PreferencesMenu;
 
 using StringTools;
+
+#if polymod
+import polymod.format.ParseRules.TargetSignatureElement;
+#end
 
 class Note extends FlxSprite
 {
@@ -18,21 +24,26 @@ class Note extends FlxSprite
 	public var canBeHit:Bool = false;
 	public var tooLate:Bool = false;
 	public var wasGoodHit:Bool = false;
-	public var willMiss:Bool = false;
-	public var altNote:Bool = false;
 	public var prevNote:Note;
+
+	private var willMiss:Bool = false;
+
+	public var altNote:Bool = false;
+	public var invisNote:Bool = false;
 
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 
-	var colorSwap:ColorSwap;
-	
+	public var colorSwap:ColorSwap;
+	public var noteScore:Float = 1;
+
 	public static var swagWidth:Float = 160 * 0.7;
-	public static var arrowColors = [1, 1, 1, 1];
 	public static var PURP_NOTE:Int = 0;
 	public static var GREEN_NOTE:Int = 2;
 	public static var BLUE_NOTE:Int = 1;
 	public static var RED_NOTE:Int = 3;
+
+	public static var arrowColors:Array<Float> = [1, 1, 1, 1];
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
@@ -51,7 +62,9 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
-		switch (PlayState.curStage)
+		var daStage:String = PlayState.curStage;
+
+		switch (daStage)
 		{
 			case 'school' | 'schoolEvil':
 				loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels'), true, 17, 17);
@@ -100,6 +113,13 @@ class Note extends FlxSprite
 				setGraphicSize(Std.int(width * 0.7));
 				updateHitbox();
 				antialiasing = true;
+
+				// colorSwap.colorToReplace = 0xFFF9393F;
+				// colorSwap.newColor = 0xFF00FF00;
+
+				// color = FlxG.random.color();
+				// color.saturation *= 4;
+				// replaceColor(0xFFC1C1C1, FlxColor.RED);
 		}
 
 		colorSwap = new ColorSwap();
@@ -126,25 +146,24 @@ class Note extends FlxSprite
 
 		if (isSustainNote && prevNote != null)
 		{
+			noteScore * 0.2;
 			alpha = 0.6;
 
 			if (PreferencesMenu.getPref('downscroll'))
-			{
 				angle = 180;
-			}
 
 			x += width / 2;
 
 			switch (noteData)
 			{
-				case 0:
-					animation.play('purpleholdend');
-				case 1:
-					animation.play('blueholdend');
 				case 2:
 					animation.play('greenholdend');
 				case 3:
 					animation.play('redholdend');
+				case 1:
+					animation.play('blueholdend');
+				case 0:
+					animation.play('purpleholdend');
 			}
 
 			updateHitbox();
@@ -175,7 +194,7 @@ class Note extends FlxSprite
 		}
 	}
 
-	function updateColors()
+	public function updateColors():Void
 	{
 		colorSwap.update(arrowColors[noteData]);
 	}
@@ -186,6 +205,7 @@ class Note extends FlxSprite
 
 		if (mustPress)
 		{
+			// miss on the NEXT frame so lag doesnt make u miss notes
 			if (willMiss && !wasGoodHit)
 			{
 				tooLate = true;
@@ -194,14 +214,14 @@ class Note extends FlxSprite
 			else
 			{
 				if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset)
-				{
-					if (strumTime < Conductor.songPosition + 0.5 * Conductor.safeZoneOffset)
+				{ // The * 0.5 is so that it's easier to hit them too late, instead of too early
+					if (strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
 						canBeHit = true;
 				}
 				else
 				{
-					willMiss = true;
 					canBeHit = true;
+					willMiss = true;
 				}
 			}
 		}

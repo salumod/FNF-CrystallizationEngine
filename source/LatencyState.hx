@@ -5,8 +5,8 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
-import flixel.addons.display.FlxGridOverlay;
-class LatencyState extends MusicBeatState
+
+class LatencyState extends FlxState
 {
 	var offsetText:FlxText;
 	var noteGrp:FlxTypedGroup<Note>;
@@ -15,9 +15,6 @@ class LatencyState extends MusicBeatState
 	override function create()
 	{
 		FlxG.sound.playMusic(Paths.sound('soundTest'));
-
-		var gridBG:FlxSprite = FlxGridOverlay.create(20, 20);
-		add(gridBG);
 
 		noteGrp = new FlxTypedGroup<Note>();
 		add(noteGrp);
@@ -63,20 +60,13 @@ class LatencyState extends MusicBeatState
 			FlxG.resetState();
 		}
 
-        if (controls.BACK)
-		{
-			FlxG.sound.playMusic(Paths.sound('freakyMenu'));
-
-			FlxG.switchState(new MainMenuState());
-		}
-
 		noteGrp.forEach(function(daNote:Note)
 		{
-			daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime + Conductor.offset) * 0.45);
+			daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * 0.45);
 			daNote.x = strumLine.x + 30;
 
 			if (daNote.y < strumLine.y)
-				daNote.strumTime += Conductor.crochet * 32;
+				daNote.kill();
 		});
 
 		super.update(elapsed);

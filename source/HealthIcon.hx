@@ -11,47 +11,46 @@ class HealthIcon extends FlxSprite
 	 */
 	public var sprTracker:FlxSprite;
 
-	public var char:String;
-	public var isPlayer:Bool = false;
-	public var isOldIcon:Bool = false;
+	var char:String = '';
+	var isPlayer:Bool = false;
 
 	public function new(char:String = 'bf', isPlayer:Bool = false)
 	{
 		super();
+
 		this.isPlayer = isPlayer;
+
 		changeIcon(char);
 		antialiasing = true;
 		scrollFactor.set();
 	}
 
-	public function swapOldIcon()
+	public var isOldIcon:Bool = false;
+
+	public function swapOldIcon():Void
 	{
 		isOldIcon = !isOldIcon;
-		
+
 		if (isOldIcon)
-		{
 			changeIcon('bf-old');
-		}
 		else
-		{
-			changeIcon('bf');
-		}
+			changeIcon(PlayState.SONG.player1);
 	}
 
-	public function changeIcon(char:String)
+	public function changeIcon(newChar:String):Void
 	{
-		if (char != 'bf-pixel' && char != 'bf-old' && char != 'senpai-angry' && char != 'monster-christmas')
-			char = char.split('-')[0].trim();
+		if (newChar != 'bf-pixel' && newChar != 'bf-old')
+			newChar = newChar.split('-')[0].trim();
 
-		if (char != this.char)
+		if (newChar != char)
 		{
-			if (animation.getByName(char) == null)
+			if (animation.getByName(newChar) == null)
 			{
-				loadGraphic(Paths.image('icons/icon-' + char), true, 150, 150);
-				animation.add(char, [0, 1, 2, 3, 4], 0, false, isPlayer);
+				loadGraphic(Paths.image('icons/icon-' + newChar), true, 150, 150);
+				animation.add(newChar, [0, 1], 0, false, isPlayer);
 			}
-			animation.play(char);
-			this.char = char;
+			animation.play(newChar);
+			char = newChar;
 		}
 	}
 

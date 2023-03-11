@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="gf.png">
+	<!-- Created with Adobe Animate version 22.0.1.105 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="元件 60000" x="0" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60001" x="0" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60002" x="0" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60003" x="0" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60004" x="0" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60005" x="303" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60006" x="303" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60007" x="303" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60008" x="303" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60009" x="303" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60010" x="303" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60011" x="303" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60012" x="303" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60013" x="303" y="0" width="303" height="411"/>
+	<SubTexture name="元件 60014" x="0" y="0" width="303" height="411"/>
+</TextureAtlas>

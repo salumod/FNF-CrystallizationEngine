@@ -15,7 +15,7 @@ using StringTools;
 class DialogueBox extends FlxSpriteGroup
 {
 	var box:FlxSprite;
-
+    var pixelsong:Array<String> = ['senpai', 'roses', 'thorns'];
 	var curCharacter:String = '';
 
 	var dialogue:Alphabet;
@@ -30,8 +30,6 @@ class DialogueBox extends FlxSpriteGroup
 
 	var portraitLeft:FlxSprite;
 	var portraitRight:FlxSprite;
-	var fportraitLeft:FlxSprite;
-	var fportraitRight:FlxSprite;
 
 	var handSelect:FlxSprite;
 	var bgFade:FlxSprite;
@@ -39,27 +37,18 @@ class DialogueBox extends FlxSpriteGroup
 	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>)
 	{
 		super();
-	if (PlayState.isStoryMode)
-{
+
 		switch (PlayState.SONG.song.toLowerCase())
 		{
 			case 'senpai':
+				pixelsong;
 				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			case 'roses':
-			    FlxG.sound.playMusic(Paths.music('Worstbox'), 0);
-			    FlxG.sound.music.fadeIn(1, 0, 0.8);
 			case 'thorns':
 				FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			case 'tutorial' | 'pico' | 'philly': 
-			    FlxG.sound.playMusic(Paths.music('breakfast'), 0);
-				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			case 'bopeebo' |'fresh' | 'blammed':
-				FlxG.sound.playMusic(Paths.music('dailogue'), 0);
-				FlxG.sound.music.fadeIn(1, 0, 0.8);
 		}
-	}
+
 		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
 		bgFade.scrollFactor.set();
 		bgFade.alpha = 0;
@@ -73,7 +62,7 @@ class DialogueBox extends FlxSpriteGroup
 		}, 5);
 
 		portraitLeft = new FlxSprite(-20, 40);
-		portraitLeft.frames = Paths.getSparrowAtlas('weeb/dialogue/senpai/senpaiPortrait');
+		portraitLeft.frames = Paths.getSparrowAtlas('weeb/senpaiPortrait');
 		portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter', 24, false);
 		portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
 		portraitLeft.updateHitbox();
@@ -82,7 +71,7 @@ class DialogueBox extends FlxSpriteGroup
 		portraitLeft.visible = false;
 
 		portraitRight = new FlxSprite(0, 40);
-		portraitRight.frames = Paths.getSparrowAtlas('weeb/dialogue/bf-pixel/bfPortrait');
+		portraitRight.frames = Paths.getSparrowAtlas('weeb/bfPortrait');
 		portraitRight.animation.addByPrefix('enter', 'Boyfriend portrait enter', 24, false);
 		portraitRight.setGraphicSize(Std.int(portraitRight.width * PlayState.daPixelZoom * 0.9));
 		portraitRight.updateHitbox();
@@ -90,33 +79,11 @@ class DialogueBox extends FlxSpriteGroup
 		add(portraitRight);
 		portraitRight.visible = false;
 
-		fportraitLeft = new FlxSprite(0, 0);
-		fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/dad');
-		fportraitLeft.animation.addByPrefix('enter', '元件', 24, false);
-		fportraitLeft.setGraphicSize(Std.int(fportraitLeft.width * 1));
-		fportraitLeft.updateHitbox();
-		fportraitLeft.scrollFactor.set();
-		add(fportraitLeft);
-		fportraitLeft.visible = false;
-
-		fportraitRight = new FlxSprite(0, 0);
-		fportraitRight.frames = Paths.getSparrowAtlas('dialogue/Portrait/bf');
-		fportraitRight.animation.addByPrefix('enter', 'Boyfriend portrait enter', 24, false);
-		fportraitRight.setGraphicSize(Std.int(fportraitRight.width * 1));
-		fportraitRight.updateHitbox();
-		fportraitRight.scrollFactor.set();
-		add(fportraitRight);
-		fportraitRight.visible = false;
-		switch (PlayState.SONG.song.toLowerCase())
-		{
-		case 'senpai' | 'roses' | 'thorns':
 		box = new FlxSprite(-20, 45);
-		default:
-		box = new FlxSprite(-20, 410);
-		}
+		
 		var hasDialog = false;
 		switch (PlayState.SONG.song.toLowerCase())
-		{		
+		{
 			case 'senpai':
 				hasDialog = true;
 				box.frames = Paths.getSparrowAtlas('weeb/pixelUI/dialogueBox-pixel');
@@ -127,8 +94,8 @@ class DialogueBox extends FlxSpriteGroup
 				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX'));
 
 				box.frames = Paths.getSparrowAtlas('weeb/pixelUI/dialogueBox-senpaiMad');
-				box.animation.addByPrefix('normalOpen', 'SENPAI ANGRY IMPACT SPEECH instance', 24, false);
-				box.animation.addByIndices('normal', 'SENPAI ANGRY IMPACT SPEECH instance', [4], "", 24);
+				box.animation.addByPrefix('normalOpen', 'SENPAI ANGRY IMPACT SPEECH', 24, false);
+				box.animation.addByIndices('normal', 'SENPAI ANGRY IMPACT SPEECH', [4], "", 24);
 
 			case 'thorns':
 				hasDialog = true;
@@ -139,95 +106,44 @@ class DialogueBox extends FlxSpriteGroup
 				var face:FlxSprite = new FlxSprite(320, 170).loadGraphic(Paths.image('weeb/spiritFaceForward'));
 				face.setGraphicSize(Std.int(face.width * 6));
 				add(face);
-			default:
-				hasDialog = true;
-				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
-				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
-				box.animation.addByPrefix('continued', 'speech bubble normal', 24, true);
-				box.animation.addByPrefix('loudOpen', 'speech bubble loud open', 24, false);
-				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
-
-				switch (PlayState.SONG.song.toLowerCase())
-				{
-					case 'score' | '2hot':
-					box.flipX = false;
-			        default:
-				    box.flipX = true;
-				}
-					
 		}
 
 		this.dialogueList = dialogueList;
 		
 		if (!hasDialog)
 			return;
-
-		switch (PlayState.SONG.song.toLowerCase())
-		{
-		case 'senpai' | 'roses' | 'thorns':
+		
 		box.animation.play('normalOpen');
 		box.setGraphicSize(Std.int(box.width * PlayState.daPixelZoom * 0.9));
 		box.updateHitbox();
 		add(box);
-		default:
-		box.animation.play('normalOpen');
-		box.setGraphicSize(Std.int(box.width * 0.9));
-		box.updateHitbox();
-		add(box);
-		
-		}
+
 		box.screenCenter(X);
 		portraitLeft.screenCenter(X);
-		fportraitLeft.screenCenter(X);
 
-		switch (PlayState.SONG.song.toLowerCase())
+		handSelect = new FlxSprite(1042, 590).loadGraphic(Paths.image('weeb/pixelUI/hand_textbox'));
+		handSelect.setGraphicSize(Std.int(handSelect.width * PlayState.daPixelZoom * 0.9));
+		handSelect.updateHitbox();
+		handSelect.visible = false;
+		add(handSelect);
+
+
+		if (!talkingRight)
 		{
-		case 'senpai' | 'roses':
-		handSelect = new FlxSprite(1042, 590).loadGraphic(Paths.image('weeb/dialogue/handSelect/hand_textbox'));
-		handSelect.setGraphicSize(Std.int(handSelect.width * PlayState.daPixelZoom * 0.9));
-		handSelect.updateHitbox();
-		handSelect.visible = false;
-		add(handSelect);
-		case 'thorns':
-		handSelect = new FlxSprite(1042, 590).loadGraphic(Paths.image('weeb/dialogue/handSelect/hand_evil'));
-		handSelect.setGraphicSize(Std.int(handSelect.width * PlayState.daPixelZoom * 0.9));
-		handSelect.updateHitbox();
-		handSelect.visible = false;
-		add(handSelect);
-		default:
-		handSelect = new FlxSprite(1042, 590).loadGraphic(Paths.image('dialogue/handSelect/hand_textbox'));
-		handSelect.setGraphicSize(Std.int(handSelect.width * PlayState.daPixelZoom * 0.9));
-		handSelect.updateHitbox();
-		handSelect.visible = false;
-		add(handSelect);
+			// box.flipX = true;
 		}
 
-		talkingRight = !talkingRight;
-
-		switch (PlayState.SONG.song.toLowerCase())
-		{
-		case 'senpai' | 'roses' | 'thorns':
 		dropText = new FlxText(242, 502, Std.int(FlxG.width * 0.6), "", 32);
 		dropText.font = 'Pixel Arial 11 Bold';
 		dropText.color = 0xFFD89494;
 		add(dropText);
+
 		swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 32);
 		swagDialogue.font = 'Pixel Arial 11 Bold';
 		swagDialogue.color = 0xFF3F2021;
 		swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		add(swagDialogue);
-		default:
-		dropText = new FlxText(242, 502, Std.int(FlxG.width * 0.6), "", 60);
-		dropText.font = 'Funkin';
-		dropText.color = 0xFF000000;
-		add(dropText);
 
-		swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 60);
-		swagDialogue.font = 'Funkin';
-		swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
-		swagDialogue.color = 0xFFA5A5A5;
-		add(swagDialogue);
-		}
 		dialogue = new Alphabet(0, 80, "", false, true);
 		// dialogue.x = 90;
 		// add(dialogue);
@@ -250,9 +166,7 @@ class DialogueBox extends FlxSpriteGroup
 		}
 
 		dropText.text = swagDialogue.text;
-    switch (PlayState.SONG.song.toLowerCase())
-	{
-	case 'senpai' | 'roses' | 'thorns':
+
 		if (box.animation.curAnim != null)
 		{
 			if (box.animation.curAnim.name == 'normalOpen' && box.animation.curAnim.finished)
@@ -261,16 +175,7 @@ class DialogueBox extends FlxSpriteGroup
 				dialogueOpened = true;
 			}
 		}
-	default:
-		if (box.animation.curAnim != null)
-			{
-				if (box.animation.curAnim.name == 'normalOpen' && box.animation.curAnim.finished)
-				{
-					box.animation.play('continued');
-					dialogueOpened = true;
-				}
-			}
-		}
+
 		if (dialogueOpened && !dialogueStarted)
 		{
 			startDialogue();
@@ -298,8 +203,6 @@ class DialogueBox extends FlxSpriteGroup
 						bgFade.alpha -= 1 / 5 * 0.7;
 						portraitLeft.visible = false;
 						portraitRight.visible = false;
-						fportraitLeft.visible = false;
-						fportraitRight.visible = false;
 						swagDialogue.alpha -= 1 / 5;
 						handSelect.alpha -= 1 / 5;
 						dropText.alpha = swagDialogue.alpha;
@@ -319,9 +222,7 @@ class DialogueBox extends FlxSpriteGroup
 			}
 		}
 		else if (FlxG.keys.justPressed.ANY && dialogueStarted)
-		{
 			swagDialogue.skip();
-		}
 		
 		super.update(elapsed);
 	}
@@ -337,250 +238,31 @@ class DialogueBox extends FlxSpriteGroup
 
 		// swagDialogue.text = ;
 		swagDialogue.resetText(dialogueList[0]);
-		swagDialogue.start(0.04, true);
+		swagDialogue.start(0.04);
 		swagDialogue.completeCallback = function()
 		{
-			trace('dialogue finish');
+			trace("dialogue finish");
 			handSelect.visible = true;
 			dialogueEnded = true;
 		};
-
 		handSelect.visible = false;
 		dialogueEnded = false;
 
 		switch (curCharacter)
 		{
 			case 'dad':
-				fportraitLeft.visible = false;
-		        fportraitRight.visible = false;
-				if (!fportraitLeft.visible)
+				portraitRight.visible = false;
+				if (!portraitLeft.visible)
 				{
-					fportraitLeft.x = 0;
-					fportraitLeft.y = 120;
-					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/dad');
-		            fportraitLeft.animation.addByPrefix('enter', '元件', 24, false);
-					fportraitLeft.visible = true;
-					fportraitLeft.animation.play('enter');
-					box.flipX = true;
+					portraitLeft.visible = true;
+					portraitLeft.animation.play('enter');
 				}
-
 			case 'bf':
-				fportraitRight.visible = false;
-				fportraitLeft.visible = false;
-				if (!fportraitRight.visible)
-				{
-					fportraitRight.x = 800;
-					fportraitRight.y = 200;
-					fportraitRight.frames = Paths.getSparrowAtlas('dialogue/Portrait/bf');
-		            fportraitRight.animation.addByPrefix('enter', '元件', 24, false);
-					fportraitRight.visible = true;
-					fportraitRight.animation.play('enter');
-					box.flipX = false;
-				}
-			case 'gf':
-				fportraitLeft.visible = false;
-		        fportraitRight.visible = false;
-				if (!fportraitLeft.visible)
-				{
-					fportraitLeft.x = 60;
-					fportraitLeft.y = 120;
-					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/gf');
-		            fportraitLeft.animation.addByPrefix('enter', '元件', 24, false);
-					fportraitLeft.visible = true;
-					fportraitLeft.animation.play('enter');
-					box.flipX = true;
-				}
-			case 'spooky':
-				fportraitLeft.visible = false;
-		        fportraitRight.visible = false;
-				if (!fportraitLeft.visible)
-				{
-					fportraitLeft.x = 60;
-					fportraitLeft.y = 120;
-					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/spooky');
-		            fportraitLeft.animation.addByPrefix('enter', '元件', 24, false);
-					fportraitLeft.visible = true;
-					fportraitLeft.animation.play('enter');
-					box.flipX = true;
-				}
-			case 'pico':
-				fportraitLeft.visible = false;
-		        fportraitRight.visible = false;
-				if (!fportraitLeft.visible)
-				{
-					fportraitLeft.x = 60;
-					fportraitLeft.y = 120;
-					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/pico');
-		            fportraitLeft.animation.addByPrefix('enter', 'Pico Idle Dance 实例', 24, false);
-					fportraitLeft.visible = true;
-					fportraitLeft.animation.play('enter');
-					box.flipX = true;
-				}
-			case 'pico-player':
-				fportraitLeft.visible = false;
-				fportraitRight.visible = false;
-				if (!fportraitLeft.visible)
-				{
-					fportraitLeft.x = 800;
-					fportraitLeft.y = 120;
-					fportraitLeft.frames = Paths.getSparrowAtlas('characters/picoo');
-					fportraitLeft.animation.addByPrefix('enter', 'idle', 24, false);
-					fportraitLeft.visible = true;
-					fportraitLeft.animation.play('enter');
-					box.flipX = false;
-				}
-			case 'darnell':
-				fportraitLeft.visible = false;
-				fportraitRight.visible = false;
-				if (!fportraitLeft.visible)
-				{
-					fportraitLeft.x = 60;
-					fportraitLeft.y = 120;
-					fportraitLeft.frames = Paths.getSparrowAtlas('characters/darnboy');
-					fportraitLeft.animation.addByPrefix('enter', 'idle', 24, false);
-					fportraitLeft.visible = true;
-					fportraitLeft.animation.play('enter');
-					box.flipX = true;
-				}
-			case 'mom-hair-blowing':
-				fportraitLeft.visible = false;
-		        fportraitRight.visible = false;
-				if (!fportraitLeft.visible)
-				{
-					fportraitLeft.x = 60;
-					fportraitLeft.y = 120;
-					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/mom-hair-blowing');
-		            fportraitLeft.animation.addByPrefix('enter', '元件', 24, false);
-					fportraitLeft.visible = true;
-					fportraitLeft.animation.play('enter');
-					box.flipX = true;
-				}
-			case 'bf-hair-blowing':
-				fportraitLeft.visible = false;
-		        fportraitRight.visible = false;
-				if (!fportraitRight.visible)
-				{
-					fportraitRight.x = 800;
-					fportraitRight.y = 200;
-					fportraitRight.frames = Paths.getSparrowAtlas('dialogue/Portrait/bf-hair-blowing');
-		            fportraitRight.animation.addByPrefix('enter', 'BF idle 实例', 24, false);
-					fportraitRight.visible = true;
-					fportraitRight.animation.play('enter');
-					box.flipX = false;
-				}
-			case 'bf-c':
-				fportraitLeft.visible = false;
-		        fportraitRight.visible = false;
-				if (!fportraitRight.visible)
-				{
-					fportraitRight.x = 800;
-					fportraitRight.y = 200;
-					fportraitRight.frames = Paths.getSparrowAtlas('dialogue/Portrait/bf-c');
-		            fportraitRight.animation.addByPrefix('enter', 'BF idle dance 实例', 24, false);
-					fportraitRight.visible = true;
-					fportraitRight.animation.play('enter');
-					box.flipX = false;
-				}
-			case 'mom-c':
-				fportraitLeft.visible = false;
-		        fportraitRight.visible = false;
-				if (!fportraitLeft.visible)
-				{
-					fportraitLeft.x = 100;
-					fportraitLeft.y = 120;
-					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/mom_dad');
-		            fportraitLeft.animation.addByPrefix('enter', 'Parent Christmas Idle 实例', 24, false);
-					fportraitLeft.visible = true;
-					fportraitLeft.animation.play('enter');
-					box.flipX = true;
-				}
-			case 'dad-c':
-				fportraitLeft.visible = false;
-		        fportraitRight.visible = false;
-				if (!fportraitLeft.visible)
-				{
-					fportraitLeft.x = 100;
-					fportraitLeft.y = 120;
-					fportraitLeft.frames = Paths.getSparrowAtlas('dialogue/Portrait/dad_mom');
-		            fportraitLeft.animation.addByPrefix('enter', 'Parent Christmas Idle 实例', 24, false);
-					fportraitLeft.visible = true;
-					fportraitLeft.animation.play('enter');
-					box.flipX = true;
-				}
-				//pixel art
-			case 'bf-pixel':
-		        portraitRight.visible = false;
 				portraitLeft.visible = false;
 				if (!portraitRight.visible)
 				{
-					portraitRight.frames = Paths.getSparrowAtlas('weeb/dialogue/bf-pixel/bfPortrait');
-		            portraitRight.animation.addByPrefix('enter', 'Boyfriend portrait enter', 24, false);
 					portraitRight.visible = true;
 					portraitRight.animation.play('enter');
-				}
-
-            case 'bf-pixel-angry':
-				portraitRight.visible = false;
-				portraitLeft.visible = false;
-				if (!portraitRight.visible)
-				{
-					portraitRight.frames = Paths.getSparrowAtlas('weeb/dialogue/bf-pixel/angry');
-		            portraitRight.animation.addByPrefix('enter', 'Boyfriend portrait enter instance', 24, false);
-					portraitRight.visible = true;
-					portraitRight.animation.play('enter');
-				}
-
-		    case 'bf-pixel-unkown':
-		        portraitRight.visible = false;
-		        portraitLeft.visible = false;
-				if (!portraitRight.visible)
-				{
-					portraitRight.frames = Paths.getSparrowAtlas('weeb/dialogue/bf-pixel/bf-unkown');
-					portraitRight.animation.addByPrefix('enter', 'Boyfriend portrait enter instance', 24, false);
-					portraitRight.visible = true;
-					portraitRight.animation.play('enter');
-				}
-            case 'bf-pixel-no':
-				portraitRight.visible = false;
-		        portraitLeft.visible = false;
-				if (!portraitRight.visible)
-				{
-					portraitRight.frames = Paths.getSparrowAtlas('weeb/dialogue/bf-pixel/no');
-					portraitRight.animation.addByPrefix('enter', 'Boyfriend portrait enter instance', 24, false);
-					portraitRight.visible = true;
-					portraitRight.animation.play('enter');
-				}
-		    case 'senpai-love':
-		        portraitLeft.visible = false;
-		        portraitRight.visible = false;
-				if (!portraitLeft.visible)
-				{
-					portraitLeft.frames = Paths.getSparrowAtlas('weeb/dialogue/senpai/senpai-love');
-		            portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter instance', 24, false);
-					portraitLeft.visible = true;
-					portraitLeft.animation.play('enter');
-				}
-
-			case 'senpai':
-		        portraitLeft.visible = false;
-		        portraitRight.visible = false;
-				if (!portraitLeft.visible)
-				{
-					portraitLeft.frames = Paths.getSparrowAtlas('weeb/dialogue/senpai/senpaiPortrait');
-		            portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter', 24, false);
-					portraitLeft.visible = true;
-					portraitLeft.animation.play('enter');
-				}
-
-			case 'senpai-angry':
-		        portraitLeft.visible = false;
-		        portraitRight.visible = false;
-				if (!portraitLeft.visible)
-				{
-					portraitLeft.frames = Paths.getSparrowAtlas('weeb/dialogue/senpai/senpai-angry');
-		            portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter instance', 24, false);
-					portraitLeft.visible = true;
-					portraitLeft.animation.play('enter');
 				}
 		}
 	}
