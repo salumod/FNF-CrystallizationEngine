@@ -23,7 +23,7 @@ at the source code page:
 					"week6" => "week6",
 					"week7" => "week7",
 					"week8" => "week8"
-If every mod want to be in game.You have to make a file for polymod to road form your PC.The name calls _polymod_meta.json
+If every mod want to be in game.You have to make a file for polymod to roading form your PC.The name calls _polymod_meta.json
 Sample file content:
 {
 	"title":"name",
