@@ -46,8 +46,8 @@ class ModMenu extends ui.OptionsState.Page
 		descBg.alpha = 0.4;
 		add(descBg);
 
-		descriptionText = new FlxText(descBg.x, descBg.y + 4, FlxG.width, "Description", 18);
-		descriptionText.setFormat(Paths.font("Font.ttf"), 24, FlxColor.WHITE, CENTER);
+		descriptionText = new FlxText(descBg.x, descBg.y + 4, FlxG.width, "", 18);
+		descriptionText.setFormat(Paths.font("Funkin'.otf"), 24, FlxColor.WHITE, CENTER);
 		descriptionText.borderColor = FlxColor.BLACK;
 		descriptionText.borderSize = 1;
 		descriptionText.borderStyle = OUTLINE;
@@ -112,7 +112,7 @@ class ModMenu extends ui.OptionsState.Page
 
 		descriptionText.text = 
 		modList[curSelected].description
-		+ "\nContributors:";
+		+ "\nContributors:   ";
 
 		var _count:Int = 0;
 		for (i in modList[curSelected].contributors){
@@ -128,7 +128,7 @@ class ModMenu extends ui.OptionsState.Page
 
 		descriptionText.text =
 		descriptionText.text
-		+ "\nMod Version: " + modList[curSelected].modVersion 
+		+ "\nMod Version:     " + modList[curSelected].modVersion 
 		+ "\n";
 
 		organizeByY();
@@ -159,8 +159,7 @@ class ModMenu extends ui.OptionsState.Page
 		for (i in modList)
 		{
 			trace(i.id);
-			var txt:ModMenuItem = new ModMenuItem(10, 10 + (40 * loopNum), 0, i.id, 100);
-			txt.screenCenter(X);
+			var txt:ModMenuItem = new ModMenuItem(0, 50 + (40 * loopNum), 0, i.id, 100);
 			txt.text = i.id;
 			if (enabledMods.contains(i.id))
 				txt.modEnabled = true;

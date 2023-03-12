@@ -14,6 +14,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.tweens.FlxEase;
 import lime.net.curl.CURLCode;
 
 using StringTools;
@@ -21,7 +22,7 @@ using StringTools;
 class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
-
+	var yellowBG:FlxSprite;
 	var weekData:Array<Dynamic> = [
 		['Tutorial'],
 		['Bopeebo', 'Fresh', 'Dadbattle'],
@@ -59,6 +60,18 @@ class StoryMenuState extends MusicBeatState
 		"hating simulator ft. moawling",
 		"TANKMAN",
 		"Vs darnell"
+	];
+
+	var weekColors:Array<FlxColor> = [
+		0xFFF9CF51,
+		0xff9271fd,
+		0xff223344,
+		0xFF941653,
+		0xFFfc96d7,
+		0xFFa0d1ff,
+		0xffff78bf,
+		0xfff6b604,
+		0xff7f49ff
 	];
 
 	var txtWeekTitle:FlxText;
@@ -104,8 +117,8 @@ class StoryMenuState extends MusicBeatState
 		rankText.screenCenter(X);
 
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
-
+		yellowBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400);
+		yellowBG.color = 0xFFF9CF51;
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
 
@@ -232,7 +245,8 @@ class StoryMenuState extends MusicBeatState
 	{
 		// scoreText.setFormat('VCR OSD Mono', 32);
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.5);
-
+		FlxTween.cancelTweensOf(yellowBG);
+		FlxTween.color(yellowBG, .5, yellowBG.color, weekColors[curWeek], {ease: FlxEase.linear});
 		scoreText.text = "WEEK SCORE:" + Math.round(lerpScore);
 
 		txtWeekTitle.text = weekNames[curWeek].toUpperCase();
