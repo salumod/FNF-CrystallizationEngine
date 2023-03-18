@@ -950,7 +950,6 @@ class PlayState extends MusicBeatState
 				case 'score':
 					scoreIntro();
 				case 'two-hot':
-					FlxG.sound.play(Paths.sound('Boom'));
 					hotIntro();
 				default:
 					startCountdown();
@@ -985,6 +984,7 @@ class PlayState extends MusicBeatState
 
 	function hotIntro()
 		{
+			FlxG.sound.play(Paths.sound('Boom'));
 			camHUD.alpha = 0;
 			FlxG.camera.fade(FlxColor.BLACK, 1, true);
 			gf.playAnim('hey', true);
