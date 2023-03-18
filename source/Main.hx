@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import openfl.Assets;
@@ -13,6 +14,9 @@ import openfl.events.NetStatusEvent;
 import openfl.media.Video;
 import openfl.net.NetConnection;
 import openfl.net.NetStream;
+#if polymod
+import polymod.Polymod;
+#end
 
 class Main extends Sprite
 {
@@ -68,6 +72,44 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
+		#if polymod
+		var mods:Array<String> = CoolUtil.hotTextFile("mods/modList.txt");
+		//Thanks For Leather Engine
+		Polymod.init({
+			modRoot:"mods/",
+			dirs: mods,
+            framework: FLIXEL,
+			errorCallback: function(error:PolymodError)
+			{
+				#if debug
+                trace(error.message);
+                #end
+			},
+            frameworkParams: {
+                assetLibraryPaths: [
+                    "songs" => "songs",
+                    "shared" => "shared",
+                    "fonts" => "fonts",
+					"data" => "data",
+					"images" => "images",
+					"music" => "music",
+					"sounds" => "sounds",
+					"tutorial" => "tutorial",
+					"week1" => "week1",
+					"week2" => "week2",
+					"week3" => "week3",
+					"week4" => "week4",
+					"week5" => "week5",
+					"week6" => "week6",
+					"week7" => "week7",
+					"week8" => "week8"
+                ]
+            }
+		});
+		FlxG.bitmap.clearCache();
+		Polymod.clearCache();
+		#end
+
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 

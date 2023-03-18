@@ -250,6 +250,9 @@ class MainMenuState extends MusicBeatState
 
 	function gameExit()
 		{
+			#if cpp
+			Sys.exit(0);
+			#end
 			FlxG.log.redirectTraces = true;
 		}
 
@@ -269,8 +272,6 @@ class MainMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			FlxG.switchState(new TitleState());
-			gameExit();
-			gameExit();
 			gameExit();
 		}
 

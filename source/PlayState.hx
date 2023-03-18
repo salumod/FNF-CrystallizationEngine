@@ -105,6 +105,12 @@ class PlayState extends MusicBeatState
 	private var camHUD:FlxCamera;
 	private var camGame:FlxCamera;
 
+	private var accuracy:Float = 0.00;
+	private var totalPlayed:Int = 0;
+	private var totalNotesHit:Float = 0;
+	private var ss:Bool = true;
+	private var rank:String = "?";
+
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 
 	public static var seenCutscene:Bool = false;
@@ -137,7 +143,8 @@ class PlayState extends MusicBeatState
 
 	var talking:Bool = true;
 	var songScore:Int = 0;
-	var scoreTxt:FlxText;
+	var misses:Int = 0;
+	var rankTxt:FlxText;
 
 	var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
@@ -893,11 +900,11 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 		add(healthBarBG);
 
-		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 190, healthBarBG.y + 30, 0, "Score:0?!", 20);
-		scoreTxt.setFormat(Paths.font("Difficult.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		scoreTxt.scrollFactor.set();
-		scoreTxt.size = 40;
-		add(scoreTxt);
+		rankTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 310, healthBarBG.y + 30, 0, "", 20);
+		rankTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		rankTxt.scrollFactor.set();
+		rankTxt.size = 20;
+		add(rankTxt);
 
 		iconP1 = new HealthIcon(SONG.player1, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
@@ -914,7 +921,7 @@ class PlayState extends MusicBeatState
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
-		scoreTxt.cameras = [camHUD];
+		rankTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
@@ -1740,6 +1747,35 @@ class PlayState extends MusicBeatState
 		generatedMusic = true;
 	}
 
+	function updateAccuracy()
+		{
+			totalPlayed += 1;
+			accuracy = totalNotesHit / totalPlayed * 100;
+			if (accuracy >= 100.00)
+				{
+					if (ss && misses == 0)
+						    accuracy = 100.00;
+					else
+						{
+						    accuracy = 99.98;
+						}
+				}
+				if (ss)
+					rank = "Perfect";
+				else if (accuracy >= 95)
+					rank = "Sick";
+				else if (accuracy >= 92)
+					rank = "Great";
+				else if (accuracy >= 82)
+					rank = "Good";
+				else if (accuracy >= 70)
+					rank = "Normal";
+				else if (accuracy >= 50)
+					rank = "Bad";
+				else if (accuracy < 49)
+					rank = "Shit";
+		}
+
 	// Now you are probably wondering why I made 2 of these very similar functions
 	// sortByShit(), and sortNotes(). sortNotes is meant to be used by both sortByShit(), and the notes FlxGroup
 	// sortByShit() is meant to be used only by the unspawnNotes array.
@@ -2013,7 +2049,12 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 		if(songScore != 0)
-		    scoreTxt.text = "Score:" + songScore;
+			{
+		    rankTxt.text = "Score: " + songScore
+				+ ' | Misses: ' + misses
+		        + '| Accuracy: ' + truncateFloat(accuracy, 2) + "%"
+		        +  '| Rank: ' + rank;
+			}
 
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
@@ -2325,9 +2366,11 @@ class PlayState extends MusicBeatState
 				{
 					if (daNote.tooLate)
 					{
+						misses += 1;
 						health -= 0.0475;
 						vocals.volume = 0;
 						killCombo();
+						updateAccuracy();
 					}
 
 					daNote.active = false;
@@ -2492,20 +2535,24 @@ class PlayState extends MusicBeatState
 			daRating = 'shit';
 			score = 50;
 			isSick = false; // shitty copypaste on this literally just because im lazy and tired lol!
+			totalNotesHit += 0.10;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
 		{
 			daRating = 'bad';
 			score = 100;
 			isSick = false;
+			totalNotesHit += 0.35;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
 		{
 			daRating = 'good';
 			score = 200;
 			isSick = false;
+			totalNotesHit += 0.85;
 		}
-
+        else
+			totalNotesHit += 1;
 		if (isSick)
 		{
 			var noteSplash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
@@ -2665,6 +2712,13 @@ class PlayState extends MusicBeatState
 	}
 
 	var cameraRightSide:Bool = false;
+    function truncateFloat(number:Float, precision:Int):Float 
+	{
+		var num = number;
+		num = num * Math.pow(10, precision);
+		num = Math.round( num ) / Math.pow(10, precision);
+		return num;
+	}
 
 	function cameraMovement()
 	{
@@ -2931,6 +2985,7 @@ class PlayState extends MusicBeatState
 				note.kill();
 				notes.remove(note, true);
 				note.destroy();
+				updateAccuracy();
 			}
 		}
 	}
