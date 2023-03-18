@@ -1,0 +1,27 @@
+start files as Hale like Haxe;
+
+import using halx.hlcpp;
+
+Made a class('GAME')[in...I]
+list.I.start
+Modding
+.gitignore
+CHANGELOG
+LICENSE
+list.I.end
+
+Made a class('gamestart)[gameOn]
+{
+    with sth.
+    using tools;
+    make(Windows), 1 ,10, 10, color.black;
+}
+
+var new StringTools<string> == "sad" "red" "shader";
+
+if option_old using Shader.Haxe
+{
+    StringTools."shader" = new shader[hot];
+    camera.bg.color = shader.last(1);
+}
+end files;
