@@ -2536,6 +2536,7 @@ class PlayState extends MusicBeatState
 			score = 50;
 			isSick = false; // shitty copypaste on this literally just because im lazy and tired lol!
 			totalNotesHit += 0.10;
+			ss = false;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
 		{
@@ -2543,6 +2544,7 @@ class PlayState extends MusicBeatState
 			score = 100;
 			isSick = false;
 			totalNotesHit += 0.35;
+			ss = false;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
 		{
@@ -2550,6 +2552,7 @@ class PlayState extends MusicBeatState
 			score = 200;
 			isSick = false;
 			totalNotesHit += 0.85;
+			ss = false;
 		}
         else
 			totalNotesHit += 1;
