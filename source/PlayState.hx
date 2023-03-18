@@ -895,9 +895,10 @@ class PlayState extends MusicBeatState
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		// healthBar
 		add(healthBar);
+		reloadHealthBarColors();
+
 		add(healthBarBG);
 
 		rankTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 310, healthBarBG.y + 30, 0, "", 20);
@@ -3290,4 +3291,11 @@ class PlayState extends MusicBeatState
 	}
 
 	var curLight:Int = 0;
+
+	function reloadHealthBarColors(){
+		healthBar.createFilledBar(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
+			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
+
+		healthBar.updateBar();
+	}
 }
