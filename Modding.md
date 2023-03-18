@@ -7,9 +7,9 @@ With the pb update, I added a bit of a slightly nicer mod support backend.
 
 It's POLYMOD, which is made by Lars Doucet: https://github.com/larsiusprime/polymod
 at the source code page:
-                    "songs" => "songs",
-                    "shared" => "shared",
-                    "fonts" => "fonts",
+                                        "songs" => "songs",
+                                        "shared" => "shared",
+                                        "fonts" => "fonts", 
 					"data" => "data",
 					"images" => "images",
 					"music" => "music",
