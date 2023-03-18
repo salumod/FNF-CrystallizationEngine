@@ -7,9 +7,9 @@ With the pb update, I added a bit of a slightly nicer mod support backend.
 
 It's POLYMOD, which is made by Lars Doucet: https://github.com/larsiusprime/polymod
 at the source code page:
-                                        "songs" => "songs",
-                                        "shared" => "shared",
-                                        "fonts" => "fonts", 
+-                             "songs" => "songs",
+                              "shared" => "shared",
+                              "fonts" => "fonts", 
 					"data" => "data",
 					"images" => "images",
 					"music" => "music",
@@ -25,6 +25,7 @@ at the source code page:
 					"week8" => "week8"
 If every mod want to be in game.You have to make a file for polymod to roading form your PC.The name calls _polymod_meta.json
 Sample file content:
+
 {
 	"title":"name",
 	"description":"description",
