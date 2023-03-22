@@ -3,7 +3,7 @@
 
 # QUICK AND DIRTY MOD GUIDE
 
-With the pb update, I added a bit of a slightly nicer mod support backend.
+With the pb updating,  I added a slightly better mod support backend.
 
 It's POLYMOD, which is made by Lars Doucet: https://github.com/larsiusprime/polymod
 at the source code page:
@@ -23,7 +23,7 @@ at the source code page:
 					"week6" => "week6",
 					"week7" => "week7",
 					"week8" => "week8"
-If every mod want to be in game.You have to make a file for polymod to roading form your PC.The name calls _polymod_meta.json
+If every mod want to be in game.You have to make a file for polymod to loading form your PC.The name is _polymod_meta.json
 Sample file content:
 
 {
@@ -41,4 +41,4 @@ Sample file content:
 	"license":"unknown"
 }
 
-so you can make modding files now!
+so you can start now!

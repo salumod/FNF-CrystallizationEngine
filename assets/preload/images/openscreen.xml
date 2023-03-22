@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="openscreen.png">
+	<!-- Created with Adobe Animate version 22.0.1.105 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="openan0000" x="0" y="0" width="98" height="98" frameX="-5" frameY="-32" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0001" x="0" y="0" width="98" height="98" frameX="-5" frameY="-106" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0002" x="0" y="0" width="98" height="98" frameX="-5" frameY="-179" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0003" x="0" y="0" width="98" height="98" frameX="-5" frameY="-252" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0004" x="0" y="0" width="98" height="98" frameX="-5" frameY="-325" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0005" x="0" y="0" width="98" height="98" frameX="-5" frameY="-398" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0006" x="0" y="0" width="98" height="98" frameX="-3" frameY="-370" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0007" x="0" y="0" width="98" height="98" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0008" x="0" y="0" width="98" height="98" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0009" x="0" y="0" width="98" height="98" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0010" x="0" y="0" width="98" height="98" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0011" x="0" y="0" width="98" height="98" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0012" x="0" y="0" width="98" height="98" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0013" x="0" y="0" width="98" height="98" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0014" x="0" y="0" width="98" height="98" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0015" x="98" y="0" width="686" height="99" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0016" x="784" y="0" width="624" height="99" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0017" x="1408" y="0" width="563" height="99" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0018" x="0" y="99" width="501" height="99" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0019" x="0" y="99" width="501" height="99" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0020" x="0" y="99" width="501" height="99" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0021" x="0" y="99" width="501" height="99" frameX="0" frameY="-341" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0022" x="501" y="99" width="501" height="440" frameX="0" frameY="0" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0023" x="1002" y="99" width="501" height="359" frameX="0" frameY="-81" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0024" x="1503" y="99" width="501" height="278" frameX="0" frameY="-162" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0025" x="0" y="539" width="501" height="197" frameX="0" frameY="-243" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0026" x="501" y="539" width="501" height="129" frameX="0" frameY="-324" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0027" x="501" y="539" width="501" height="129" frameX="0" frameY="-324" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0028" x="501" y="539" width="501" height="129" frameX="0" frameY="-324" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0029" x="1002" y="539" width="428" height="129" frameX="-34" frameY="-312" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0030" x="1430" y="539" width="355" height="129" frameX="-67" frameY="-301" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0031" x="0" y="736" width="282" height="129" frameX="-100" frameY="-290" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0032" x="282" y="736" width="221" height="129" frameX="-121" frameY="-279" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0033" x="503" y="736" width="128" height="129" frameX="-144" frameY="-292" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0034" x="503" y="736" width="128" height="129" frameX="-144" frameY="-292" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0035" x="503" y="736" width="128" height="129" frameX="-144" frameY="-292" frameWidth="747" frameHeight="497"/>
+	<SubTexture name="openan0036" x="503" y="736" width="128" height="129" frameX="-144" frameY="-292" frameWidth="747" frameHeight="497"/>
+</TextureAtlas>

@@ -5,12 +5,15 @@ import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.addons.effects.chainable.FlxOutlineEffect;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
+import ui.AtlasText;
 
 class ColorsMenu extends ui.OptionsState.Page
 {
 	var curSelected:Int = 0;
 
 	var grpNotes:FlxTypedGroup<Note>;
+
+	var headers = new FlxTypedGroup<AtlasText>();
 
 	public function new()
 	{
@@ -19,6 +22,8 @@ class ColorsMenu extends ui.OptionsState.Page
 		grpNotes = new FlxTypedGroup<Note>();
 		add(grpNotes);
 
+		add(headers);
+
 		for (i in 0...4)
 		{
 			var note:Note = new Note(0, i);
@@ -26,8 +31,11 @@ class ColorsMenu extends ui.OptionsState.Page
 			note.x = (100 * i) + i;
 			note.screenCenter(Y);
 
+			headers.add(new BoldText(0, 0.4, "NOTES")).screenCenter(X);
+
 			var _effectSpr:FlxEffectSprite = new FlxEffectSprite(note, [new FlxOutlineEffect(FlxOutlineMode.FAST, FlxColor.WHITE, 4, 1)]);
 			add(_effectSpr);
+
 			_effectSpr.y = 0;
 			_effectSpr.x = i * 130;
 			_effectSpr.antialiasing = true;
