@@ -48,6 +48,9 @@ import shaderslmfao.BuildingShaders.BuildingShader;
 import shaderslmfao.BuildingShaders;
 import shaderslmfao.ColorSwap;
 import ui.PreferencesMenu;
+#if hxCodec
+import hxcodec.VideoHandler;
+#end
 
 using StringTools;
 
@@ -273,7 +276,8 @@ class PlayState extends MusicBeatState
 					light.setGraphicSize(Std.int(light.width * 0.85));
 					light.updateHitbox();
 					light.antialiasing = true;
-					light.shader = lightFadeShader.shader;
+					if (PreferencesMenu.getPref('shader-on'))
+					    light.shader = lightFadeShader.shader;
 					phillyCityLights.add(light);
 				}
 
@@ -470,11 +474,6 @@ class PlayState extends MusicBeatState
 			case 'thorns':
 				curStage = 'schoolEvil';
 
-				// var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
-				// var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
-
-				// var posX = 400;
-				// var posY = 200;
 				var posX = 500;
 				var posY = 450;
 
@@ -492,14 +491,18 @@ class PlayState extends MusicBeatState
 				var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolBG'));
 				bg.scale.set(6, 6);
 				bg.setGraphicSize(Std.int(bg.width * daPixelZoom));
-				bg.shader = wiggleShitBg.shader;
 				add(bg);
 
 				var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolFG'));
 				fg.scale.set(6, 6);
 				fg.setGraphicSize(Std.int(fg.width * daPixelZoom));
-				fg.shader = wiggleShit.shader;
 				add(fg);
+
+				if (PreferencesMenu.getPref('shader-on'))
+					{
+						bg.shader = wiggleShitBg.shader;
+						fg.shader = wiggleShit.shader;
+					}
 
 			case 'guns' | 'stress' | 'ugh':
 				defaultCamZoom = 0.90;
@@ -878,7 +881,14 @@ class PlayState extends MusicBeatState
 		add(healthBarBG);
 
 		rankTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 310, healthBarBG.y + 30, 0, "", 20);
-		rankTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		if (PreferencesMenu.getPref('font-on'))
+			{
+				rankTxt.x = healthBarBG.x + healthBarBG.width / 2 - 250;
+		        rankTxt.setFormat(Paths.font("Funkin/Funkin.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			}
+		else
+			rankTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		
 		rankTxt.scrollFactor.set();
 		rankTxt.size = 20;
 		add(rankTxt);
@@ -1777,8 +1787,12 @@ class PlayState extends MusicBeatState
 			// FlxG.log.add(i);
 			var babyArrow:FlxSprite = new FlxSprite(0, strumLine.y);
 			var colorswap:ColorSwap = new ColorSwap();
-			babyArrow.shader = colorswap.shader;
-			colorswap.update(Note.arrowColors[i]);
+
+			if (PreferencesMenu.getPref('shader-on'))
+				{
+					babyArrow.shader = colorswap.shader;
+			        colorswap.update(Note.arrowColors[i]);
+				}
 
 			switch (curStage)
 			{
@@ -2017,8 +2031,8 @@ class PlayState extends MusicBeatState
 						trainFrameTiming = 0;
 					}
 				}
-
-				lightFadeShader.update((Conductor.crochet / 1000) * FlxG.elapsed * 1.5);
+				if (PreferencesMenu.getPref('shader-on'))
+				    lightFadeShader.update((Conductor.crochet / 1000) * FlxG.elapsed * 1.5);
 			// phillyCityLights.members[curLight].alpha -= (Conductor.crochet / 1000) * FlxG.elapsed;
 
 			case 'tank':
@@ -3239,7 +3253,8 @@ class PlayState extends MusicBeatState
 
 				if (curBeat % 4 == 0)
 				{
-					lightFadeShader.reset();
+					if (PreferencesMenu.getPref('shader-on'))
+					    lightFadeShader.reset();
 
 					phillyCityLights.forEach(function(light:FlxSprite)
 					{
@@ -3269,7 +3284,8 @@ class PlayState extends MusicBeatState
 
 	var curLight:Int = 0;
 
-	function reloadHealthBarColors(){
+	function reloadHealthBarColors()
+	{
 		healthBar.createFilledBar(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
 			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
 

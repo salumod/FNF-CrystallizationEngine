@@ -38,6 +38,7 @@ class MainMenuState extends MusicBeatState
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
+	var backspace:MenuItem;
 
 	override function create()
 	{
@@ -82,12 +83,23 @@ class MainMenuState extends MusicBeatState
 			add(magenta);
 		// magenta.scrollFactor.set();
 
+		// backspace = new MenuItem(-800, -750, 'backspace', null);
+		// backspace.frames = Paths.getSparrowAtlas('backspace');
+		// backspace.antialiasing = true;
+		// backspace.animation.addByPrefix('click', 'backspace to exit', 24);
+		// backspace.animation.addByPrefix('keep', 'backspace PRESSED', 24);
+		// backspace.animation.play('keep');
+		// backspace.screenCenter();
+		// backspace.updateHitbox();
+        // add(backspace);
+
 		menuItems = new MainMenuList();
 		add(menuItems);
 		menuItems.onChange.add(onMenuItemChange);
 		menuItems.onAcceptPress.add(function(_)
 		{
 			FlxFlicker.flicker(magenta, 1.1, 0.15, false, true);
+			// FlxFlicker.flicker(backspace, 1.1, 0.15, false, true);
 		});
 
 		menuItems.enabled = false; // disable for intro
@@ -129,7 +141,7 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		versionShit.text += '(Github exclusive preview)';
+		versionShit.text += '(CrystallizationEngine project B)';
 
 		// NG.core.calls.event.logEvent('swag').send();
 
@@ -248,14 +260,6 @@ class MainMenuState extends MusicBeatState
 		new FlxTimer().start(duration, function(_) FlxG.switchState(state));
 	}
 
-	function gameExit()
-		{
-			#if cpp
-			Sys.exit(0);
-			#end
-			FlxG.log.redirectTraces = true;
-		}
-
 	override function update(elapsed:Float)
 	{
 		// FlxG.camera.followLerp = CoolUtil.camLerpShit(0.06);
@@ -271,8 +275,7 @@ class MainMenuState extends MusicBeatState
 		if (controls.BACK && menuItems.enabled && !menuItems.busy)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			FlxG.switchState(new TitleState());
-			gameExit();
+			FlxG.switchState(new CloseGameSubState());
 		}
 
 		super.update(elapsed);
