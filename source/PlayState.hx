@@ -1024,6 +1024,7 @@ class PlayState extends MusicBeatState
 		super.create();
 	}
 
+	#if desktop
 	function playCutscene(name:String, atEndOfSong:Bool = false)
 		{
 		  inCutscene = true;
@@ -1047,7 +1048,8 @@ class PlayState extends MusicBeatState
 		  }
 		  video.playVideo(Paths.video(name));
 		}
-
+    #end
+	
 	function intro(?dialogueBox:DialogueBox):Void
 		{
 			var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);

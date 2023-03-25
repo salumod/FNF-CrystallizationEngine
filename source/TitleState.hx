@@ -126,10 +126,7 @@ class TitleState extends MusicBeatState
 		FlxG.switchState(new CutsceneAnimTestState());
 		#elseif CHARTING
 		FlxG.switchState(new ChartingState());
-		/* 
-			#elseif web
-
-
+		#elseif web
 			if (!initialized)
 			{
 
@@ -154,7 +151,6 @@ class TitleState extends MusicBeatState
 				// FlxG.stage.addChild(overlay);
 
 			}
-		 */
 
 		// netConnection.addEventListener(MouseEvent.MOUSE_DOWN, overlay_onMouseDown);
 		#else
@@ -419,7 +415,7 @@ class TitleState extends MusicBeatState
 			transitioning = true;
 			// FlxG.sound.music.stop();
 
-			#if newgrounds
+			#if web
 			/*
 			if (!OutdatedSubState.leftState)
 			{
@@ -461,7 +457,6 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !skippedIntro && initialized)
 			skipIntro();
-		/* 
 			#if web
 			if (!initialized && controls.ACCEPT)
 			{
@@ -472,7 +467,6 @@ class TitleState extends MusicBeatState
 				skipIntro();
 			}
 			#end
-		 */
 
 		// if (FlxG.keys.justPressed.SPACE)
 		// swagShader.hasOutline = !swagShader.hasOutline;

@@ -72,7 +72,7 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
-		#if polymod
+		#if cpp
 		var mods:Array<String> = CoolUtil.textFile("mods/modList.txt");
 		//Thanks For Leather Engine
 		Polymod.init({

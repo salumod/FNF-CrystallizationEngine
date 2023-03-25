@@ -31,6 +31,8 @@ class ModMenu extends ui.OptionsState.Page
 	var descriptionText:FlxText;
 	var modText:FlxText;
 	var descBg:FlxSprite;
+	var sayBG:FlxSprite;
+	var sayText:FlxText;
 	public static var MOD_PATH = "mods";
 
 	public function new():Void
@@ -54,6 +56,14 @@ class ModMenu extends ui.OptionsState.Page
 		descriptionText.scrollFactor.set();
 		descriptionText.screenCenter(X);
 		add(descriptionText);
+
+		sayBG = new FlxSprite(FlxG.width * 0.7 - 6, 0).makeGraphic(FlxG.width, 190, 0x99000000);
+		sayBG.antialiasing = false;
+		add(sayBG);
+
+		sayText = new FlxText(FlxG.width * 0.7, 5, 0, "This is only for viewing mods \n \nI to oldOne \n K to newOne \n   R to refresh ModList", 32);
+		sayText.setFormat(Paths.font("Funkin/Funkin.ttf"), 24, FlxColor.WHITE, CENTER);
+		add(sayText);
 	}
 
 	override function update(elapsed:Float)
@@ -68,9 +78,6 @@ class ModMenu extends ui.OptionsState.Page
 		if (controls.UI_DOWN_P)
 			selections(1);
 
-		if (FlxG.keys.justPressed.SPACE){
-			grpMods.members[curSelected].modEnabled = !grpMods.members[curSelected].modEnabled;
-		}
 
 		if (FlxG.keys.justPressed.I && curSelected != 0)
 		{
@@ -141,7 +148,7 @@ class ModMenu extends ui.OptionsState.Page
 			grpMods.remove(grpMods.members[0], true);
 		}
 
-		#if polymod
+		#if cpp
 		modList = [];
 		
 		trace("mods path:" + FileSystem.absolutePath(MOD_PATH));
@@ -159,7 +166,7 @@ class ModMenu extends ui.OptionsState.Page
 		for (i in modList)
 		{
 			trace(i.id);
-			var txt:ModMenuItem = new ModMenuItem(0, 50 + (40 * loopNum), 0, i.id, 100);
+			var txt:ModMenuItem = new ModMenuItem(0, (70 * loopNum) + 30, 0, i.id, 50);
 			txt.text = i.id;
 			if (enabledMods.contains(i.id))
 				txt.modEnabled = true;
@@ -192,13 +199,13 @@ class ModMenuItem extends FlxText
 
 	override function update(elapsed:Float)
 	{
-		setFormat(Paths.font("Difficult.ttf"), 60, FlxColor.WHITE);
+		setFormat(Paths.font("Difficult.ttf"), 40, FlxColor.WHITE);
 		borderColor = FlxColor.BLACK;
 
 		if (modEnabled)
 			alpha = 1;
 		else
-			alpha = 0.5;
+			alpha = 0.3;
 
 		super.update(elapsed);
 	}

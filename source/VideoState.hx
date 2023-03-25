@@ -58,7 +58,7 @@ class VideoState extends MusicBeatState
 		playCutscene('kickstarterTrailer.mp4');
 		#end
 	}
-
+	#if desktop
 	function playCutscene(name:String)
 		{
 		  inCutscene = true;
@@ -72,7 +72,7 @@ class VideoState extends MusicBeatState
 		  }
 		  video.playVideo(Paths.video(name));
 		}
-
+	#end
 	override function update(elapsed:Float)
 	{
 		if (controls.ACCEPT)
