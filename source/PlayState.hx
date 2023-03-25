@@ -3042,6 +3042,83 @@ class PlayState extends MusicBeatState
 							 }
 						}
 				}
+				function blammedChrlight(beaton:Int, endbeat:Int)
+					{
+						var red = 0xFFFF7676;
+						var blue = 0xFF7A7CFF;
+						var purple = 0xFFE092FB;
+						var orange = 0xFFFFA36D;
+						var green = 0xFF62FF56;
+					
+					    if (curBeat >= beaton && curBeat <= endbeat)
+						{
+							if (curBeat % 4 == 0)
+								{
+									if (FlxG.random.bool(20))
+									{
+										dad.color = red;
+										boyfriend.color = red;
+									}
+									else if (FlxG.random.bool(20))
+									{
+										dad.color = blue;
+										boyfriend.color = blue;
+									}
+									else if (FlxG.random.bool(20))
+									{
+										dad.color = purple;
+										boyfriend.color = purple;
+									}
+									else if (FlxG.random.bool(20))
+									{
+										dad.color = orange;
+										boyfriend.color = orange;
+									}
+									else if (FlxG.random.bool(20))
+									{
+										dad.color = green;
+										boyfriend.color = green;
+									}
+								}
+						}	
+					}
+
+					function chrTrail(who:Character, length:Int, delay:Int, alpha:Float, diff:Float, trailremove:Bool, time:Int)
+						{
+							var trail = new FlxTrail(who, null, length, delay, alpha, diff);
+							add(trail);
+			
+							if (trailremove)
+								{
+									new FlxTimer().start(time, function(tmr:FlxTimer)
+										{
+											remove(trail);
+										});
+								}
+						}
+
+				if (curSong =='Blammed')
+					{
+						blammedChrlight(97, 192);
+						switch (curBeat)
+						{
+							case 97:
+								FlxG.camera.fade(FlxColor.BLACK, 1, true);
+								gf.visible = false;
+							case 192:
+								FlxG.camera.fade(FlxColor.BLACK, 1, true);
+								gf.visible = true;
+								boyfriend.color = 0x00FFFFFF;
+								dad.color = 0x00FFFFFF;
+						}
+					}
+
+				if (curSong == 'Thorns' && curBeat == 256)
+					{
+						chrTrail(dad, 4, 24, 0.3, 0.069, true, 10);
+						chrTrail(gf, 4, 24, 0.3, 0.069, true, 10);
+						chrTrail(boyfriend, 4, 24, 0.3, 0.069, true, 10);
+					}
 
 				if (curSong == 'Score')
 					{
