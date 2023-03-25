@@ -131,8 +131,9 @@
 	<haxelib name="polymod"/>
 	<haxelib name="newgrounds"/>
 	<haxelib name="hxcpp-debug-server" if="desktop debug"/>
-	<haxelib name="hxCodec" if="desktop" />
-	<haxelib name="linc_luajit" if="desktop" />
+	<haxelib name="hxCodec" if="desktop || android" />
+	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
+	<!-- <haxelib name="linc_luajit" if="desktop" /> -->
 	
 	<!-- <haxelib name="flixel-animate" /> -->
 	<!-- <haxelib name="spinehaxe" /> -->

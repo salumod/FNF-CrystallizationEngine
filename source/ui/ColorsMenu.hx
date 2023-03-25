@@ -66,12 +66,14 @@ class ColorsMenu extends ui.OptionsState.Page
 		{
 			grpNotes.members[curSelected].colorSwap.update(elapsed * 0.3);
 			Note.arrowColors[curSelected] += elapsed * 0.3;
+			NoteSplash.colors[curSelected] += elapsed * 0.3;
 		}
 
 		if (controls.UI_DOWN)
 		{
 			grpNotes.members[curSelected].colorSwap.update(-elapsed * 0.3);
 			Note.arrowColors[curSelected] += -elapsed * 0.3;
+			NoteSplash.colors[curSelected] += -elapsed * 0.3;
 		}
 
 		super.update(elapsed);

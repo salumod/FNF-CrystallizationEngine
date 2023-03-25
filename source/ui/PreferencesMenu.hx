@@ -36,8 +36,9 @@ class PreferencesMenu extends ui.OptionsState.Page
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
-		createPrefItem('Font On', 'font-on', false);
+		createPrefItem('Funkin Font', 'funkin-font', false);
 		createPrefItem('Shader', 'shader-on', true);
+		createPrefItem('dialogue', 'dialogue', true);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
@@ -73,9 +74,10 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferenceCheck('camera-zoom', true);
 		preferenceCheck('fps-counter', true);
 		preferenceCheck('auto-pause', false);
-		preferenceCheck('font-on', false);
+		preferenceCheck('funkin-font', false);
 		preferenceCheck('master-volume', 1);
 		preferenceCheck('shader-on', true);
+		preferenceCheck('dialogue', true);
 		#if muted
 		setPref('master-volume', 0);
 		FlxG.sound.muted = true;

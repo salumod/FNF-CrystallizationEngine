@@ -2,18 +2,18 @@
 <TextureAtlas imagePath="dad_mom.png">
 	<!-- Created with Adobe Animate version 22.0.1.105 -->
 	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture name="Parent Christmas Idle 实例 10000" x="0" y="0" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10001" x="0" y="0" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10002" x="883" y="0" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10003" x="883" y="0" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10004" x="1766" y="0" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10005" x="1766" y="0" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10006" x="2649" y="0" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10007" x="2649" y="0" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10008" x="0" y="781" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10009" x="0" y="781" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10010" x="883" y="781" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10011" x="883" y="781" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10012" x="1766" y="781" width="883" height="781"/>
-	<SubTexture name="Parent Christmas Idle 实例 10013" x="1766" y="781" width="883" height="781"/>
+	<SubTexture name="enter 10000" x="0" y="0" width="883" height="781"/>
+	<SubTexture name="enter 10001" x="0" y="0" width="883" height="781"/>
+	<SubTexture name="enter 10002" x="883" y="0" width="883" height="781"/>
+	<SubTexture name="enter 10003" x="883" y="0" width="883" height="781"/>
+	<SubTexture name="enter 10004" x="1766" y="0" width="883" height="781"/>
+	<SubTexture name="enter 10005" x="1766" y="0" width="883" height="781"/>
+	<SubTexture name="enter 10006" x="2649" y="0" width="883" height="781"/>
+	<SubTexture name="enter 10007" x="2649" y="0" width="883" height="781"/>
+	<SubTexture name="enter 10008" x="0" y="781" width="883" height="781"/>
+	<SubTexture name="enter 10009" x="0" y="781" width="883" height="781"/>
+	<SubTexture name="enter 10010" x="883" y="781" width="883" height="781"/>
+	<SubTexture name="enter 10011" x="883" y="781" width="883" height="781"/>
+	<SubTexture name="enter 10012" x="1766" y="781" width="883" height="781"/>
+	<SubTexture name="enter 10013" x="1766" y="781" width="883" height="781"/>
 </TextureAtlas>

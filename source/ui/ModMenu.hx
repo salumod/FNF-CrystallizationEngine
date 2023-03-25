@@ -47,7 +47,7 @@ class ModMenu extends ui.OptionsState.Page
 		add(descBg);
 
 		descriptionText = new FlxText(descBg.x, descBg.y + 4, FlxG.width, "", 18);
-		descriptionText.setFormat(Paths.font("Funkin'.otf"), 24, FlxColor.WHITE, CENTER);
+		descriptionText.setFormat(Paths.font("Funkin/Funkin.ttf"), 24, FlxColor.WHITE, CENTER);
 		descriptionText.borderColor = FlxColor.BLACK;
 		descriptionText.borderSize = 1;
 		descriptionText.borderStyle = OUTLINE;
@@ -151,7 +151,7 @@ class ModMenu extends ui.OptionsState.Page
 			return;
 		}
 
-		enabledMods = CoolUtil.hotTextFile(MOD_PATH+"/modList.txt");
+		enabledMods = CoolUtil.textFile(MOD_PATH+"/modList.txt");
 
 		modList = Polymod.scan({modRoot: MOD_PATH});
 

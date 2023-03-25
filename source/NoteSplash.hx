@@ -3,9 +3,15 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import haxe.io.Path;
+import shaderslmfao.ColorSwap;
+import ui.PreferencesMenu;
 
 class NoteSplash extends FlxSprite
 {
+	public static var colors:Array<Float> = [1, 1, 1, 1];
+	public var colorSwap:ColorSwap;
+	public var noteData:Int = 0;
+
 	public function new(x:Float, y:Float, noteData:Int = 0):Void
 	{
 		super(x, y);
@@ -24,6 +30,10 @@ class NoteSplash extends FlxSprite
 		setupNoteSplash(x, y, noteData);
 
 		// alpha = 0.75;
+
+		colorSwap = new ColorSwap();
+		shader = colorSwap.shader;
+		updateColors();
 	}
 
 	public function setupNoteSplash(x:Float, y:Float, noteData:Int = 0)
@@ -45,4 +55,9 @@ class NoteSplash extends FlxSprite
 
 		super.update(elapsed);
 	}
+
+	public function updateColors():Void
+		{
+			colorSwap.update(colors[noteData]);
+		}
 }

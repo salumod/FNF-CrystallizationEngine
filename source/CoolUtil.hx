@@ -44,7 +44,7 @@ class CoolUtil
 		return daList;
 	}
 
-	public static function hotTextFile(path:String):Array<String>
+	public static function textFile(path:String):Array<String>
 	{
 		var daList:Array<String> = File.getContent(path).trim().split('\n');
 
