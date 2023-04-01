@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Background Loop.png">
+	<!-- Created with Adobe Animate version 22.0.1.105 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Background Loop0000" x="0" y="0" width="2320" height="2580" frameX="0" frameY="0" frameWidth="2320" frameHeight="3834"/>
+	<SubTexture name="Background Loop0001" x="2320" y="0" width="2320" height="2574" frameX="0" frameY="-6" frameWidth="2320" frameHeight="3834"/>
+	<SubTexture name="Background Loop0002" x="4640" y="0" width="2320" height="2572" frameX="0" frameY="-13" frameWidth="2320" frameHeight="3834"/>
+	<SubTexture name="Background Loop0003" x="0" y="2580" width="2320" height="2571" frameX="0" frameY="-20" frameWidth="2320" frameHeight="3834"/>
+	<SubTexture name="Background Loop0004" x="2320" y="2580" width="2320" height="2572" frameX="0" frameY="-26" frameWidth="2320" frameHeight="3834"/>
+	<SubTexture name="Background Loop0005" x="4640" y="2580" width="2320" height="2572" frameX="0" frameY="-33" frameWidth="2320" frameHeight="3834"/>
+	<SubTexture name="Background Loop0006" x="0" y="5152" width="2320" height="2571" frameX="0" frameY="-40" frameWidth="2320" frameHeight="3834"/>
+	<SubTexture name="Background Loop0007" x="2320" y="5152" width="2320" height="2572" frameX="0" frameY="-46" frameWidth="2320" frameHeight="3834"/>
+	<SubTexture name="Background Loop0008" x="4640" y="5152" width="2320" height="2571" frameX="0" frameY="-53" frameWidth="2320" frameHeight="3834"/>
+</TextureAtlas>

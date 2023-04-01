@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Option-Tab.png">
+	<!-- Created with Adobe Animate version 22.0.1.105 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Music Slider Tab0000" x="0" y="0" width="118" height="170"/>
+	<SubTexture name="Music Slider Tab Selected0000" x="118" y="0" width="118" height="165"/>
+</TextureAtlas>

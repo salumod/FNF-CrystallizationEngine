@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Music Volume.png">
+	<!-- Created with Adobe Animate version 22.0.1.105 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Music Volume Selected0000" x="0" y="0" width="734" height="140"/>
+	<SubTexture name="Music Volume Selected0001" x="0" y="0" width="734" height="140"/>
+	<SubTexture name="Music Volume Selected0002" x="0" y="140" width="734" height="140"/>
+	<SubTexture name="Music Volume Selected0003" x="0" y="140" width="734" height="140"/>
+	<SubTexture name="Music Volume Static0000" x="0" y="280" width="734" height="140"/>
+</TextureAtlas>

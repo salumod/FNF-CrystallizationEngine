@@ -99,6 +99,8 @@ class PlayState extends MusicBeatState
 
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
+	private var timeBG:FlxSprite;
+	private var timeTxt:FlxText;
 
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
@@ -246,8 +248,6 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + 'thornsDialogue'));
 			case 'score':
 				dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + 'scoreDialogue'));
-			// case 'two-hot':
-			// 	dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + 'thornsDialogue'));
 		}
 
 		#if discord_rpc
@@ -879,6 +879,25 @@ class PlayState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 
+		timeTxt = new FlxText(500, FlxG.height * 0, "", 20);
+		timeTxt.setFormat(Paths.font("Funkin/Funkin.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
+		timeTxt.scrollFactor.set();
+		if (PreferencesMenu.getPref('downscroll'))
+			timeTxt.y = FlxG.height * 0.95;
+
+		timeBG = new FlxSprite(0, FlxG.height * 0).loadGraphic(Paths.image('timeBG'));
+		timeBG.screenCenter(X);
+		timeBG.scrollFactor.set();
+		
+		if (PreferencesMenu.getPref('downscroll'))
+		{
+				timeBG.y = FlxG.height * 0.95;
+				timeBG.flipY = true;
+		}
+
+		add(timeBG);
+        add(timeTxt);
+
 		function reloadHealthBarColors()
 			{
 				healthBar.createFilledBar(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
@@ -927,6 +946,8 @@ class PlayState extends MusicBeatState
 		grpNoteSplashes.cameras = [camHUD];
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
+		timeBG.cameras = [camHUD];
+		timeTxt.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
@@ -993,7 +1014,7 @@ class PlayState extends MusicBeatState
 						case 'score':
 							scoreIntro(doof);
 						case 'two-hot':
-							hotIntro(doof);
+							hotIntro();
 				}
 			}
 			else
@@ -1239,7 +1260,7 @@ class PlayState extends MusicBeatState
 			});
 		}
 
-	function hotIntro(?dialogueBox:DialogueBox)
+	function hotIntro()
 		{
 			FlxG.sound.play(Paths.sound('Boom'));
 			camHUD.alpha = 0;
@@ -1248,24 +1269,8 @@ class PlayState extends MusicBeatState
 
 			FlxTween.tween(camHUD, {alpha: 10}, 3, {ease: FlxEase.backIn, onComplete: function(twe:FlxTween)
 				{
-					cameraMovement();
-				}});
-	
-			camFollow.setPosition(camPos.x, camPos.y);
-	
-			new FlxTimer().start(0.1, function(tmr:FlxTimer)
-			{
-				tmr.reset(0.1);
-
-				if (dialogueBox != null)
-				{
-					inCutscene = true;
-					add(dialogueBox);
-				}
-				else
 					startCountdown();
-	
-			});
+				}});
 		}
 
 	function initDiscord():Void
@@ -1884,6 +1889,8 @@ class PlayState extends MusicBeatState
 		        + '| Accuracy: ' + truncateFloat(accuracy, 2) + "%"
 		        +  '| Rank: ' + rank;
 			}
+
+		timeTxt.text = '     Beat:' + curBeat;
 
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
@@ -3139,8 +3146,8 @@ class PlayState extends MusicBeatState
 					}
 				if (curSong == 'two-hot')
 					{
-						camerasOn(185, 221, 0.015, 0.03);
-						camerasOn(254, 290, 0.15, 0.4);
+						camerasOn(111, 132, 0.015, 0.03);
+						camerasOn(152, 173, 0.15, 0.4);
 					}
 		// boppin friends
 		switch (curStage)

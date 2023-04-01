@@ -83,15 +83,15 @@ class MainMenuState extends MusicBeatState
 			add(magenta);
 		// magenta.scrollFactor.set();
 
-		// backspace = new MenuItem(-800, -750, 'backspace', null);
-		// backspace.frames = Paths.getSparrowAtlas('backspace');
-		// backspace.antialiasing = true;
-		// backspace.animation.addByPrefix('click', 'backspace to exit', 24);
-		// backspace.animation.addByPrefix('keep', 'backspace PRESSED', 24);
-		// backspace.animation.play('keep');
-		// backspace.screenCenter();
-		// backspace.updateHitbox();
-        // add(backspace);
+		backspace = new MenuItem(960, 600, 'backspace', null);
+		backspace.frames = Paths.getSparrowAtlas('backspace');
+		backspace.animation.addByPrefix('keep', 'backspace to exit', 24);
+		backspace.animation.addByPrefix('click', 'backspace PRESSED', 24);
+		backspace.animation.play('keep');
+		backspace.updateHitbox();
+        add(backspace);
+		backspace.antialiasing = true;
+		backspace.scrollFactor.set(0, 0);
 
 		menuItems = new MainMenuList();
 		add(menuItems);
@@ -265,6 +265,9 @@ class MainMenuState extends MusicBeatState
 		if (controls.BACK && menuItems.enabled && !menuItems.busy)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
+			backspace.animation.play('click');
+			backspace.offset.x = 50;
+			backspace.offset.y = 50;
 			FlxG.switchState(new CloseGameSubState());
 		}
 
