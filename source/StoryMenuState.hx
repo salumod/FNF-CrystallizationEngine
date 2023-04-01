@@ -32,7 +32,7 @@ class StoryMenuState extends MusicBeatState
 		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
 		['Senpai', 'Roses', 'Thorns'],
 		['Ugh', 'Guns', 'Stress'],
-		['Score', 'Lit-Up', 'Two-Hot']
+		['Score', 'Two-Hot']
 	];
 	var curDifficulty:Int = 1;
 
@@ -59,7 +59,7 @@ class StoryMenuState extends MusicBeatState
 		"RED SNOW",
 		"hating simulator ft. moawling",
 		"TANKMAN",
-		"Vs darnell"
+		"DARNELL"
 	];
 
 	var weekColors:Array<FlxColor> = [
@@ -71,7 +71,7 @@ class StoryMenuState extends MusicBeatState
 		0xFFa0d1ff,
 		0xffff78bf,
 		0xfff6b604,
-		0xff7f49ff
+		0xffff8949
 	];
 
 	var txtWeekTitle:FlxText;

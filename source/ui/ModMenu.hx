@@ -1,5 +1,7 @@
 package ui;
 
+import flixel.FlxCamera;
+import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
@@ -22,6 +24,8 @@ using StringTools;
 
 class ModMenu extends ui.OptionsState.Page
 {
+	var camFollow:FlxObject;
+	var menuCamera:FlxCamera;
 	var modList:Array<ModMetadata> = [];
 	public static var grpMods:FlxTypedGroup<ModMenuItem>;
 	public static var enabledMods:Array<String> = [];
@@ -38,6 +42,11 @@ class ModMenu extends ui.OptionsState.Page
 	public function new():Void
 	{
 		super();
+
+		menuCamera = new SwagCamera();
+		FlxG.cameras.add(menuCamera, false);
+		menuCamera.bgColor = 0x0;
+		camera = menuCamera;
 
 		grpMods = new FlxTypedGroup<ModMenuItem>();
 		add(grpMods);
@@ -173,6 +182,25 @@ class ModMenu extends ui.OptionsState.Page
 			grpMods.add(txt);
 
 			loopNum++;
+
+			var textGroup:FlxTypedGroup<Alphabet> = new FlxTypedGroup<Alphabet>();
+			add(textGroup);
+
+			for (i in 0...modList.length)
+			{
+			    var money:Alphabet = new Alphabet(0, 0, enabledMods[i], true, false);
+			    money.screenCenter(X);
+			    money.y += (i * 60) + 110;
+			    textGroup.add(money);
+		    }
+			camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
+		    if (grpMods != null)
+			camFollow.y = txt.y;
+
+			menuCamera.follow(camFollow, null, 0.06);
+			var margin = 160;
+			menuCamera.deadzone.set(0, margin, menuCamera.width, 40);
+			menuCamera.minScrollY = 0;
 		}
 		#end
 	}
@@ -199,9 +227,6 @@ class ModMenuItem extends FlxText
 
 	override function update(elapsed:Float)
 	{
-		setFormat(Paths.font("Difficult.ttf"), 40, FlxColor.WHITE);
-		borderColor = FlxColor.BLACK;
-
 		if (modEnabled)
 			alpha = 1;
 		else

@@ -106,6 +106,7 @@ class PlayState extends MusicBeatState
 	private var iconP1:HealthIcon;
 	private var iconP2:HealthIcon;
 	private var camHUD:FlxCamera;
+	private var rtxHUD:FlxCamera;
 	private var camGame:FlxCamera;
 
 	private var accuracy:Float = 0.00;
@@ -187,10 +188,14 @@ class PlayState extends MusicBeatState
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new SwagCamera();
 		camHUD = new FlxCamera();
+		rtxHUD = new FlxCamera();
+
 		camHUD.bgColor.alpha = 0;
+		rtxHUD.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD, false);
+		FlxG.cameras.add(rtxHUD, false);
 
 		persistentUpdate = true;
 		persistentDraw = true;
@@ -337,7 +342,11 @@ class PlayState extends MusicBeatState
 
 				var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay'));
 				overlayShit.alpha = 0.5;
-				// add(overlayShit);
+				if ((SONG.song.toLowerCase()) == 'milf')
+				    overlayShit.color = 0x54FF9191;
+				
+				add(overlayShit);
+				    overlayShit.cameras = [rtxHUD];
 				// var shaderBullshit = new BlendModeEffect(new OverlayShader(), FlxColor.RED);
 				// FlxG.camera.setFilters([new ShaderFilter(cast shaderBullshit.shader)]);
 				// overlayShit.shader = shaderBullshit;
@@ -593,7 +602,7 @@ class PlayState extends MusicBeatState
 				var fgTank3:BGSprite = new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']);
 				foregroundSprites.add(fgTank3);
 
-			case 'score' | 'lit-up' |'two-hot':
+			case 'score' | 'two-hot':
 					    defaultCamZoom = 0.9;
 						curStage = 'april';
 
@@ -605,13 +614,24 @@ class PlayState extends MusicBeatState
 						{
 							var hot:FlxSprite = new FlxSprite(-1000, -1000);
 		                    hot.frames = Paths.getSparrowAtlas('town/hot');
-		                    hot.animation.addByPrefix('hot', 'fa', 24);
-		                    hot.animation.play('hot');
+		                    hot.animation.addByPrefix('fa', 'fa', 24);
+		                    hot.animation.play('fa');
 							hot.scrollFactor.set(0.9, 0.9);
 							hot.alpha = 0.6;
 		                    add(hot);
-						}
 
+							var hotrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('town/rtx/hotrtx'));
+								hotrtx.alpha = 0.9;
+								add(hotrtx);
+								hotrtx.cameras = [rtxHUD];
+						}
+                        else
+						{
+							var bgrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('town/rtx/bgrtx'));
+							bgrtx.alpha = 0.9;
+							add(bgrtx);
+							bgrtx.cameras = [rtxHUD];
+						}
 						var fg:FlxSprite = new FlxSprite(-1600, -300).loadGraphic(Paths.image('town/fg'));
 		                fg.scrollFactor.set(0.9, 0.9);
 		                add(fg);
@@ -803,27 +823,6 @@ class PlayState extends MusicBeatState
 		add(boyfriend);
 
 		add(foregroundSprites);
-
-
-		switch (curStage)
-		{
-			case 'april':
-				        var bgfor:FlxSprite = new FlxSprite(-1600, -400).loadGraphic(Paths.image('town/april_for'));
-		                bgfor.scrollFactor.set(0.9, 0.9);
-		                add(bgfor);
-						if (SONG.song.toLowerCase() == 'two-hot')
-							{
-								var hotrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('town/rtx/hotrtx'));
-								hotrtx.alpha = 0.9;
-								add(hotrtx);
-							}
-						else
-							{
-								var bgrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('town/rtx/bgrtx'));
-					            bgrtx.alpha = 0.9;
-				                add(bgrtx);
-							}
-		}
 
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
 		// doof.x += 70;
