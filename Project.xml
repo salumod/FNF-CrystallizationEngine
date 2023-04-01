@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin' Porject B" file="Funkin" packageName="com.salumod.ce-pb" package="com.salumod.ce-pb" main="Main" version="0.3" company="salumod" />
+	<app title="CrystallizationEngine project B" file="CrystallizationEngine project B" packageName="com.salumod.ce-pb" package="com.salumod.ce-pb" main="Main" version="0.3" company="salumod" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
