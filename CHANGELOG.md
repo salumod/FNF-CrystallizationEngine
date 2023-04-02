@@ -6,9 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3]2023-04-01
 ### Added
-- Week 8 intall!And two new songs!
+- Week 8 install!And two new songs!
 - New donate stage
-- Mods intall!(just assets)
+- Mods install!(just assets)
 - Shader for Thorns
 ### Changed
 - Week 7 videos for windows now!
