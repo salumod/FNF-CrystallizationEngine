@@ -1,4 +1,4 @@
-package fps.display;
+package;
 
 import haxe.Timer;
 

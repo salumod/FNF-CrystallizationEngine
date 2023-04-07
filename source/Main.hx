@@ -5,7 +5,7 @@ import flixel.FlxGame;
 import flixel.FlxState;
 import openfl.Assets;
 import openfl.Lib;
-import fps.display.Fpspackshow;
+import Fpspackshow;
 import openfl.display.Sprite;
 import openfl.events.AsyncErrorEvent;
 import openfl.events.Event;
