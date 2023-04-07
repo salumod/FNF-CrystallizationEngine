@@ -47,7 +47,7 @@ class StoryMenuState extends MusicBeatState
 		['parents-christmas', 'bf', 'gf'],
 		['senpai', 'bf', 'gf'],
 		['tankman', 'bf', 'gf'],
-		['tankman', 'pico', 'gf']
+		['none', 'none', 'none']
 	];
 
 	var weekNames:Array<String> = [
@@ -320,7 +320,10 @@ class StoryMenuState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 
 				grpWeekText.members[curWeek].startFlashing();
-				grpWeekCharacters.members[1].animation.play('bfConfirm');
+				if (curWeek > 7)
+					grpWeekCharacters.members[1].animation.play('none');
+				else
+				    grpWeekCharacters.members[1].animation.play('bfConfirm');
 				stopspamming = true;
 			}
 

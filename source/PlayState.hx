@@ -1885,7 +1885,7 @@ class PlayState extends MusicBeatState
 			}
 
 			if(curBeat <= 0)
-		        beatTxt.text = '    ' + SONG.song.toLowerCase();
+		        beatTxt.text = '       ' + SONG.song.toLowerCase();
             else
 				beatTxt.text = '     Beat:' + curBeat;
 		if (controls.PAUSE && startedCountdown && canPause)
