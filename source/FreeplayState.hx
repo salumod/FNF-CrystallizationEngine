@@ -13,6 +13,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
+import flixel.util.FlxTimer;
 
 using StringTools;
 
@@ -47,6 +48,7 @@ class FreeplayState extends MusicBeatState
 	private var iconArray:Array<HealthIcon> = [];
 	var bg:FlxSprite;
 	var scoreBG:FlxSprite;
+	var songWait:FlxTimer = new FlxTimer();
 
 	override function create()
 	{
@@ -292,7 +294,10 @@ class FreeplayState extends MusicBeatState
 		// lerpScore = 0;
 
 		#if PRELOAD_ALL
-		FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+		songWait.cancel();
+		songWait.start(0.5, function(tmr:FlxTimer) {
+			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+		});
 		#end
 
 		var bullShit:Int = 0;
