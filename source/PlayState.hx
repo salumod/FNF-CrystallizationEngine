@@ -99,8 +99,8 @@ class PlayState extends MusicBeatState
 
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
-	private var timeBG:FlxSprite;
-	private var timeTxt:FlxText;
+	private var beatBG:FlxSprite;
+	private var beatTxt:FlxText;
 
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
@@ -879,24 +879,24 @@ class PlayState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 
-		timeTxt = new FlxText(500, FlxG.height * 0, "", 20);
-		timeTxt.setFormat(Paths.font("Funkin/Funkin.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
-		timeTxt.scrollFactor.set();
+		beatTxt = new FlxText(500, FlxG.height * 0, "", 20);
+		beatTxt.setFormat(Paths.font("Funkin/Funkin.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
+		beatTxt.scrollFactor.set();
 		if (PreferencesMenu.getPref('downscroll'))
-			timeTxt.y = FlxG.height * 0.95;
+			beatTxt.y = FlxG.height * 0.95;
 
-		timeBG = new FlxSprite(0, FlxG.height * 0).loadGraphic(Paths.image('timeBG'));
-		timeBG.screenCenter(X);
-		timeBG.scrollFactor.set();
+		beatBG = new FlxSprite(0, FlxG.height * 0).loadGraphic(Paths.image('beatBG'));
+		beatBG.screenCenter(X);
+		beatBG.scrollFactor.set();
 		
 		if (PreferencesMenu.getPref('downscroll'))
 		{
-				timeBG.y = FlxG.height * 0.95;
-				timeBG.flipY = true;
+				beatBG.y = FlxG.height * 0.95;
+				beatBG.flipY = true;
 		}
 
-		add(timeBG);
-        add(timeTxt);
+		add(beatBG);
+        add(beatTxt);
 
 		function reloadHealthBarColors()
 			{
@@ -923,13 +923,7 @@ class PlayState extends MusicBeatState
 		add(healthBarBG);
 
 		rankTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 310, healthBarBG.y + 30, 0, "", 20);
-		if (PreferencesMenu.getPref('funkin-font'))
-			{
-				rankTxt.x = healthBarBG.x + healthBarBG.width / 2 - 270;
-		        rankTxt.setFormat(Paths.font("Funkin/Funkin.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			}
-		else
-			rankTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		rankTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		
 		rankTxt.scrollFactor.set();
 		rankTxt.size = 20;
@@ -946,8 +940,8 @@ class PlayState extends MusicBeatState
 		grpNoteSplashes.cameras = [camHUD];
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
-		timeBG.cameras = [camHUD];
-		timeTxt.cameras = [camHUD];
+		beatBG.cameras = [camHUD];
+		beatTxt.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
@@ -1890,8 +1884,10 @@ class PlayState extends MusicBeatState
 		        +  '| Rank: ' + rank;
 			}
 
-		timeTxt.text = '     Beat:' + curBeat;
-
+			if(curBeat <= 0)
+		        beatTxt.text = '    ' + SONG.song.toLowerCase();
+            else
+				beatTxt.text = '     Beat:' + curBeat;
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
@@ -1960,8 +1956,8 @@ class PlayState extends MusicBeatState
 		/* if (FlxG.keys.justPressed.NINE)
 			FlxG.switchState(new Charting()); */
 
-		if (FlxG.keys.justPressed.ONE)
-			endSong();
+		// if (FlxG.keys.justPressed.ONE)
+		// 	endSong();
         #if debug
 		if (FlxG.keys.justPressed.PAGEUP)
 			changeSection(1);
@@ -2293,7 +2289,7 @@ class PlayState extends MusicBeatState
 
 				if (SONG.validScore)
 				{
-					NGio.unlockMedal(60961);
+					// NGio.unlockMedal(60961);
 					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 				}
 

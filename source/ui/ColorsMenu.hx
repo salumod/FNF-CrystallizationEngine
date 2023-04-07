@@ -6,6 +6,7 @@ import flixel.addons.effects.chainable.FlxOutlineEffect;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import ui.AtlasText;
+import flixel.FlxSprite;
 
 class ColorsMenu extends ui.OptionsState.Page
 {
@@ -28,15 +29,16 @@ class ColorsMenu extends ui.OptionsState.Page
 		{
 			var note:Note = new Note(0, i);
 
-			note.x = (100 * i) + i;
+			note.x = (130 * i) + i;
 			note.screenCenter(Y);
-
-			headers.add(new BoldText(0, 0.4, "NOTES")).screenCenter(X);
+            //this is two?
+			
+			headers.add(new BoldText(0, 0.4, "NOTES colors")).screenCenter(X);
 
 			var _effectSpr:FlxEffectSprite = new FlxEffectSprite(note, [new FlxOutlineEffect(FlxOutlineMode.FAST, FlxColor.WHITE, 4, 1)]);
-			add(_effectSpr);
+			add(_effectSpr);//this is note list 1
 
-			_effectSpr.y = 0;
+			_effectSpr.y = 100;
 			_effectSpr.x = i * 130;
 			_effectSpr.antialiasing = true;
 			_effectSpr.scale.x = _effectSpr.scale.y = 0.7;

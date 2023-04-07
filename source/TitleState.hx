@@ -414,7 +414,6 @@ class TitleState extends MusicBeatState
 
 			transitioning = true;
 			// FlxG.sound.music.stop();
-
 			#if web
 			/*
 			if (!OutdatedSubState.leftState)

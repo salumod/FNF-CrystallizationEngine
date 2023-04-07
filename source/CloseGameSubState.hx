@@ -18,12 +18,12 @@ class CloseGameSubState extends MusicBeatSubstate
 		background.alpha = 0.5;
 		add(background);
 
-		var txt = new FlxText(0, 0, 0, "Do you want to EXIT game?", 20);
+		var txt = new FlxText(0, 0, 0, "Do you want to EXIT GAME?", 20);
 		txt.setFormat(Paths.font("Funkin/Funkin.ttf"), 70, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		txt.screenCenter();
 		add(txt);
 
-		var txt2 = new FlxText(490, 470, 0, "Y:yes      N:no", 20);
+		var txt2 = new FlxText(490, 470, 0, "Y: yes      N: no", 20);
 		txt2.setFormat(Paths.font("Funkin/Funkin.ttf"), 50, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(txt2);
 	}

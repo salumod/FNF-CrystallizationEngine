@@ -37,16 +37,12 @@ class ModMenu extends ui.OptionsState.Page
 	var descBg:FlxSprite;
 	var sayBG:FlxSprite;
 	var sayText:FlxText;
+
 	public static var MOD_PATH = "mods";
 
 	public function new():Void
 	{
 		super();
-
-		menuCamera = new SwagCamera();
-		FlxG.cameras.add(menuCamera, false);
-		menuCamera.bgColor = 0x0;
-		camera = menuCamera;
 
 		grpMods = new FlxTypedGroup<ModMenuItem>();
 		add(grpMods);
@@ -183,24 +179,16 @@ class ModMenu extends ui.OptionsState.Page
 
 			loopNum++;
 
-			var textGroup:FlxTypedGroup<Alphabet> = new FlxTypedGroup<Alphabet>();
-			add(textGroup);
+			// var textGroup:FlxTypedGroup<Alphabet> = new FlxTypedGroup<Alphabet>();
+			// add(textGroup);
 
-			for (i in 0...modList.length)
-			{
-			    var money:Alphabet = new Alphabet(0, 0, enabledMods[i], true, false);
-			    money.screenCenter(X);
-			    money.y += (i * 60) + 110;
-			    textGroup.add(money);
-		    }
-			camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
-		    if (grpMods != null)
-			camFollow.y = txt.y;
-
-			menuCamera.follow(camFollow, null, 0.06);
-			var margin = 160;
-			menuCamera.deadzone.set(0, margin, menuCamera.width, 40);
-			menuCamera.minScrollY = 0;
+			// for (i in 0...modList.length)
+			// {
+			//     var money:Alphabet = new Alphabet(0, 0, enabledMods[i], true, false);
+			//     money.screenCenter(X);
+			//     money.y += (i * 60) + 110;
+			//     textGroup.add(money);
+		    // }
 		}
 		#end
 	}
@@ -223,6 +211,8 @@ class ModMenuItem extends FlxText
 	public function new(x:Float, y:Float, w:Float, str:String, size:Int)
 	{
 		super(x, y, w, str, size);
+
+		setFormat(Paths.font("Funkin/Funkin.ttf"), 32, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 	}
 
 	override function update(elapsed:Float)

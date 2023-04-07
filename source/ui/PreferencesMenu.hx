@@ -36,7 +36,6 @@ class PreferencesMenu extends ui.OptionsState.Page
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
-		createPrefItem('Funkin Font', 'funkin-font', false);
 		createPrefItem('Shader', 'shader-on', true);
 		createPrefItem('dialogue', 'dialogue', true);
 
@@ -74,8 +73,6 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferenceCheck('camera-zoom', true);
 		preferenceCheck('fps-counter', true);
 		preferenceCheck('auto-pause', false);
-		preferenceCheck('funkin-font', false);
-		preferenceCheck('master-volume', 1);
 		preferenceCheck('shader-on', true);
 		preferenceCheck('dialogue', true);
 		#if muted

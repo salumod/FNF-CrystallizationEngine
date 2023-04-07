@@ -99,7 +99,7 @@ class MainMenuState extends MusicBeatState
 		menuItems.onAcceptPress.add(function(_)
 		{
 			FlxFlicker.flicker(magenta, 1.1, 0.15, false, true);
-			// FlxFlicker.flicker(backspace, 1.1, 0.15, false, true);
+			FlxFlicker.flicker(backspace, 1.1, 0.15, false, true);
 		});
 
 		menuItems.enabled = false; // disable for intro
@@ -140,8 +140,6 @@ class MainMenuState extends MusicBeatState
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
-
-		versionShit.text += '(CrystallizationEngine project B)';
 
 		// NG.core.calls.event.logEvent('swag').send();
 
