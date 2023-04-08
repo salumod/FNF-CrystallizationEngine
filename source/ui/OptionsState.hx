@@ -199,7 +199,9 @@ class OptionsMenu extends Page
 		else
 			createItem("login", selectLogin);
 		#end
-		// createItem("exit", exit);
+		#if web
+		createItem("exit", exit);
+		#end
 	}
 
 	function createItem(name:String, callback:Void->Void, fireInstantly = false)

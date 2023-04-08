@@ -100,7 +100,7 @@
 	<assets path="assets/week8"    library="week8"    exclude="*.fla|*.ogg" if="web"/>
 	<assets path="assets/week8"    library="week8"    exclude="*.fla|*.mp3" unless="web"/>
 	
-	<assets path='example_mods' rename='mods' embed='false'/>
+	<assets path='example_mods' rename='mods' embed='false' if= 'cpp'/>
 
 	<!-- <template path="example_mods" rename="mods" /> -->
 
@@ -108,7 +108,7 @@
 	<!-- <template path='mods' /> -->
 	
 	<assets path="CHANGELOG.md" rename='changelog.txt'/>
-    <assets path="Modding.md" rename='Modding.txt'/>
+    <assets path="Modding.md" rename='Modding.txt' if= 'cpp'/>
 	<!-- NOTE FOR FUTURE SELF SINCE FONTS ARE ALWAYS FUCKY 
 		TO FIX ONE OF THEM, I CONVERTED IT TO OTF. DUNNO IF YOU NEED TO
 		THEN UHHH I USED THE NAME OF THE FONT WITH SETFORMAT() ON THE TEXT!!!

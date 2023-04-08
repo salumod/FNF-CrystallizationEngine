@@ -1256,7 +1256,7 @@ class PlayState extends MusicBeatState
 			Events.playSound('Boom');
 			camHUD.alpha = 0;
 			Events.cameraFade('rad', 1);
-			gf.playAnim('hey', true);
+			Events.playAnim(gf, 'hey');
 
 			FlxTween.tween(camHUD, {alpha: 10}, 3, {ease: FlxEase.backIn, onComplete: function(twe:FlxTween)
 				{
@@ -3104,10 +3104,10 @@ class PlayState extends MusicBeatState
 						switch (curBeat)
 						{
 							case 97:
-								FlxG.camera.fade(FlxColor.BLACK, 1, true);
+								Events.cameraFade('black', 1);
 								gf.visible = false;
 							case 192:
-								FlxG.camera.fade(FlxColor.BLACK, 1, true);
+								Events.cameraFade('black', 1);
 								gf.visible = true;
 								boyfriend.color = 0x00FFFFFF;
 								dad.color = 0x00FFFFFF;
@@ -3124,13 +3124,12 @@ class PlayState extends MusicBeatState
 				if (curSong == 'Score')
 					{
 						if (curBeat % 15 == 0 && curSong == 'Score')
-							{
-								gf.playAnim('hey', true);
-							}
+							Events.playAnim(gf, 'hey');
 
 						camerasIn(-5, 5);
 						camerasIn(228, 232);
 						camerasIn(288, 304);
+
 						switch (curBeat)
 						{
 							case -3:
@@ -3142,6 +3141,7 @@ class PlayState extends MusicBeatState
 						camerasOn(111, 132, 0.015, 0.03);
 						camerasOn(152, 173, 0.15, 0.4);
 					}
+					
 		// boppin friends
 		switch (curStage)
 		{

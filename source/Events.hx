@@ -61,7 +61,7 @@ class Events extends MusicBeatState
 {
     static public function cameraFade(colornoun:String, time:Int)
     {
-        trace("Event:cameraFade");
+        trace("cameraFade");
         var color:Int = 0x0;
 
     switch (colornoun)
@@ -92,25 +92,24 @@ class Events extends MusicBeatState
                 trace("error!");
             }
     }
-
-    FlxG.camera.fade(color, time, true);
+        FlxG.camera.fade(color, time, true);
     }
 
     static public function playSound(sound:String)
     {
         FlxG.sound.play(Paths.sound(sound));
-        trace("Event:playSound");
+        trace("playSound");
     }
 
     static public function playMusic(music:String)
     {
         FlxG.sound.playMusic(Paths.music(music), 0);
-        trace("Event:playMusic");
+        trace("playMusic");
     }
 
     static public function playAnim(character:Character, anim:String)
     {
         character.playAnim(anim, true);
-        trace("Event:playAnim");
+        trace("playAnim");
     }
 }

@@ -110,9 +110,9 @@ class MainMenuState extends MusicBeatState
 		var hasPopupBlocker = #if web true #else false #end;
 
 		if (VideoState.seenVideo)
-			menuItems.createItem('kickstarter', selectDonate, hasPopupBlocker);
+			menuItems.createItem('kickstarter', function() startExitState(new DonateScreenState()));
 		else
-			menuItems.createItem('donate', selectDonate, hasPopupBlocker);
+			menuItems.createItem('donate', function() startExitState(new DonateScreenState()));
 		#end
 		menuItems.createItem('options', function() startExitState(new OptionsState()));
 		// #if newgrounds
@@ -162,13 +162,6 @@ class MainMenuState extends MusicBeatState
 	{
 		camFollow.setPosition(selected.getGraphicMidpoint().x, selected.getGraphicMidpoint().y);
 	}
-
-	#if CAN_OPEN_LINKS
-	function selectDonate()
-	{
-		FlxG.switchState(new DonateScreenState());
-	}
-	#end
 
 	#if newgrounds
 	function selectLogin()
@@ -266,7 +259,11 @@ class MainMenuState extends MusicBeatState
 			backspace.animation.play('click');
 			backspace.offset.x = 50;
 			backspace.offset.y = 50;
+			#if cpp
 			FlxG.switchState(new CloseGameSubState());
+			#else
+		    FlxG.switchState(new TitleState());
+			#end
 		}
 
 		super.update(elapsed);
