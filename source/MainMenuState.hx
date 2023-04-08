@@ -259,7 +259,7 @@ class MainMenuState extends MusicBeatState
 			backspace.animation.play('click');
 			backspace.offset.x = 50;
 			backspace.offset.y = 50;
-			#if cpp
+			#if !web
 			FlxG.switchState(new CloseGameSubState());
 			#else
 		    FlxG.switchState(new TitleState());
