@@ -1057,6 +1057,12 @@ class PlayState extends MusicBeatState
 				FlxG.switchState(new PlayState());
 			  }
 			}
+			else if (curSong.toLowerCase() == 'ugh' || curSong.toLowerCase() == 'stress')
+				{
+			        FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
+			        startCountdown();
+			        cameraMovement();
+				}
 			else
 			  startCountdown();
 		  }
@@ -1129,10 +1135,10 @@ class PlayState extends MusicBeatState
 	function ughIntro()
 	{
 		inCutscene = true;
-		#if web
 		var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		blackShit.scrollFactor.set();
 		add(blackShit);
+		#if web
 		var vid:FlxVideo = new FlxVideo('videos/ughCutscene.mp4');
 		vid.finishCallback = function()
 		{
@@ -1147,12 +1153,8 @@ class PlayState extends MusicBeatState
 		camFollow.x += 100;
 		camFollow.y += 100;
         #else
-
-		FlxG.camera.zoom = defaultCamZoom * 1.2;
-
-		camFollow.x += 100;
-		camFollow.y += 100;
-
+		new FlxTimer().start(3, function(tmr:FlxTimer)
+			{remove(blackShit);});
 		playCutscene('ughCutscene.mp4');
 		#end
 	}
@@ -1161,11 +1163,10 @@ class PlayState extends MusicBeatState
 	{
 		inCutscene = true;
 
-		#if web
 		var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		blackShit.scrollFactor.set();
 		add(blackShit);
-
+		#if web
 		var vid:FlxVideo = new FlxVideo('videos/gunsCutscene.mp4');
 		vid.finishCallback = function()
 		{
@@ -1176,10 +1177,9 @@ class PlayState extends MusicBeatState
 			cameraMovement();
 		};
         #else
+		new FlxTimer().start(3, function(tmr:FlxTimer)
+			{remove(blackShit);});
 		    playCutscene('gunsCutscene.mp4');
-
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-			cameraMovement();
 		#end
 	}
 
@@ -1198,11 +1198,10 @@ class PlayState extends MusicBeatState
 	{
 		inCutscene = true;
 
-		#if web
 		var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		blackShit.scrollFactor.set();
 		add(blackShit);
-
+		#if web
 		var vid:FlxVideo = new FlxVideo('videos/stressCutscene.mp4');
 		vid.finishCallback = function()
 		{
@@ -1213,17 +1212,16 @@ class PlayState extends MusicBeatState
 			cameraMovement();
 		};
         #else
+		new FlxTimer().start(3, function(tmr:FlxTimer)
+			{remove(blackShit);});
 		playCutscene('stressCutscene.mp4');
-
-		FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-		cameraMovement();
 		#end
 	}
 
 	function scoreIntro(?dialogueBox:DialogueBox)
 		{
-			FlxG.camera.fade(FlxColor.BLACK, 1, true);
-			dad.playAnim('hey', true);
+			Events.cameraFade('black', 1);
+			Events.playAnim(dad, 'hey');
 
 			var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 			black.scrollFactor.set();
@@ -1246,7 +1244,6 @@ class PlayState extends MusicBeatState
 						inCutscene = true;
 						add(dialogueBox);
 					}
-
 					else
 						startCountdown();
 	
@@ -1256,9 +1253,9 @@ class PlayState extends MusicBeatState
 
 	function hotIntro()
 		{
-			FlxG.sound.play(Paths.sound('Boom'));
+			Events.playSound('Boom');
 			camHUD.alpha = 0;
-			FlxG.camera.fade(FlxColor.BLACK, 1, true);
+			Events.cameraFade('rad', 1);
 			gf.playAnim('hey', true);
 
 			FlxTween.tween(camHUD, {alpha: 10}, 3, {ease: FlxEase.backIn, onComplete: function(twe:FlxTween)
@@ -1956,8 +1953,8 @@ class PlayState extends MusicBeatState
 		/* if (FlxG.keys.justPressed.NINE)
 			FlxG.switchState(new Charting()); */
 
-		// if (FlxG.keys.justPressed.ONE)
-		// 	endSong();
+		if (FlxG.keys.justPressed.ONE)
+			endSong();
         #if debug
 		if (FlxG.keys.justPressed.PAGEUP)
 			changeSection(1);
