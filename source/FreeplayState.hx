@@ -101,6 +101,9 @@ class FreeplayState extends MusicBeatState
 		if (StoryMenuState.weekUnlocked[8] || isDebug)
 			addWeek(['Score', 'Two-Hot'], 8, ['darnell']);
 
+		#if web
+		    addSong('Error', 8, 'haxeflixel');
+		#end
 		// LOAD MUSIC
 
 		// LOAD CHARACTERS

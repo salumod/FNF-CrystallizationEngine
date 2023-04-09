@@ -179,6 +179,10 @@ class PlayState extends MusicBeatState
 	var lightFadeShader:BuildingShaders;
     var dialogueLoad:String = "dialogue/";
 
+	// shader shit
+    var pixelShader:MosaicShader;
+    var vhsShader:VHSShader;
+
 	override public function create()
 	{
 		if (FlxG.sound.music != null)
@@ -351,6 +355,9 @@ class PlayState extends MusicBeatState
 				// FlxG.camera.setFilters([new ShaderFilter(cast shaderBullshit.shader)]);
 				// overlayShit.shader = shaderBullshit;
 
+				// var invertShader = new InvertShader();
+				// FlxG.camera.setFilters([new ShaderFilter(invertShader)]);
+
 				limo = new FlxSprite(-120, 550);
 				limo.frames = Paths.getSparrowAtlas('limo/limoDrive');
 				limo.animation.addByPrefix('drive', "Limo stage", 24);
@@ -470,7 +477,6 @@ class PlayState extends MusicBeatState
 				add(treeLeaves);
 
 				var widShit = Std.int(bgSky.width * 6);
-
 				bgSky.setGraphicSize(widShit);
 				bgSchool.setGraphicSize(widShit);
 				bgStreet.setGraphicSize(widShit);
@@ -496,6 +502,10 @@ class PlayState extends MusicBeatState
 				bgGirls.setGraphicSize(Std.int(bgGirls.width * daPixelZoom));
 				bgGirls.updateHitbox();
 				add(bgGirls);
+
+				// var pixelShader = new MosaicShader(200, 200);
+				// if (PreferencesMenu.getPref('shader-on'))
+				//     FlxG.camera.setFilters([new ShaderFilter(pixelShader)]);
 			case 'thorns':
 				curStage = 'schoolEvil';
 
@@ -523,12 +533,14 @@ class PlayState extends MusicBeatState
 				fg.setGraphicSize(Std.int(fg.width * daPixelZoom));
 				add(fg);
 
+				vhsShader = new VHSShader();
+
 				if (PreferencesMenu.getPref('shader-on'))
 					{
 						bg.shader = wiggleShitBg.shader;
 						fg.shader = wiggleShit.shader;
+						// FlxG.camera.setFilters([new ShaderFilter(vhsShader)]);
 					}
-
 			case 'guns' | 'stress' | 'ugh':
 				defaultCamZoom = 0.90;
 				curStage = 'tank';
@@ -818,6 +830,19 @@ class PlayState extends MusicBeatState
 		// Shitty layering but whatev it works LOL
 		if (curStage == 'limo')
 			add(limo);
+
+		if (PreferencesMenu.getPref('shader-on'))
+			{
+				var pixelShader = new MosaicShader(270, 270);
+
+				switch (curStage)
+		        {
+			        case 'school':
+				        FlxG.camera.setFilters([new ShaderFilter(pixelShader)]);
+					case 'schollEvil':
+						FlxG.camera.setFilters([new ShaderFilter(pixelShader)]);
+		        }
+			}
 
 		add(dad);
 		add(boyfriend);
@@ -1111,7 +1136,7 @@ class PlayState extends MusicBeatState
 							new FlxTimer().start(0.1, function(tmr:FlxTimer)
 							{
 								remove(blackScreen);
-								FlxG.sound.play(Paths.sound('Lights_Turn_On'));
+								Events.playSound('Lights_Turn_On');
 								camFollow.y = -2050;
 								camFollow.x += 200;
 								FlxG.camera.focusOn(camFollow.getPosition());
@@ -1320,7 +1345,7 @@ class PlayState extends MusicBeatState
 				camHUD.visible = false;
 			}
 			else
-				FlxG.sound.play(Paths.sound('ANGRY'));
+			    Events.playSound('ANGRY');
 			// moved senpai angry noise in here to clean up cutscene switch case lol
 		}
 
@@ -2219,7 +2244,7 @@ class PlayState extends MusicBeatState
 	function killCombo():Void
 	{
 		if (combo > 5 && gf.animOffsets.exists('sad'))
-			gf.playAnim('sad');
+		    Events.playAnim(gf, 'sad');
 		if (combo != 0)
 		{
 			combo = 0;
@@ -2268,8 +2293,7 @@ class PlayState extends MusicBeatState
 
 			if (storyPlaylist.length <= 0)
 			{
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-
+                Events.playMusic('freakyMenu');
 				transIn = FlxTransitionableState.defaultTransIn;
 				transOut = FlxTransitionableState.defaultTransOut;
 
@@ -2883,7 +2907,7 @@ class PlayState extends MusicBeatState
 		if (trainSound.time >= 4700)
 		{
 			startedMoving = true;
-			gf.playAnim('hairBlow');
+			Events.playAnim(gf, 'hairBlow');
 		}
 
 		if (startedMoving)
@@ -2906,7 +2930,7 @@ class PlayState extends MusicBeatState
 
 	function trainReset():Void
 	{
-		gf.playAnim('hairFall');
+		Events.playAnim(gf, 'hairFall');
 		phillyTrain.x = FlxG.width + 200;
 		trainMoving = false;
 		// trainSound.stop();
@@ -2924,8 +2948,8 @@ class PlayState extends MusicBeatState
 		lightningStrikeBeat = curBeat;
 		lightningOffset = FlxG.random.int(8, 24);
 
-		boyfriend.playAnim('scared', true);
-		gf.playAnim('scared', true);
+		Events.playAnim(boyfriend, 'scared');
+		Events.playAnim(gf, 'scared');
 	}
 
 	override function stepHit()
@@ -3009,13 +3033,13 @@ class PlayState extends MusicBeatState
 
 		if (curBeat % 8 == 7 && curSong == 'Bopeebo')
 		{
-			boyfriend.playAnim('hey', true);
+			Events.playAnim(boyfriend, 'hey');
 		}
 
 		if (curBeat % 16 == 15 && SONG.song == 'Tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
 		{
-			boyfriend.playAnim('hey', true);
-			dad.playAnim('cheer', true);
+			Events.playAnim(boyfriend, 'hey');
+			Events.playAnim(dad, 'cheer');
 		}
 
 		foregroundSprites.forEach(function(spr:BGSprite)

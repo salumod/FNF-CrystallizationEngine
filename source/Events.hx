@@ -56,6 +56,18 @@ using StringTools;
 #if discord_rpc
 import Discord.DiscordClient;
 #end
+class EventState extends MusicBeatState
+{
+    override function create()
+        {
+            super.create();
+        }
+
+    override function update(elapsed:Float)
+        {
+            super.update(elapsed);
+        }
+}
 
 class Events extends MusicBeatState
 {
@@ -93,23 +105,24 @@ class Events extends MusicBeatState
             }
     }
         FlxG.camera.fade(color, time, true);
+        trace("camera fade: " + colornoun + " time: " + time);
     }
 
     static public function playSound(sound:String)
     {
         FlxG.sound.play(Paths.sound(sound));
-        trace("playSound");
+        trace("playSound: " + sound);
     }
 
     static public function playMusic(music:String)
     {
         FlxG.sound.playMusic(Paths.music(music), 0);
-        trace("playMusic");
+        trace("playMusic: " + music);
     }
 
     static public function playAnim(character:Character, anim:String)
     {
         character.playAnim(anim, true);
-        trace("playAnim");
+        trace(character + "playAnim: "+ anim);
     }
 }

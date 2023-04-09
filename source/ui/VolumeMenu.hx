@@ -12,6 +12,7 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxG;
 import flixel.ui.FlxBar;
 import flixel.util.FlxAxes;
+import ui.AtlasText;
 
 class VolumeMenu extends ui.OptionsState.Page
 {
@@ -22,10 +23,12 @@ class VolumeMenu extends ui.OptionsState.Page
 	var volumeText:FlxText;
 	var volumeAmountText:FlxText;
 
-	var blurb:Array<String> = [
-		"Volume"
-	];
+	// var blurb:Array<String> = [
+	// 	"Volume"
+	// ];
 
+	var headers = new FlxTypedGroup<AtlasText>();
+	
 	public function new()
 		{
 			super();
@@ -41,26 +44,25 @@ class VolumeMenu extends ui.OptionsState.Page
 			add(option);
 			option.antialiasing = true;
 
+			add(headers);
+
+			headers.add(new BoldText(0, 0.4, "Volume")).screenCenter(X);
+
 			var barBG:FlxSprite = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('Music Slider Bar'));
 			barBG.screenCenter(X);
 			barBG.scrollFactor.set();
 			// add(barBG);
 
-			// var option:FlxSprite = new FlxSprite(0, FlxG.height * 0.1).loadGraphic(Paths.image('option/option'));
-			// option.screenCenter(X);
-			// option.scrollFactor.set();
-			// add(option);
+			// var textGroup:FlxTypedGroup<Alphabet> = new FlxTypedGroup<Alphabet>();
+		    // add(textGroup);
 
-			var textGroup:FlxTypedGroup<Alphabet> = new FlxTypedGroup<Alphabet>();
-		    add(textGroup);
-
-		    for (i in 0...blurb.length)
-		    {
-			    var money:Alphabet = new Alphabet(10, 10, blurb[i], true, false);
-			    money.screenCenter(X);
-			    money.y += (i * 20) + 30;
-			    textGroup.add(money);
-		    }
+		    // for (i in 0...blurb.length)
+		    // {
+			//     var money:Alphabet = new Alphabet(10, 10, blurb[i], true, false);
+			//     money.screenCenter(X);
+			//     money.y += (i * 20) + 30;
+			//     textGroup.add(money);
+		    // }
 
 			volumeBar = new FlxBar(barBG.x + 4, barBG.y + 4, LEFT_TO_RIGHT, Std.int(barBG.width - 8), Std.int(barBG.height - 8));
 		    volumeBar.createFilledBar(0xff464646, FlxColor.WHITE, true);
@@ -90,7 +92,7 @@ class VolumeMenu extends ui.OptionsState.Page
 
 				if (FlxG.mouse.wheel != 0)
 					{
-						FlxG.sound.volume += (FlxG.mouse.wheel / 10);
+						FlxG.sound.volume += (FlxG.mouse.wheel / 100);
 					}
 
 				updateVolume();

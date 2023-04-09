@@ -179,8 +179,8 @@ class OptionsMenu extends Page
 
 		add(items = new TextMenuList());
 		createItem('preferences', function() switchPage(Preferences));
-		createItem('volume', function() switchPage(Volume));
 		createItem("controls", function() switchPage(Controls));
+		createItem('volume', function() switchPage(Volume));
 		createItem('colors', function() switchPage(Colors));
 		#if cpp
 		createItem('mods', function() switchPage(Mods));
@@ -284,8 +284,8 @@ class OptionsMenu extends Page
 enum PageName
 {
 	Options;
-	Volume;
 	Controls;
+	Volume;
 	Colors;
 	Mods;
 	Preferences;

@@ -85,6 +85,13 @@ class ChartingState extends MusicBeatState
 	{
 		curSection = lastSection;
 
+		var menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
+		menuBG.updateHitbox();
+		menuBG.screenCenter();
+		menuBG.scrollFactor.set(0, 0);
+		add(menuBG);
+
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
 		add(gridBG);
 
@@ -1061,6 +1068,13 @@ class ChartingState extends MusicBeatState
 			"song": _song
 		};
 
+		var diffic:String = "";
+		
+		if (PlayState.storyDifficulty == 0)
+			diffic = "-easy";
+		if (PlayState.storyDifficulty == 2)
+			diffic = "-hard";
+
 		var data:String = Json.stringify(json);
 
 		if ((data != null) && (data.length > 0))
@@ -1070,6 +1084,7 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), _song.song.toLowerCase() + ".json");
+			_file.save(data.trim(), _song.song.toLowerCase() + diffic + ".json");
 		}
 	}
 

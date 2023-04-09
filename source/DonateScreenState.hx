@@ -61,7 +61,7 @@ class DonateScreenState extends MusicBeatState {
 			textGroup.add(money);
 		}
 
-		#if html5
+		#if web
 		var someText:FlxText = new FlxText(0, 684, 0, "(opens the donate page in a new tab)");
 		#else
 		var someText:FlxText = new FlxText(0, 684, 0, "(opens the donate page in a browser window)");
