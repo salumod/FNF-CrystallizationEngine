@@ -129,6 +129,7 @@ class PlayState extends MusicBeatState
 	var trainSound:FlxSound;
 
 	var foregroundSprites:FlxTypedGroup<BGSprite>;
+	var fgFlxSprites:FlxTypedGroup<FlxSprite>;
 
 	var limo:FlxSprite;
 	var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
@@ -181,7 +182,6 @@ class PlayState extends MusicBeatState
 
 	// shader shit
     var pixelShader:MosaicShader;
-    var vhsShader:VHSShader;
 
 	override public function create()
 	{
@@ -213,6 +213,7 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(SONG.bpm);
 
 		foregroundSprites = new FlxTypedGroup<BGSprite>();
+		fgFlxSprites = new FlxTypedGroup<FlxSprite>();
 
 		switch (SONG.song.toLowerCase())
 		{
@@ -533,8 +534,6 @@ class PlayState extends MusicBeatState
 				fg.setGraphicSize(Std.int(fg.width * daPixelZoom));
 				add(fg);
 
-				vhsShader = new VHSShader();
-
 				if (PreferencesMenu.getPref('shader-on'))
 					{
 						bg.shader = wiggleShitBg.shader;
@@ -655,6 +654,12 @@ class PlayState extends MusicBeatState
 						var news:FlxSprite = new FlxSprite(-1600, -300).loadGraphic(Paths.image('town/news'));
 		                news.scrollFactor.set(0.9, 0.9);
 		                add(news);
+
+						var boxes:FlxSprite = new FlxSprite(-1600, -300).loadGraphic(Paths.image('town/april_for'));
+		                boxes.scrollFactor.set(0.9, 0.9);
+		                add(boxes);
+
+						fgFlxSprites.add(boxes);
 
 			default:
 				defaultCamZoom = 0.9;
@@ -848,6 +853,7 @@ class PlayState extends MusicBeatState
 		add(boyfriend);
 
 		add(foregroundSprites);
+        add(fgFlxSprites);
 
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
 		// doof.x += 70;
