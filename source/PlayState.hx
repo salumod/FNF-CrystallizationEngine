@@ -839,7 +839,7 @@ class PlayState extends MusicBeatState
 		        {
 			        case 'school':
 				        FlxG.camera.setFilters([new ShaderFilter(pixelShader)]);
-					case 'schollEvil':
+					case 'schoolEvil':
 						FlxG.camera.setFilters([new ShaderFilter(pixelShader)]);
 		        }
 			}
