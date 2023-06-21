@@ -112,10 +112,11 @@ class StoryMenuState extends MusicBeatState
 
 		var rankText:FlxText = new FlxText(0, 10);
 		rankText.text = 'RANK: GREAT';
-		rankText.setFormat(Paths.font("vcr.ttf"), 32);
+		rankText.setFormat(Paths.font("Funkin/Funkin.ttf"), 32);
 		rankText.size = scoreText.size;
 		rankText.screenCenter(X);
-
+		add(rankText);
+		
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		yellowBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400);
 		yellowBG.color = 0xFFF9CF51;

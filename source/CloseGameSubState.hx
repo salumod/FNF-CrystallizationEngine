@@ -14,10 +14,20 @@ class CloseGameSubState extends MusicBeatSubstate
 	{
 		super();
 
-		var background:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		background.alpha = 0.5;
-		add(background);
+		// var background:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		// background.alpha = 0.5;
+		// add(background);
 
+		var bg:FlxSprite = new FlxSprite(Paths.image('menuDesat'));
+		bg.color = 0xFF161616;
+		bg.scrollFactor.x = 0;
+		bg.scrollFactor.y = 0.17;
+		bg.setGraphicSize(Std.int(bg.width * 1.2));
+		bg.updateHitbox();
+		bg.screenCenter();
+		bg.antialiasing = true;
+		add(bg);
+		
 		var txt = new FlxText(0, 0, 0, "Do you want to EXIT GAME?", 20);
 		txt.setFormat(Paths.font("Funkin/Funkin.ttf"), 70, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		txt.screenCenter();

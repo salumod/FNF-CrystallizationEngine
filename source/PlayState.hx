@@ -27,7 +27,7 @@ import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -99,8 +99,10 @@ class PlayState extends MusicBeatState
 
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
-	private var beatBG:FlxSprite;
-	private var beatTxt:FlxText;
+	private var timeBG:FlxSprite;
+	private var songNameTxt:FlxText;
+	private var songInTime:Float;
+	private var timeBar:FlxBar;
 
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
@@ -910,24 +912,32 @@ class PlayState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 
-		beatTxt = new FlxText(500, FlxG.height * 0, "", 20);
-		beatTxt.setFormat(Paths.font("Funkin/Funkin.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
-		beatTxt.scrollFactor.set();
-		if (PreferencesMenu.getPref('downscroll'))
-			beatTxt.y = FlxG.height * 0.95;
+		songNameTxt = new FlxText(450, FlxG.height * 0, "", 20);
+		songNameTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
+		songNameTxt.scrollFactor.set();
 
-		beatBG = new FlxSprite(0, FlxG.height * 0).loadGraphic(Paths.image('beatBG'));
-		beatBG.screenCenter(X);
-		beatBG.scrollFactor.set();
+		// songInTime
+		timeBG = new FlxSprite(0, FlxG.height * 0).loadGraphic(Paths.image('timeBG'));
+		timeBG.screenCenter(X);
+		timeBG.scrollFactor.set();
 		
+		timeBar = new FlxBar(0, FlxG.height * 0, LEFT_TO_RIGHT, Std.int(timeBG.width - 2), Std.int(timeBG.height - 2),this,
+			'songInTime', 0, 1);
+		timeBar.screenCenter(X);
+		timeBar.scrollFactor.set();
+		timeBar.createFilledBar(0xFF000000, 0xFFFFFFFF);
+
 		if (PreferencesMenu.getPref('downscroll'))
 		{
-				beatBG.y = FlxG.height * 0.95;
-				beatBG.flipY = true;
+			songNameTxt.y = FlxG.height * 0.95;
+			timeBar.y = FlxG.height * 0.95;
+			timeBG.y = FlxG.height * 0.95;
+			timeBG.flipY = true;
 		}
 
-		add(beatBG);
-        add(beatTxt);
+		add(timeBG);
+		add(timeBar);
+        add(songNameTxt);
 
 		function reloadHealthBarColors()
 			{
@@ -971,8 +981,9 @@ class PlayState extends MusicBeatState
 		grpNoteSplashes.cameras = [camHUD];
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
-		beatBG.cameras = [camHUD];
-		beatTxt.cameras = [camHUD];
+		timeBG.cameras = [camHUD];
+		timeBar.cameras = [camHUD];
+		songNameTxt.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
@@ -1088,14 +1099,15 @@ class PlayState extends MusicBeatState
 				FlxG.switchState(new PlayState());
 			  }
 			}
-			else if (curSong.toLowerCase() == 'ugh' || curSong.toLowerCase() == 'stress')
+			else
+				startCountdown();
+
+			if (curSong.toLowerCase() == 'ugh' || curSong.toLowerCase() == 'stress')
 				{
 			        FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
 			        startCountdown();
 			        cameraMovement();
 				}
-			else
-			  startCountdown();
 		  }
 		  video.playVideo(Paths.video(name));
 		}
@@ -1912,10 +1924,10 @@ class PlayState extends MusicBeatState
 		        +  '| Rank: ' + rank;
 			}
 
-			if(curBeat <= 0)
-		        beatTxt.text = '       ' + SONG.song.toLowerCase();
-            else
-				beatTxt.text = '     Beat:' + curBeat;
+			songInTime = FlxG.sound.music.time / FlxG.sound.music.length;
+
+		    songNameTxt.text = '' + SONG.song;
+
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
@@ -1984,9 +1996,9 @@ class PlayState extends MusicBeatState
 		/* if (FlxG.keys.justPressed.NINE)
 			FlxG.switchState(new Charting()); */
 
+        #if debug
 		if (FlxG.keys.justPressed.ONE)
 			endSong();
-        #if debug
 		if (FlxG.keys.justPressed.PAGEUP)
 			changeSection(1);
 		if (FlxG.keys.justPressed.PAGEDOWN)

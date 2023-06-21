@@ -21,7 +21,7 @@ class OptionsState extends MusicBeatState
 	override function create()
 	{
 		var menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		menuBG.color = 0xFFea71fd;
+		menuBG.color = 0xff71fdb7;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
@@ -193,15 +193,14 @@ class OptionsMenu extends Page
 			createItem('donate', selectDonate, hasPopupBlocker);
 		}
 		#end
-		#if newgrounds
+
+		#if web
 		if (NGio.isLoggedIn)
 			createItem("logout", selectLogout);
 		else
 			createItem("login", selectLogin);
 		#end
-		#if web
 		createItem("exit", exit);
-		#end
 	}
 
 	function createItem(name:String, callback:Void->Void, fireInstantly = false)

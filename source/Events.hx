@@ -126,3 +126,11 @@ class Events extends MusicBeatState
         trace(character + "playAnim: "+ anim);
     }
 }
+
+enum Eventmenu
+{
+    CameraFade;
+    PlaySound;
+    PlayMusic;
+    PlayAnim;
+}

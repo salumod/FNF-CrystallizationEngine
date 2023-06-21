@@ -1,5 +1,6 @@
 package ui;
 
+import flixel.tweens.FlxTween;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -18,6 +19,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 	var checkboxes:Array<CheckboxThingie> = [];
 	var menuCamera:FlxCamera;
 	var camFollow:FlxObject;
+	var menuBG:FlxSprite;
 
 	public function new()
 	{
@@ -27,6 +29,14 @@ class PreferencesMenu extends ui.OptionsState.Page
 		FlxG.cameras.add(menuCamera, false);
 		menuCamera.bgColor = 0x0;
 		camera = menuCamera;
+
+		menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		menuBG.color = 0xff71f8fd;
+		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
+		menuBG.updateHitbox();
+		menuBG.screenCenter();
+		menuBG.scrollFactor.set(0, 0);
+		add(menuBG);
 
 		add(items = new TextMenuList());
 

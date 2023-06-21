@@ -8,16 +8,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 
 class DonateScreenState extends MusicBeatState {
-	var blurb:Array<String> = [
-		"your donations help us",
-		"",
-		"develop the funkiest game",
-		"",
-		"this side of the internet",
-		"",
-		"support the funky cause",
-		"give a lil bit back"
-	];
 
 	override function create()
 	{
@@ -51,16 +41,11 @@ class DonateScreenState extends MusicBeatState {
 		add(menuItem);
 		menuItem.antialiasing = true;
 
-		var textGroup:FlxTypedGroup<Alphabet> = new FlxTypedGroup<Alphabet>();
-		add(textGroup);
-		for (i in 0...blurb.length)
-		{
-			var money:Alphabet = new Alphabet(0, 0, blurb[i], true, false);
-			money.screenCenter(X);
-			money.y += (i * 60) + 10;
-			textGroup.add(money);
-		}
-
+	    var txt:FlxText = new FlxText(0, 0, 0, "Your donations help us. \n Develop the funkiest game. \n This side of the internet. \n Support the funky cause. \n Give a lil bit back");
+		txt.setFormat(Paths.font("Font.ttf") , 60, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		txt.updateHitbox();
+		txt.screenCenter(X);
+		add(txt);
 		#if web
 		var someText:FlxText = new FlxText(0, 684, 0, "(opens the donate page in a new tab)");
 		#else

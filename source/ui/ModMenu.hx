@@ -44,12 +44,21 @@ class ModMenu extends ui.OptionsState.Page
 	{
 		super();
 
+		var menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		menuBG.color = 0xfffdc571;
+		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
+		menuBG.updateHitbox();
+		menuBG.screenCenter();
+		menuBG.scrollFactor.set(0, 0);
+		add(menuBG);
+
 		grpMods = new FlxTypedGroup<ModMenuItem>();
 		add(grpMods);
 
 		refreshModList();
 
 		descBg = new FlxSprite(0, FlxG.height - 90).makeGraphic(FlxG.width, 90, 0xFF000000);
+		descBg.scrollFactor.set();
 		descBg.alpha = 0.4;
 		add(descBg);
 
@@ -64,10 +73,12 @@ class ModMenu extends ui.OptionsState.Page
 
 		sayBG = new FlxSprite(FlxG.width * 0.7 - 6, 0).makeGraphic(FlxG.width, 190, 0x99000000);
 		sayBG.antialiasing = false;
+		sayBG.scrollFactor.set();
 		add(sayBG);
 
 		sayText = new FlxText(FlxG.width * 0.7, 5, 0, "This is only for viewing mods \n \nI to oldOne \n K to newOne \n   R to refresh ModList", 32);
 		sayText.setFormat(Paths.font("Funkin/Funkin.ttf"), 24, FlxColor.WHITE, CENTER);
+		sayText.scrollFactor.set();
 		add(sayText);
 	}
 
