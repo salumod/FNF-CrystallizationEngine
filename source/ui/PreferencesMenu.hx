@@ -9,6 +9,7 @@ import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
 import ui.AtlasText.AtlasFont;
 import ui.TextMenuList.TextMenuItem;
+import ui.CheckboxThingie;
 
 class PreferencesMenu extends ui.OptionsState.Page
 {
@@ -30,16 +31,9 @@ class PreferencesMenu extends ui.OptionsState.Page
 		menuCamera.bgColor = 0x0;
 		camera = menuCamera;
 
-		menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		menuBG.color = 0xff71f8fd;
-		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
-		menuBG.updateHitbox();
-		menuBG.screenCenter();
-		menuBG.scrollFactor.set(0, 0);
-		add(menuBG);
-
 		add(items = new TextMenuList());
 
+		createPrefItem('loadingstate', 'show-loading-state', false);
 		createPrefItem('naughtyness', 'censor-naughty', true);
 		createPrefItem('downscroll', 'downscroll', false);
 		createPrefItem('flashing menu', 'flashing-menu', true);
@@ -77,6 +71,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 
 	public static function initPrefs():Void
 	{
+		preferenceCheck('show-loading-state', false);
 		preferenceCheck('censor-naughty', true);
 		preferenceCheck('downscroll', false);
 		preferenceCheck('flashing-menu', true);
@@ -182,49 +177,5 @@ class PreferencesMenu extends ui.OptionsState.Page
 		{
 			trace('found preference: ' + preferences.get(prefString));
 		}
-	}
-}
-
-class CheckboxThingie extends FlxSprite
-{
-	public var daValue(default, set):Bool;
-
-	public function new(x:Float, y:Float, daValue:Bool = false)
-	{
-		super(x, y);
-
-		frames = Paths.getSparrowAtlas('checkboxThingie');
-		animation.addByPrefix('static', 'Check Box unselected', 24, false);
-		animation.addByPrefix('checked', 'Check Box selecting animation', 24, false);
-
-		antialiasing = true;
-
-		setGraphicSize(Std.int(width * 0.7));
-		updateHitbox();
-
-		this.daValue = daValue;
-	}
-
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-
-		switch (animation.curAnim.name)
-		{
-			case 'static':
-				offset.set();
-			case 'checked':
-				offset.set(17, 70);
-		}
-	}
-
-	function set_daValue(value:Bool):Bool
-	{
-		if (value)
-			animation.play('checked', true);
-		else
-			animation.play('static');
-
-		return value;
 	}
 }

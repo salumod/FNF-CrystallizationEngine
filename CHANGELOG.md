@@ -4,16 +4,14 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3]2023-04-01
+## [FNF-CrystallizationEngineV0.4]2023-05-29
 ### Added
-- Week 8 install!And two new songs!
-- New donate stage
-- Mods install!(just assets)
-- Shader for Thorns
+- Mod system(just assets)!
+- A full engine!
 ### Changed
-- Week 7 videos for windows now!
+- BeatBar => timeBar
 ### Fixed
-- April Fool?
+- Error things in virson 0.3!
 
 ## [0.2.8]2023-02-01
 ### Added

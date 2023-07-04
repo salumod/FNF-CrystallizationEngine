@@ -44,8 +44,11 @@ class DonateScreenState extends MusicBeatState {
 	    var txt:FlxText = new FlxText(0, 0, 0, "Your donations help us. \n Develop the funkiest game. \n This side of the internet. \n Support the funky cause. \n Give a lil bit back");
 		txt.setFormat(Paths.font("Font.ttf") , 60, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		txt.updateHitbox();
-		txt.screenCenter(X);
+		txt.screenCenter();
 		add(txt);
+
+		txt.text = txt.text.toUpperCase();
+
 		#if web
 		var someText:FlxText = new FlxText(0, 684, 0, "(opens the donate page in a new tab)");
 		#else

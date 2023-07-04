@@ -21,7 +21,7 @@ class OptionsState extends MusicBeatState
 	override function create()
 	{
 		var menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		menuBG.color = 0xff71fdb7;
+		menuBG.color = 0xFFea71fd;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
@@ -29,6 +29,7 @@ class OptionsState extends MusicBeatState
 		add(menuBG);
 
 		var options = addPage(Options, new OptionsMenu(false));
+		var gameplay = addPage(Gameplay, new GameplayMenu());
 		var preferences = addPage(Preferences, new PreferencesMenu());
 		var controls = addPage(Controls, new ControlsMenu());
 		var colors = addPage(Colors, new ColorsMenu());
@@ -41,6 +42,7 @@ class OptionsState extends MusicBeatState
 		if (options.hasMultipleOptions())
 		{
 			options.onExit.add(exitToMainMenu);
+			gameplay.onExit.add(switchPage.bind(Options));
 			controls.onExit.add(switchPage.bind(Options));
 			colors.onExit.add(switchPage.bind(Options));
 			preferences.onExit.add(switchPage.bind(Options));
@@ -178,6 +180,7 @@ class OptionsMenu extends Page
 		super();
 
 		add(items = new TextMenuList());
+		createItem('gameplay', function() switchPage(Gameplay));
 		createItem('preferences', function() switchPage(Preferences));
 		createItem("controls", function() switchPage(Controls));
 		createItem('volume', function() switchPage(Volume));
@@ -200,7 +203,7 @@ class OptionsMenu extends Page
 		else
 			createItem("login", selectLogin);
 		#end
-		createItem("exit", exit);
+		// createItem("exit", exit);
 	}
 
 	function createItem(name:String, callback:Void->Void, fireInstantly = false)
@@ -283,6 +286,7 @@ class OptionsMenu extends Page
 enum PageName
 {
 	Options;
+	Gameplay;
 	Controls;
 	Volume;
 	Colors;

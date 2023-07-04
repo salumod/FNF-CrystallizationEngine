@@ -37,20 +37,13 @@ class ModMenu extends ui.OptionsState.Page
 	var descBg:FlxSprite;
 	var sayBG:FlxSprite;
 	var sayText:FlxText;
+    var modicon:ModIcon;
 
 	public static var MOD_PATH = "mods";
 
 	public function new():Void
 	{
 		super();
-
-		var menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		menuBG.color = 0xfffdc571;
-		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
-		menuBG.updateHitbox();
-		menuBG.screenCenter();
-		menuBG.scrollFactor.set(0, 0);
-		add(menuBG);
 
 		grpMods = new FlxTypedGroup<ModMenuItem>();
 		add(grpMods);
@@ -186,20 +179,10 @@ class ModMenu extends ui.OptionsState.Page
 			txt.text = i.id;
 			if (enabledMods.contains(i.id))
 				txt.modEnabled = true;
+
 			grpMods.add(txt);
 
 			loopNum++;
-
-			// var textGroup:FlxTypedGroup<Alphabet> = new FlxTypedGroup<Alphabet>();
-			// add(textGroup);
-
-			// for (i in 0...modList.length)
-			// {
-			//     var money:Alphabet = new Alphabet(0, 0, enabledMods[i], true, false);
-			//     money.screenCenter(X);
-			//     money.y += (i * 60) + 110;
-			//     textGroup.add(money);
-		    // }
 		}
 		#end
 	}
@@ -235,4 +218,21 @@ class ModMenuItem extends FlxText
 
 		super.update(elapsed);
 	}
+}
+
+class ModIcon extends FlxSprite
+{
+	var icon:FlxSprite;
+
+	public function new(x:Float, y:Float, str:String)
+		{
+			super();
+
+	        icon = new FlxSprite(x + 300, y).loadGraphic(Paths.image(str));
+		}
+
+	override function update(elapsed:Float)
+		{
+			super.update(elapsed);
+		}
 }

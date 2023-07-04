@@ -190,6 +190,8 @@ class PlayState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
+		FlxG.mouse.visible = false;
+
 		FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
 		FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
 
@@ -912,11 +914,11 @@ class PlayState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 
-		songNameTxt = new FlxText(450, FlxG.height * 0, "", 20);
+		songNameTxt = new FlxText(0, FlxG.height * 0, "", 20);
 		songNameTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
 		songNameTxt.scrollFactor.set();
-
-		// songInTime
+		songNameTxt.screenCenter(X);
+		
 		timeBG = new FlxSprite(0, FlxG.height * 0).loadGraphic(Paths.image('timeBG'));
 		timeBG.screenCenter(X);
 		timeBG.scrollFactor.set();
@@ -932,11 +934,10 @@ class PlayState extends MusicBeatState
 			songNameTxt.y = FlxG.height * 0.95;
 			timeBar.y = FlxG.height * 0.95;
 			timeBG.y = FlxG.height * 0.95;
-			timeBG.flipY = true;
 		}
 
-		add(timeBG);
 		add(timeBar);
+		add(timeBG);
         add(songNameTxt);
 
 		function reloadHealthBarColors()
@@ -1115,6 +1116,8 @@ class PlayState extends MusicBeatState
 	
 	function intro(?dialogueBox:DialogueBox):Void
 		{
+			songNameTxt.text = 'dialogue';
+
 			var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 			black.scrollFactor.set();
 			add(black);
@@ -1263,6 +1266,8 @@ class PlayState extends MusicBeatState
 
 	function scoreIntro(?dialogueBox:DialogueBox)
 		{
+			songNameTxt.text = 'dialogue';
+
 			Events.cameraFade('black', 1);
 			Events.playAnim(dad, 'hey');
 
@@ -1335,6 +1340,8 @@ class PlayState extends MusicBeatState
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
+		songNameTxt.text = 'dialogue';
+
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		black.scrollFactor.set();
 		add(black);
@@ -1513,6 +1520,8 @@ class PlayState extends MusicBeatState
 		startingSong = false;
 
 		previousFrameTime = FlxG.game.ticks;
+
+		songNameTxt.text = SONG.song;
 
 		if (!paused)
 			FlxG.sound.playMusic(Paths.inst(SONG.song), 1, false);
@@ -1926,7 +1935,7 @@ class PlayState extends MusicBeatState
 
 			songInTime = FlxG.sound.music.time / FlxG.sound.music.length;
 
-		    songNameTxt.text = '' + SONG.song;
+		    // songNameTxt.text = '' + SONG.song;
 
 		if (controls.PAUSE && startedCountdown && canPause)
 		{

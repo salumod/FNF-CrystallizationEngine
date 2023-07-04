@@ -150,7 +150,7 @@ class DialogueBox extends FlxSpriteGroup
 
 				switch (PlayState.SONG.song.toLowerCase())
 				{
-					case 'score' | 'two-hot' | 'senpai' | 'roses' | 'thorns':
+					case 'score' | 'two-hot' | 'senpai' | 'thorns':
 					box.flipX = false;
 			        default:
 					box.flipX = true;
@@ -588,8 +588,9 @@ class DialogueBox extends FlxSpriteGroup
 		            pixelPortraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter instance', 24, false);
 					pixelPortraitLeft.visible = true;
 					pixelPortraitLeft.animation.play('enter');
-					box.flipX = true;
+					box.flipX = false;
 				}
+
 			default:
 				portraitLeft.visible = false;
 		        portraitRight.visible = false;

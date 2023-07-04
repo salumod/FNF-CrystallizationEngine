@@ -128,7 +128,8 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...menuItems.length)
 		{
 			var menuItem = menuItems.members[i];
-			menuItem.x = FlxG.width / 2;
+			menuItem.x = 400;
+			menuItem.x += 100 * i;
 			menuItem.y = top + spacing * i;
 		}
 
@@ -260,7 +261,7 @@ class MainMenuState extends MusicBeatState
 			backspace.offset.x = 50;
 			backspace.offset.y = 50;
 			#if !web
-			FlxG.switchState(new CloseGameSubState());
+			FlxG.switchState(new CloseGameState());
 			#else
 		    FlxG.switchState(new TitleState());
 			#end
