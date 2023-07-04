@@ -18,8 +18,8 @@ import ui.AtlasText;
 
 class VolumeMenu extends ui.OptionsState.Page
 {
-	public static var musicVolume:Float = 0;
-	public static var sfxVolume:Float = 0;
+	public static var musicVolume:Float = 100;
+	public static var sfxVolume:Float = 100;
 	
 	var masterVolumeBar:FlxBar;
 	var masterVolumeAmountText:FlxText;
@@ -42,6 +42,8 @@ class VolumeMenu extends ui.OptionsState.Page
 			super();
 
 			FlxG.mouse.visible = true;
+
+			FlxG.save.bind("volume-save-data", "The Funkin Crew");
 
 			volumeTextThing(-300, 130, 'master-volume');
 			volumeTextThing(-300, 350, 'music-volume');
@@ -86,20 +88,22 @@ class VolumeMenu extends ui.OptionsState.Page
 			{
 				var barWidth = 33;
 			    var barHeight = 705;
+                var buttonHeight = 730;
 
 				var barBG:FlxSprite = new FlxSprite(x, y).loadGraphic(Paths.image('Music Slider Bar'));
 			    barBG.scrollFactor.set();
                 add(barBG);
 
-				var volumeDownButton = new FlxButton(buttonX, buttonY, clickVolumeDown);
-		        volumeDownButton.loadGraphic(Paths.image('Button_Down'));
-
-				var volumeUpButton = new FlxButton(volumeDownButton.x + 730, volumeDownButton.y, clickVolumeUp);
-		        volumeUpButton.loadGraphic(Paths.image('Button_Up'));
-
 				switch (volumeName)
 				{
 					case 'master-volume':
+						var volumeDownButton = new FlxButton(buttonX, buttonY, clickVolumeDown);
+						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickVolumeUp);
+						volumeDownButton.loadGraphic(Paths.image('Button_Down'));
+		                volumeUpButton.loadGraphic(Paths.image('Button_Up'));
+				        add(volumeDownButton);
+				        add(volumeUpButton);
+
 						masterVolumeBar = new FlxBar(x + 4, y + 4, LEFT_TO_RIGHT, barHeight - 8, barWidth - 8);
 						masterVolumeBar.createFilledBar(FlxColor.BLACK, FlxColor.WHITE, true);
 						add(masterVolumeBar);
@@ -110,6 +114,13 @@ class VolumeMenu extends ui.OptionsState.Page
 						masterVolumeAmountText.y = masterVolumeBar.y + (masterVolumeBar.height / 2) - (masterVolumeAmountText.height / 2);
 						add(masterVolumeAmountText);
 				    case 'music-volume':
+						var volumeDownButton = new FlxButton(buttonX, buttonY, clickMusicVolumeDown);
+						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickMusicVolumeUp);
+						volumeDownButton.loadGraphic(Paths.image('Button_Down'));
+		                volumeUpButton.loadGraphic(Paths.image('Button_Up'));
+				        add(volumeDownButton);
+				        add(volumeUpButton);
+
                         musicBar = new FlxBar(x + 4, y + 4, LEFT_TO_RIGHT, barHeight - 8, barWidth - 8);
 						musicBar.createFilledBar(FlxColor.BLACK, FlxColor.WHITE, true);
 						add(musicBar);
@@ -120,6 +131,13 @@ class VolumeMenu extends ui.OptionsState.Page
 						musicAmountText.y = musicBar.y + (musicBar.height / 2) - (musicAmountText.height / 2);
 						add(musicAmountText);
 					case 'sfx-volume':
+						var volumeDownButton = new FlxButton(buttonX, buttonY, clickSFXVolumeDown);
+						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickSFXVolumeUp);
+						volumeDownButton.loadGraphic(Paths.image('Button_Down'));
+						volumeUpButton.loadGraphic(Paths.image('Button_Up'));
+						add(volumeDownButton);
+						add(volumeUpButton);
+
 						sfxBar = new FlxBar(x + 4, y + 4, LEFT_TO_RIGHT, barHeight - 8, barWidth - 8);
 						sfxBar.createFilledBar(FlxColor.BLACK, FlxColor.WHITE, true);
 						add(sfxBar);
@@ -132,8 +150,6 @@ class VolumeMenu extends ui.OptionsState.Page
 					default:
 						trace('You think that things will come?');
 				}
-				add(volumeDownButton);
-				add(volumeUpButton);
 			}
 
 		function updateVolume()
@@ -142,13 +158,11 @@ class VolumeMenu extends ui.OptionsState.Page
 				masterVolumeBar.value = volume;
 				masterVolumeAmountText.text = volume + "%";
 
-				var musicVolumeAmount = Math.round(musicVolume * 100);
 				musicBar.value = musicVolume;
-				musicAmountText.text = musicVolumeAmount + "%";
+				musicAmountText.text = Std.int(musicVolume) + "%";
 
-				var sfxVolumeAmount = Math.round(sfxVolume * 100);
 				sfxBar.value = sfxVolume;
-				sfxAmountText.text = sfxVolumeAmount + "%";
+				sfxAmountText.text = Std.int(sfxVolume) + "%";
 			}
 
 			function clickVolumeDown()
@@ -165,11 +179,40 @@ class VolumeMenu extends ui.OptionsState.Page
 				updateVolume();
 			}
 
-		function saveData()
+			function clickMusicVolumeDown()
+				{
+					musicVolume -= 10;
+					if (musicVolume < 0)
+						musicVolume = 0;
+					FlxG.save.data.musicVolume = musicVolume;
+					updateVolume();
+				}
+
+			function clickMusicVolumeUp()
 			{
-				FlxG.save.data.FunkinMastervolume = FlxG.sound.volume;
-				FlxG.save.data.FunkinMusicVolume = musicVolume;
-				FlxG.save.data.FunkinSFXVolume = sfxVolume;
+				musicVolume += 10;
+				if (musicVolume > 100)
+					musicVolume = 100;
+				FlxG.save.data.musicVolume = musicVolume;
+				updateVolume();
+			}
+
+			function clickSFXVolumeDown()
+				{
+					sfxVolume -= 10;
+					if (sfxVolume < 0)
+						sfxVolume = 0;
+					FlxG.save.data.SFXVolume = sfxVolume;
+					updateVolume();
+				}
+
+			function clickSFXVolumeUp()
+			{
+				sfxVolume += 10;
+				if (sfxVolume > 100)
+					sfxVolume = 100;
+				FlxG.save.data.SFXVolume = sfxVolume;
+				updateVolume();
 			}
 
 		function clearData()
@@ -178,18 +221,16 @@ class VolumeMenu extends ui.OptionsState.Page
 					{
 						FlxG.save.erase();
 						FlxG.sound.volume = 0.5;
-						musicVolume = 0.5;
-						sfxVolume = 0.5;
+						musicVolume = 100;
+						sfxVolume = 100;
 					}
 			}
 
 		override function update(elapsed:Float)
 			{
 				super.update(elapsed);
-
+				FlxG.sound.music.volume * VolumeMenu.musicVolume * 0.1;
 				updateVolume();
-
-				saveData();
 				clearData();
 			}
 }

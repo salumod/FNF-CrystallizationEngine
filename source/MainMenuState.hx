@@ -21,6 +21,7 @@ import ui.MenuList;
 import ui.OptionsState;
 import ui.PreferencesMenu;
 import ui.Prompt;
+import ui.VolumeMenu;
 
 using StringTools;
 
@@ -245,6 +246,8 @@ class MainMenuState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		// FlxG.camera.followLerp = CoolUtil.camLerpShit(0.06);
+
+		FlxG.sound.music.volume * VolumeMenu.musicVolume * 0.1;
 
 		if (FlxG.sound.music.volume < 0.8)
 		{

@@ -49,7 +49,7 @@ import sys.thread.Thread;
 #if polymod
 import polymod.Polymod;
 #end
-
+import ui.VolumeMenu;
 class TitleState extends MusicBeatState
 {
 	public static var initialized:Bool = false;
@@ -99,7 +99,7 @@ class TitleState extends MusicBeatState
         add(txt);
 
 
-		FlxG.save.bind('funkin', 'ninjamuffin99');
+		FlxG.save.bind('funkin', 'The Funkin Crew');
 		PreferencesMenu.initPrefs();
 		PlayerSettings.init();
 		Highscore.load();
@@ -378,9 +378,6 @@ class TitleState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
-
-		if (FlxG.keys.justPressed.F)
-			FlxG.fullscreen = !FlxG.fullscreen;
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 

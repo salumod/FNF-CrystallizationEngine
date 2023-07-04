@@ -57,6 +57,7 @@ using StringTools;
 #if discord_rpc
 import Discord.DiscordClient;
 #end
+import ui.VolumeMenu;
 
 class PlayState extends MusicBeatState
 {
@@ -1863,6 +1864,8 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		FlxG.sound.music.volume * VolumeMenu.musicVolume * 0.1;
+		
 		// makes the lerp non-dependant on the framerate
 		// FlxG.camera.followLerp = CoolUtil.camLerpShit(0.04);
 		wiggleShit.update(elapsed);
