@@ -1863,7 +1863,11 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
-		
+		var version:FlxText = new FlxText(5, FlxG.height - 38, 0, "commit b41c4422", 12);
+		version.scrollFactor.set();
+		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(version);
+
 		// makes the lerp non-dependant on the framerate
 		// FlxG.camera.followLerp = CoolUtil.camLerpShit(0.04);
 		wiggleShit.update(elapsed);
