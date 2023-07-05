@@ -7,6 +7,7 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIState;
 import flixel.math.FlxRect;
 import flixel.util.FlxTimer;
+import ui.VolumeMenu;
 
 class MusicBeatState extends FlxUIState
 {
@@ -27,6 +28,7 @@ class MusicBeatState extends FlxUIState
 
 	override function update(elapsed:Float)
 	{
+		// FlxG.sound.music.volume = FlxG.sound.music.volume * VolumeMenu.musicVolume * 10;
 		// everyStep();
 		var oldStep:Int = curStep;
 
@@ -35,6 +37,11 @@ class MusicBeatState extends FlxUIState
 
 		if (oldStep != curStep && curStep >= 0)
 			stepHit();
+
+		FlxG.save.data.volume = FlxG.sound.volume;
+		FlxG.save.data.musicVolume = VolumeMenu.musicVolume;
+		FlxG.save.data.SFXVolume = VolumeMenu.sfxVolume;
+        FlxG.save.flush();
 
 		super.update(elapsed);
 	}

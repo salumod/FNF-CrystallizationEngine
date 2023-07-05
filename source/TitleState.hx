@@ -99,7 +99,6 @@ class TitleState extends MusicBeatState
         add(txt);
 
 
-		FlxG.save.bind('funkin', 'The Funkin Crew');
 		PreferencesMenu.initPrefs();
 		PlayerSettings.init();
 		Highscore.load();
@@ -324,8 +323,6 @@ class TitleState extends MusicBeatState
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
-		FlxG.mouse.visible = false;
-
 		if (initialized)
 			skipIntro();
 		else
@@ -363,7 +360,7 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.justPressed.EIGHT)
 			FlxG.switchState(new CutsceneAnimTestState());
 		#end
-
+		
 		/* 
 			if (FlxG.keys.justPressed.R)
 			{

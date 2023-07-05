@@ -43,6 +43,10 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		trace('Master-Volume: ' + FlxG.save.data.volume);
+		trace('Music-Volume: ' + FlxG.save.data.musicVolume);
+		trace('SFX-Volume: ' + FlxG.save.data.SFXVolume);
+		
 		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -246,8 +250,6 @@ class MainMenuState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		// FlxG.camera.followLerp = CoolUtil.camLerpShit(0.06);
-
-		FlxG.sound.music.volume * VolumeMenu.musicVolume * 0.1;
 
 		if (FlxG.sound.music.volume < 0.8)
 		{

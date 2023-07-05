@@ -18,8 +18,8 @@ import ui.AtlasText;
 
 class VolumeMenu extends ui.OptionsState.Page
 {
-	public static var musicVolume:Float = 100;
-	public static var sfxVolume:Float = 100;
+	public static var musicVolume:Float = 1;
+	public static var sfxVolume:Float = 1;
 	
 	var masterVolumeBar:FlxBar;
 	var masterVolumeAmountText:FlxText;
@@ -41,9 +41,7 @@ class VolumeMenu extends ui.OptionsState.Page
 		{
 			super();
 
-			FlxG.mouse.visible = true;
-
-			FlxG.save.bind("volume-save-data", "The Funkin Crew");
+			FlxG.save.bind("volume-save-data", "The-Funkin-Crew");
 
 			volumeTextThing(-300, 130, 'master-volume');
 			volumeTextThing(-300, 350, 'music-volume');
@@ -65,6 +63,11 @@ class VolumeMenu extends ui.OptionsState.Page
 		    desctxt.scrollFactor.set();
 		    desctxt.screenCenter(X);
 		    add(desctxt);
+
+			trace('Master-Volume: ' + FlxG.save.data.volume);
+			trace('Music-Volume: ' + FlxG.save.data.musicVolume);
+			trace('SFX-Volume: ' + FlxG.save.data.SFXVolume);
+			trace(FlxG.sound.music.volume * VolumeMenu.musicVolume * 10);
 		}
 	
 		public function volumeTextThing(x:Float, y:Float, volumeName:String)
@@ -158,79 +161,88 @@ class VolumeMenu extends ui.OptionsState.Page
 				masterVolumeBar.value = volume;
 				masterVolumeAmountText.text = volume + "%";
 
-				musicBar.value = musicVolume;
-				musicAmountText.text = Std.int(musicVolume) + "%";
+				musicBar.value = Math.round(musicVolume * 100);
+				musicAmountText.text = Std.int(musicVolume * 100) + "%";
 
-				sfxBar.value = sfxVolume;
-				sfxAmountText.text = Std.int(sfxVolume) + "%";
+				sfxBar.value = Math.round(sfxVolume * 100);
+				sfxAmountText.text = Std.int(sfxVolume * 100) + "%";
 			}
 
 			function clickVolumeDown()
 				{
 					FlxG.sound.volume -= 0.1;
-					FlxG.save.data.volume = FlxG.sound.volume;
 					updateVolume();
 				}
 
 			function clickVolumeUp()
 			{
 				FlxG.sound.volume += 0.1;
-				FlxG.save.data.volume = FlxG.sound.volume;
 				updateVolume();
 			}
 
 			function clickMusicVolumeDown()
 				{
-					musicVolume -= 10;
+					musicVolume -= 0.1;
 					if (musicVolume < 0)
 						musicVolume = 0;
-					FlxG.save.data.musicVolume = musicVolume;
 					updateVolume();
 				}
 
 			function clickMusicVolumeUp()
 			{
-				musicVolume += 10;
-				if (musicVolume > 100)
-					musicVolume = 100;
-				FlxG.save.data.musicVolume = musicVolume;
+				musicVolume += 0.1;
+				if (musicVolume > 1)
+					musicVolume = 1;
 				updateVolume();
 			}
 
 			function clickSFXVolumeDown()
 				{
-					sfxVolume -= 10;
+					sfxVolume -= 0.1;
 					if (sfxVolume < 0)
 						sfxVolume = 0;
-					FlxG.save.data.SFXVolume = sfxVolume;
 					updateVolume();
 				}
 
 			function clickSFXVolumeUp()
 			{
-				sfxVolume += 10;
-				if (sfxVolume > 100)
-					sfxVolume = 100;
-				FlxG.save.data.SFXVolume = sfxVolume;
+				sfxVolume += 0.1;
+				if (sfxVolume > 1)
+					sfxVolume = 1;
 				updateVolume();
-			}
-
-		function clearData()
-			{
-				if (FlxG.keys.pressed.C)
-					{
-						FlxG.save.erase();
-						FlxG.sound.volume = 0.5;
-						musicVolume = 100;
-						sfxVolume = 100;
-					}
 			}
 
 		override function update(elapsed:Float)
 			{
+				FlxG.save.bind("volume-save-data", "The-Funkin-Crew");
+
 				super.update(elapsed);
-				FlxG.sound.music.volume * VolumeMenu.musicVolume * 0.1;
+				
+				if (FlxG.save.data.volume = null)
+						FlxG.sound.volume = 0.5;
+						// FlxG.save.data.volume = 0.5;
+				else
+					FlxG.save.data.volume = FlxG.sound.volume;
+
+				if (FlxG.save.data.musicVolume = null)
+					FlxG.save.data.musicVolume = 1;
+				else
+					FlxG.save.data.musicVolume = musicVolume;
+
+				if (FlxG.save.data.SFXVolume = null)
+					FlxG.save.data.SFXVolume = 1;
+				else
+					FlxG.save.data.SFXVolume = sfxVolume;
+
+				FlxG.save.flush();
 				updateVolume();
-				clearData();
+
+				if (FlxG.keys.pressed.C)
+					{
+						FlxG.save.erase();
+						FlxG.sound.volume = 0.5;
+						musicVolume = 1;
+						sfxVolume = 1;
+					}
 			}
 }
