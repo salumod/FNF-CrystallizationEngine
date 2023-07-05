@@ -28,7 +28,6 @@ class MusicBeatState extends FlxUIState
 
 	override function update(elapsed:Float)
 	{
-		// FlxG.sound.music.volume = FlxG.sound.music.volume * VolumeMenu.musicVolume * 10;
 		// everyStep();
 		var oldStep:Int = curStep;
 

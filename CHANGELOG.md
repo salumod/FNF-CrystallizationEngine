@@ -4,14 +4,22 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [FNF-CrystallizationEngineV0.4]2023-05-29
+## [0.3.1]2023-07-5
 ### Added
-- Mod system(just assets)!
-- A full engine!
+- Week 8 song(Lit-Up)!
+- StageBG in story mode now! 
+- Time bar
+- Volume things(not used yet)
 ### Changed
-- BeatBar => timeBar
+- Diff change!
 ### Fixed
-- Error things in virson 0.3!
+- error song BPM!
+
+## [0.3]2023-04-02
+### Added
+- Week 8
+- Option things
+- More HUD
 
 ## [0.2.8]2023-02-01
 ### Added

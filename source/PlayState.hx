@@ -191,8 +191,6 @@ class PlayState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
-		FlxG.mouse.visible = false;
-
 		FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
 		FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
 
@@ -618,15 +616,15 @@ class PlayState extends MusicBeatState
 				var fgTank3:BGSprite = new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']);
 				foregroundSprites.add(fgTank3);
 
-			case 'score' | 'two-hot':
+			case 'score' | 'lit-up' | '2hot':
 					    defaultCamZoom = 0.9;
-						curStage = 'april';
+						curStage = 'news';
 
 						var bg:FlxSprite = new FlxSprite(-1600, -300).loadGraphic(Paths.image('town/bg'));
 		                bg.scrollFactor.set(0.9, 0.9);
 		                add(bg);
 
-						if (SONG.song.toLowerCase() == 'two-hot')
+						if (SONG.song.toLowerCase() == '2hot')
 						{
 							var hot:FlxSprite = new FlxSprite(-1000, -1000);
 		                    hot.frames = Paths.getSparrowAtlas('town/hot');
@@ -703,7 +701,7 @@ class PlayState extends MusicBeatState
 				gfVersion = 'gf-pixel';
 			case 'tank':
 				gfVersion = 'gf-tankmen';
-			case 'april':
+			case 'news':
 				gfVersion = 'nene';
 		}
 
@@ -823,7 +821,7 @@ class PlayState extends MusicBeatState
 					gf.x -= 170;
 					gf.y -= 75;
 				}
-			case 'april':
+			case 'news':
 				gf.y += 0;
 				boyfriend.y += 0;
 				dad.y += 290;
@@ -1518,6 +1516,7 @@ class PlayState extends MusicBeatState
 
 	function startSong():Void
 	{
+		FlxG.mouse.visible = false;
 		startingSong = false;
 
 		previousFrameTime = FlxG.game.ticks;
@@ -1864,7 +1863,6 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
-		FlxG.sound.music.volume * VolumeMenu.musicVolume * 0.1;
 		
 		// makes the lerp non-dependant on the framerate
 		// FlxG.camera.followLerp = CoolUtil.camLerpShit(0.04);

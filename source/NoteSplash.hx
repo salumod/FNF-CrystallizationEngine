@@ -29,7 +29,8 @@ class NoteSplash extends FlxSprite
 
 		setupNoteSplash(x, y, noteData);
 
-		// alpha = 0.75;
+		if (PreferencesMenu.preferences.get('notesplash-alpha'))
+		    alpha = 0.75;
 
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;

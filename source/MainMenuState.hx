@@ -43,10 +43,12 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		FlxG.mouse.visible = true;
+		
 		trace('Master-Volume: ' + FlxG.save.data.volume);
 		trace('Music-Volume: ' + FlxG.save.data.musicVolume);
 		trace('SFX-Volume: ' + FlxG.save.data.SFXVolume);
-		
+
 		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);

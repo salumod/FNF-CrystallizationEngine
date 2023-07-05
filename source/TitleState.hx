@@ -360,7 +360,7 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.justPressed.EIGHT)
 			FlxG.switchState(new CutsceneAnimTestState());
 		#end
-		
+
 		/* 
 			if (FlxG.keys.justPressed.R)
 			{
@@ -471,8 +471,8 @@ class TitleState extends MusicBeatState
 			}
 			#end
 
-		// if (FlxG.keys.justPressed.SPACE)
-		// swagShader.hasOutline = !swagShader.hasOutline;
+		if (FlxG.keys.justPressed.SPACE)
+		swagShader.hasOutline = !swagShader.hasOutline;
 
 		if (controls.UI_LEFT)
 			swagShader.update(-elapsed * 0.1);

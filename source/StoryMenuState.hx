@@ -1,5 +1,7 @@
 package;
 
+import openfl.display.Preloader.DefaultPreloader;
+import openfl.display.Stage;
 #if discord_rpc
 import Discord.DiscordClient;
 #end
@@ -32,7 +34,7 @@ class StoryMenuState extends MusicBeatState
 		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
 		['Senpai', 'Roses', 'Thorns'],
 		['Ugh', 'Guns', 'Stress'],
-		['Score', 'Two-Hot']
+		['Score', 'Lit-Up', '2Hot']
 	];
 	var curDifficulty:Int = 1;
 
@@ -82,6 +84,7 @@ class StoryMenuState extends MusicBeatState
 
 	var grpWeekText:FlxTypedGroup<MenuItem>;
 	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
+	var weekStage:FlxSprite;
 
 	var grpLocks:FlxTypedGroup<FlxSprite>;
 
@@ -101,7 +104,7 @@ class StoryMenuState extends MusicBeatState
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		}
 
-		persistentUpdate = persistentDraw = true;
+		weekStage = new FlxSprite(0, 0);
 
 		scoreText = new FlxText(10, 10, 0, "SCORE: 49324858", 36);
 		scoreText.setFormat("VCR OSD Mono", 32);
@@ -110,10 +113,13 @@ class StoryMenuState extends MusicBeatState
 		txtWeekTitle.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
 		txtWeekTitle.alpha = 0.7;
 
+		add(weekStage);
+
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		yellowBG = new FlxSprite(0, 0).makeGraphic(500, FlxG.height);
 		
 		yellowBG.color = 0xFFF9CF51;
+		yellowBG.alpha = 0.7;
 		add(yellowBG);
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
@@ -360,7 +366,8 @@ class StoryMenuState extends MusicBeatState
 			curDifficulty = 2;
 		if (curDifficulty > 2)
 			curDifficulty = 0;
-
+        if (curWeek >= 8)
+			curDifficulty = 2;
 		sprDifficulty.offset.x = 0;
 
 		switch (curDifficulty)
@@ -397,6 +404,8 @@ class StoryMenuState extends MusicBeatState
 		if (curWeek < 0)
 			curWeek = weekData.length - 1;
 
+		weekStage.loadGraphic(Paths.image('stages/stage' + curWeek));
+		
 		var bullShit:Int = 0;
 
 		for (item in grpWeekText.members)

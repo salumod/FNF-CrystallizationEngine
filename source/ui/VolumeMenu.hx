@@ -67,7 +67,8 @@ class VolumeMenu extends ui.OptionsState.Page
 			trace('Master-Volume: ' + FlxG.save.data.volume);
 			trace('Music-Volume: ' + FlxG.save.data.musicVolume);
 			trace('SFX-Volume: ' + FlxG.save.data.SFXVolume);
-			trace(FlxG.sound.music.volume * VolumeMenu.musicVolume * 10);
+			trace('trace 1:' + FlxG.sound.music.volume * VolumeMenu.musicVolume);
+			trace('trace 2:' + FlxG.save.data.volume * VolumeMenu.musicVolume);
 		}
 	
 		public function volumeTextThing(x:Float, y:Float, volumeName:String)

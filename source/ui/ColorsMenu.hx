@@ -7,14 +7,15 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import ui.AtlasText;
 import flixel.FlxSprite;
+import openfl.filters.ShaderFilter;
+import shaderslmfao.InvertShader;
 
 class ColorsMenu extends ui.OptionsState.Page
 {
 	var curSelected:Int = 0;
 
 	var grpNotes:FlxTypedGroup<Note>;
-
-	var headers = new FlxTypedGroup<AtlasText>();
+	var invertShader:InvertShader;
 
 	public function new()
 	{
@@ -23,7 +24,6 @@ class ColorsMenu extends ui.OptionsState.Page
 		grpNotes = new FlxTypedGroup<Note>();
 		add(grpNotes);
 
-		add(headers);
 
 		for (i in 0...4)
 		{
@@ -31,9 +31,6 @@ class ColorsMenu extends ui.OptionsState.Page
 
 			note.x = (130 * i) + i;
 			note.screenCenter(Y);
-            //this is two?
-			
-			headers.add(new BoldText(0, 0.4, "NOTES colors")).screenCenter(X);
 
 			var _effectSpr:FlxEffectSprite = new FlxEffectSprite(note, [new FlxOutlineEffect(FlxOutlineMode.FAST, FlxColor.WHITE, 4, 1)]);
 			add(_effectSpr);//this is note list 1
@@ -42,11 +39,11 @@ class ColorsMenu extends ui.OptionsState.Page
 			_effectSpr.x = i * 130;
 			_effectSpr.antialiasing = true;
 			_effectSpr.scale.x = _effectSpr.scale.y = 0.7;
-			// _effectSpr.setGraphicSize();
+			_effectSpr.setGraphicSize();
 			_effectSpr.height = note.height;
 			_effectSpr.width = note.width;
 
-			// _effectSpr.updateHitbox();
+			_effectSpr.updateHitbox();
 
 			grpNotes.add(note);
 		}
@@ -77,6 +74,11 @@ class ColorsMenu extends ui.OptionsState.Page
 			Note.arrowColors[curSelected] += -elapsed * 0.3;
 			NoteSplash.colors[curSelected] += -elapsed * 0.3;
 		}
+
+		if (FlxG.keys.pressed.I)
+			{
+				FlxG.camera.setFilters([new ShaderFilter(invertShader)]);
+			}
 
 		super.update(elapsed);
 	}
