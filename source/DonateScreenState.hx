@@ -64,6 +64,8 @@ class DonateScreenState extends MusicBeatState {
 
 	override function update(elapsed:Float)
 	{
+		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
+		
 		if (controls.BACK)
 		{
 			FlxG.switchState(new MainMenuState());

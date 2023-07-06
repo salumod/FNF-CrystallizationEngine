@@ -48,6 +48,7 @@ import shaderslmfao.BuildingShaders.BuildingShader;
 import shaderslmfao.BuildingShaders;
 import shaderslmfao.ColorSwap;
 import ui.PreferencesMenu;
+import ui.GameplayMenu;
 #if hxCodec
 import hxcodec.VideoHandler;
 #end
@@ -628,8 +629,8 @@ class PlayState extends MusicBeatState
 						{
 							var hot:FlxSprite = new FlxSprite(-1000, -1000);
 		                    hot.frames = Paths.getSparrowAtlas('town/hot');
-		                    hot.animation.addByPrefix('fa', 'fa', 24);
-		                    hot.animation.play('fa');
+		                    hot.animation.addByPrefix('fire', 'fa', 24);
+		                    hot.animation.play('fire');
 							hot.scrollFactor.set(0.9, 0.9);
 							hot.alpha = 0.6;
 		                    add(hot);
@@ -978,6 +979,12 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
+		var version:FlxText = new FlxText(5, FlxG.height - 18, 0, "commit b3b4d9e9", 12);
+		version.scrollFactor.set();
+		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(version);
+		version.visible = true;
+
 		grpNoteSplashes.cameras = [camHUD];
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -990,6 +997,7 @@ class PlayState extends MusicBeatState
 		iconP2.cameras = [camHUD];
 		rankTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
+        version.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -1397,7 +1405,7 @@ class PlayState extends MusicBeatState
 							else
 							{
 								senpaiEvil.animation.play('idle');
-								FlxG.sound.play(Paths.sound('Senpai_Dies'), 1, false, null, true, function()
+								FlxG.sound.play(Paths.sound('Senpai_Dies'), FlxG.save.data.volume * FlxG.save.data.SFMVolume, false, null, true, function()
 								{
 									remove(senpaiEvil);
 									remove(red);
@@ -1474,7 +1482,7 @@ class PlayState extends MusicBeatState
 
 			if (swagCounter > 0)
 				readySetGo(introSprPaths[swagCounter - 1]);
-			FlxG.sound.play(Paths.sound(introSndPaths[swagCounter]), 0.6);
+			FlxG.sound.play(Paths.sound(introSndPaths[swagCounter]), 1);
 
 			/* switch (swagCounter)
 			{
@@ -1518,7 +1526,7 @@ class PlayState extends MusicBeatState
 	{
 		FlxG.mouse.visible = false;
 		startingSong = false;
-
+		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
 		previousFrameTime = FlxG.game.ticks;
 
 		songNameTxt.text = SONG.song;
@@ -1863,10 +1871,7 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
-		var version:FlxText = new FlxText(5, FlxG.height - 38, 0, "commit b41c4422", 12);
-		version.scrollFactor.set();
-		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(version);
+		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
 
 		// makes the lerp non-dependant on the framerate
 		// FlxG.camera.followLerp = CoolUtil.camLerpShit(0.04);
@@ -2219,7 +2224,12 @@ class PlayState extends MusicBeatState
 					dad.holdTimer = 0;
 
 					if (SONG.needsVoices)
-						vocals.volume = 1;
+						{
+							if (GameplayMenu.getGameoption('debug'))
+								vocals.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
+							else
+								vocals.volume = FlxG.save.data.volume * FlxG.save.data.SFXVolume;
+						}
 
 					daNote.kill();
 					notes.remove(daNote, true);
@@ -2377,7 +2387,7 @@ class PlayState extends MusicBeatState
 					camHUD.visible = false;
 					inCutscene = true;
 
-					FlxG.sound.play(Paths.sound('Lights_Shut_off'), function()
+					FlxG.sound.play(Paths.sound('Lights_Shut_off'), FlxG.save.data.volume * FlxG.save.data.SFMVolume, function()
 					{
 						// no camFollow so it centers on horror tree
 						SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase() + difficulty, storyPlaylist[0]);
@@ -2406,7 +2416,7 @@ class PlayState extends MusicBeatState
 	{
 		var noteDiff:Float = Math.abs(strumtime - Conductor.songPosition);
 		// boyfriend.playAnim('hey');
-		vocals.volume = 1;
+		vocals.volume = FlxG.save.data.volume * FlxG.save.data.SFXVolume;
 
 		var rating:FlxSprite = new FlxSprite();
 		var score:Int = 350;
@@ -2625,7 +2635,7 @@ class PlayState extends MusicBeatState
 			}
 
 			if (dad.curCharacter == 'mom')
-				vocals.volume = 1;
+				vocals.volume = FlxG.save.data.volume * FlxG.save.data.SFXVolume;
 
 			if (SONG.song.toLowerCase() == 'tutorial')
 				tweenCamIn();
@@ -2785,8 +2795,8 @@ class PlayState extends MusicBeatState
 		if (!practiceMode)
 			songScore -= 10;
 
-		vocals.volume = 0;
-		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+		vocals.volume = 0;  
+		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1 * FlxG.save.data.volume * FlxG.save.data.SFMVolume, 0.2 * FlxG.save.data.volume * FlxG.save.data.SFMVolume));
 
 		/* boyfriend.stunned = true;
 
@@ -2866,7 +2876,7 @@ class PlayState extends MusicBeatState
 			});
 
 			note.wasGoodHit = true;
-			vocals.volume = 1;
+			vocals.volume = FlxG.save.data.volume * FlxG.save.data.SFXVolume;
 
 			if (!note.isSustainNote)
 			{
@@ -2890,7 +2900,7 @@ class PlayState extends MusicBeatState
 
 	function fastCarDrive()
 	{
-		FlxG.sound.play(Paths.soundRandom('carPass', 0, 1), 0.7);
+		FlxG.sound.play(Paths.soundRandom('carPass', 0, 1), 0.7 * FlxG.save.data.volume * FlxG.save.data.SFMVolume);
 
 		fastCar.velocity.x = (FlxG.random.int(170, 220) / FlxG.elapsed) * 3;
 		fastCarCanDrive = false;
@@ -2974,7 +2984,7 @@ class PlayState extends MusicBeatState
 
 	function lightningStrikeShit():Void
 	{
-		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
+		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2), FlxG.save.data.volume * FlxG.save.data.SFMVolume);
 		halloweenBG.animation.play('lightning');
 
 		lightningStrikeBeat = curBeat;
@@ -3253,4 +3263,9 @@ class PlayState extends MusicBeatState
 	}
 
 	var curLight:Int = 0;
+
+	override function destroy()
+		{
+			super.destroy();
+		}
 }

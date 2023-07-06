@@ -26,9 +26,9 @@ class GameOverSubstate extends MusicBeatSubstate
 			case 'school' | 'schoolEvil':
 				stageSuffix = '-pixel';
 				daBf = 'bf-pixel-dead';
-			case 'april':
+			case 'news':
 				daBf = 'pico-player';
-				stageSuffix = '-april';
+				stageSuffix = '-news';
 			default:
 				daBf = 'bf';
 		}

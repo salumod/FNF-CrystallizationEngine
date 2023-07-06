@@ -203,6 +203,8 @@ class FreeplayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
+		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
+
 		if (FlxG.keys.justPressed.E)
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
 
@@ -240,7 +242,7 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			FlxG.sound.play(Paths.sound('cancelMenu'));
+			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFMVolume);
 			FlxG.switchState(new MainMenuState());
 		}
 
@@ -283,7 +285,8 @@ class FreeplayState extends MusicBeatState
 	{
 
 		// NGio.logEvent('Fresh');
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
+		FlxG.sound.play(Paths.sound('scrollMenu'), FlxG.save.data.volume * FlxG.save.data.SFMVolume);
 
 		curSelected += change;
 
@@ -331,6 +334,11 @@ class FreeplayState extends MusicBeatState
 		diffText.x = Std.int(scoreBG.x + scoreBG.width / 2);
 		diffText.x -= (diffText.width / 2);
 	}
+
+	override function destroy()
+		{
+			super.destroy();
+		}
 }
 
 class SongMetadata

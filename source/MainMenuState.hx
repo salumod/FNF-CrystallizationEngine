@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxSave;
 import NGio;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -40,7 +41,6 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	var backspace:MenuItem;
-
 	override function create()
 	{
 		FlxG.mouse.visible = true;
@@ -59,7 +59,7 @@ class MainMenuState extends MusicBeatState
 
 		if (!FlxG.sound.music.playing)
 		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music('freakyMenu'), FlxG.save.data.volume * FlxG.save.data.musicVolume);
 		}
 
 		persistentUpdate = persistentDraw = true;
@@ -149,7 +149,7 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "commit b41c4422", 12);
+		var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "commit b3b4d9e9", 12);
 		version.scrollFactor.set();
 		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(version);
@@ -256,19 +256,15 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
 		// FlxG.camera.followLerp = CoolUtil.camLerpShit(0.06);
-
-		if (FlxG.sound.music.volume < 0.8)
-		{
-			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
-		}
 
 		if (_exiting)
 			menuItems.enabled = false;
 
 		if (controls.BACK && menuItems.enabled && !menuItems.busy)
 		{
-			FlxG.sound.play(Paths.sound('cancelMenu'));
+			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			backspace.animation.play('click');
 			backspace.offset.x = 50;
 			backspace.offset.y = 50;

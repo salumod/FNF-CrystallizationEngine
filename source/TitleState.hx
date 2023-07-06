@@ -235,29 +235,45 @@ class TitleState extends MusicBeatState
 		if (FlxG.sound.music == null || !FlxG.sound.music.playing)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-			FlxG.sound.music.fadeIn(4, 0, 0.7);
+			FlxG.sound.music.fadeIn(4, 0, 0.7 * FlxG.save.data.volume * FlxG.save.data.musicVolume);
 		}
 
 		Conductor.changeBPM(102);
 		persistentUpdate = true;
 
-		var bg:FlxSprite = new FlxSprite(Paths.image('menuDesat'));
-		bg.color = 0xFF161616;
-		bg.scrollFactor.x = 0;
-		bg.scrollFactor.y = 0.17;
-		bg.setGraphicSize(Std.int(bg.width * 1.2));
-		bg.updateHitbox();
-		bg.screenCenter();
-		bg.antialiasing = true;
-		add(bg);
-
 		logoBl = new FlxSprite(-150, -100);
-		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
+
+		if (FlxG.random.bool(50))
+			{
+
+				var bgSchool:FlxSprite = new FlxSprite(Paths.image('school'));
+				bgSchool.setGraphicSize(Std.int(bgSchool.width * 5));
+				bgSchool.scrollFactor.x = 0;
+	            bgSchool.scrollFactor.y = 0.17;
+				bgSchool.screenCenter();
+				add(bgSchool);
+
+				logoBl.frames = Paths.getSparrowAtlas('logoBumpin-pixel');
+			}
+		else
+			{
+				var bg:FlxSprite = new FlxSprite(Paths.image('stages/stage0'));
+				bg.scrollFactor.x = 0;
+		        bg.scrollFactor.y = 0.17;
+		        bg.setGraphicSize(Std.int(bg.width * 1.2));
+		        bg.updateHitbox();
+		        bg.screenCenter();
+		        bg.antialiasing = true;
+		        add(bg);
+
+				logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
+			}
 		logoBl.antialiasing = true;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
 		logoBl.animation.play('bump');
 
 		logoBl.updateHitbox();
+		logoBl.screenCenter();
 
 		logoBl.shader = swagShader.shader;
 		// logoBl.shader = alphaShader.shader;
@@ -273,6 +289,7 @@ class TitleState extends MusicBeatState
 		gfDance.antialiasing = true;
 		add(gfDance);
 
+		gfDance.visible = false;
 		gfDance.shader = swagShader.shader;
 
 		add(logoBl);
@@ -414,7 +431,7 @@ class TitleState extends MusicBeatState
 			titleText.animation.play('press');
 
 			FlxG.camera.flash(FlxColor.WHITE, 1);
-			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
+			FlxG.sound.play(Paths.sound('confirmMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume * 0.7);
 
 			transitioning = true;
 			// FlxG.sound.music.stop();

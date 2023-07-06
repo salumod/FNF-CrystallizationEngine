@@ -101,8 +101,12 @@ class StoryMenuState extends MusicBeatState
 		if (FlxG.sound.music != null)
 		{
 			if (!FlxG.sound.music.playing)
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				FlxG.sound.playMusic(Paths.music('freakyMenu'), FlxG.save.data.volume * FlxG.save.data.musicVolume);
 		}
+
+		trace('Master-Volume: ' + FlxG.save.data.volume);
+		trace('Music-Volume: ' + FlxG.save.data.musicVolume);
+		trace('SFX-Volume: ' + FlxG.save.data.SFXVolume);
 
 		weekStage = new FlxSprite(0, 0);
 
@@ -117,9 +121,8 @@ class StoryMenuState extends MusicBeatState
 
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		yellowBG = new FlxSprite(0, 0).makeGraphic(500, FlxG.height);
-		
 		yellowBG.color = 0xFFF9CF51;
-		yellowBG.alpha = 0.7;
+		yellowBG.alpha = 0.3;
 		add(yellowBG);
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
@@ -248,6 +251,8 @@ class StoryMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
+
 		// scoreText.setFormat('VCR OSD Mono', 32);
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.5);
 		FlxTween.cancelTweensOf(yellowBG);
@@ -304,7 +309,7 @@ class StoryMenuState extends MusicBeatState
 
 		if (controls.BACK && !movedBack && !selectedWeek)
 		{
-			FlxG.sound.play(Paths.sound('cancelMenu'));
+			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			movedBack = true;
 			FlxG.switchState(new MainMenuState());
 		}
@@ -322,7 +327,7 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (stopspamming == false)
 			{
-				FlxG.sound.play(Paths.sound('confirmMenu'));
+				FlxG.sound.play(Paths.sound('confirmMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 
 				grpWeekText.members[curWeek].startFlashing();
 				if (curWeek > 7)
@@ -405,7 +410,8 @@ class StoryMenuState extends MusicBeatState
 			curWeek = weekData.length - 1;
 
 		weekStage.loadGraphic(Paths.image('stages/stage' + curWeek));
-		
+		// weekStage.destroy();
+
 		var bullShit:Int = 0;
 
 		for (item in grpWeekText.members)
@@ -418,7 +424,7 @@ class StoryMenuState extends MusicBeatState
 			bullShit++;
 		}
 
-		FlxG.sound.play(Paths.sound('scrollMenu'));
+		FlxG.sound.play(Paths.sound('scrollMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 
 		updateText();
 	}
@@ -472,4 +478,10 @@ class StoryMenuState extends MusicBeatState
 
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
 	}
+
+	override function destroy()
+		{
+			super.destroy();
+		}
+
 }

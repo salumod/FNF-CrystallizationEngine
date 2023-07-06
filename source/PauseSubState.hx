@@ -123,7 +123,7 @@ class PauseSubState extends MusicBeatSubstate
 	override function update(elapsed:Float)
 	{
 		if (pauseMusic.volume < 0.5)
-			pauseMusic.volume += 0.01 * elapsed;
+			pauseMusic.volume += 0.01 * elapsed * FlxG.save.data.volume * FlxG.save.data.SFMVolume;
 
 		super.update(elapsed);
 
@@ -194,7 +194,7 @@ class PauseSubState extends MusicBeatSubstate
 
 	function changeSelection(change:Int = 0):Void
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		FlxG.sound.play(Paths.sound('scrollMenu'), FlxG.save.data.volume * FlxG.save.data.SFMVolume);
 
 		curSelected += change;
 

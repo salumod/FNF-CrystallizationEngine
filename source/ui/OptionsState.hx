@@ -131,6 +131,8 @@ class Page extends FlxGroup
 
 	override function update(elapsed:Float)
 	{
+		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
+
 		super.update(elapsed);
 
 		if (enabled)
@@ -141,7 +143,7 @@ class Page extends FlxGroup
 	{
 		if (canExit && controls.BACK)
 		{
-			FlxG.sound.play(Paths.sound('cancelMenu'));
+			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			exit();
 		}
 	}

@@ -56,6 +56,8 @@ class GameOverState extends FlxTransitionableState
 
 	override function update(elapsed:Float)
 	{
+		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
+		
 		var pressed:Bool = FlxG.keys.justPressed.ANY;
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;

@@ -110,13 +110,13 @@ class Events extends MusicBeatState
 
     static public function playSound(sound:String)
     {
-        FlxG.sound.play(Paths.sound(sound));
+        FlxG.sound.play(Paths.sound(sound), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
         trace("playSound: " + sound);
     }
 
     static public function playMusic(music:String)
     {
-        FlxG.sound.playMusic(Paths.music(music), 0);
+        FlxG.sound.playMusic(Paths.music(music), FlxG.save.data.volume * FlxG.save.data.musicVolume);
         trace("playMusic: " + music);
     }
 

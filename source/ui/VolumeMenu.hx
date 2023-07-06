@@ -215,6 +215,8 @@ class VolumeMenu extends ui.OptionsState.Page
 			{
 				FlxG.save.bind("volume-save-data", "The-Funkin-Crew");
 
+				FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
+				
 				super.update(elapsed);
 				
 				if (FlxG.save.data.volume = null)

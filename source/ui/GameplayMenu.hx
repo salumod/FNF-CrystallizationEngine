@@ -35,7 +35,8 @@ class GameplayMenu extends ui.OptionsState.Page
             add(items = new TextMenuList());
     
             createItem('Full screen', 'full-screen', false);
-    
+            createItem('Debug', 'debug', false);
+
             camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
             if (items != null)
                 camFollow.y = items.selectedItem.y;
@@ -64,6 +65,7 @@ class GameplayMenu extends ui.OptionsState.Page
     public static function initGameplay():Void
         {
             gameplayCheck('full-screen', false);
+            gameplayCheck('debug', false);
         }
 
     private function createItem(itemName:String, itemString:String, itemValue:Dynamic):Void
@@ -111,19 +113,6 @@ class GameplayMenu extends ui.OptionsState.Page
             gameoption.set(itemName, daSwap);
             checkboxes[items.selectedIndex].daValue = daSwap;
             trace('toggled? ' + gameoption.get(itemName));
-    
-            switch (itemName)
-            {
-                case 'fps-counter':
-                    if (getGameoption('fps-counter'))
-                        FlxG.stage.addChild(Main.fpsCounter);
-                    else
-                        FlxG.stage.removeChild(Main.fpsCounter);
-                case 'auto-pause':
-                    FlxG.autoPause = getGameoption('auto-pause');
-            }
-    
-            if (itemName == 'fps-counter') {}
         }
 
         private static function gameplayCheck(itemString:String, itemValue:Dynamic):Void
