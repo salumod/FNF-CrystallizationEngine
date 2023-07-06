@@ -1972,15 +1972,36 @@ class PlayState extends MusicBeatState
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 			#end
 		}
+		if (GameplayMenu.getGameoption('debug'))
+        {
+	        if (FlxG.keys.justPressed.SEVEN)
+		        {
+			        FlxG.switchState(new ChartingState());
 
-		if (FlxG.keys.justPressed.SEVEN)
-		{
-			FlxG.switchState(new ChartingState());
+			        #if discord_rpc
+			        DiscordClient.changePresence("Chart Editor", null, null, true);
+			        #end
+		        }
 
-			#if discord_rpc
-			DiscordClient.changePresence("Chart Editor", null, null, true);
-			#end
-		}
+			if (FlxG.keys.justPressed.ONE)
+				{
+					endSong();
+				}
+
+			if (FlxG.keys.justPressed.EIGHT)
+				{
+				/* 	 8 for opponent char
+				    SHIFT+8 for player char
+				    CTRL+SHIFT+8 for gf   */
+					if (FlxG.keys.pressed.SHIFT)
+					    if (FlxG.keys.pressed.CONTROL)
+						    FlxG.switchState(new AnimationDebug(gf.curCharacter));
+					    else 
+						    FlxG.switchState(new AnimationDebug(SONG.player1));
+					    else
+						    FlxG.switchState(new AnimationDebug(SONG.player2));
+				}
+        }
 
 		if (FlxG.keys.justPressed.NINE)
 			iconP1.swapOldIcon();
@@ -2023,20 +2044,7 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.PAGEDOWN)
 			changeSection(-1);
 		#end
-		if (FlxG.keys.justPressed.EIGHT)
-		{
-			/* 	 8 for opponent char
-			   SHIFT+8 for player char
-				 CTRL+SHIFT+8 for gf   */
-			if (FlxG.keys.pressed.SHIFT)
-				if (FlxG.keys.pressed.CONTROL)
-					FlxG.switchState(new AnimationDebug(gf.curCharacter));
-				else 
-					FlxG.switchState(new AnimationDebug(SONG.player1));
-			else
-				FlxG.switchState(new AnimationDebug(SONG.player2));
-		}
-		
+
 		if (generatedMusic && SONG.notes[Std.int(curStep / 16)] != null)
 		{
 			cameraRightSide = SONG.notes[Std.int(curStep / 16)].mustHitSection;
