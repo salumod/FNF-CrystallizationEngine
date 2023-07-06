@@ -149,7 +149,7 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "commit b3b4d9e9", 12);
+		var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "commit b c2b9d74", 12);
 		version.scrollFactor.set();
 		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(version);

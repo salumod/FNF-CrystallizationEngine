@@ -32,7 +32,7 @@ class OptionsState extends MusicBeatState
 		var gameplay = addPage(Gameplay, new GameplayMenu());
 		var preferences = addPage(Preferences, new PreferencesMenu());
 		var controls = addPage(Controls, new ControlsMenu());
-		var colors = addPage(Colors, new ColorsMenu());
+		// var colors = addPage(Colors, new ColorsMenu());
 		var volume = addPage(Volume, new VolumeMenu());
 
 		#if cpp
@@ -44,7 +44,7 @@ class OptionsState extends MusicBeatState
 			options.onExit.add(exitToMainMenu);
 			gameplay.onExit.add(switchPage.bind(Options));
 			controls.onExit.add(switchPage.bind(Options));
-			colors.onExit.add(switchPage.bind(Options));
+			// colors.onExit.add(switchPage.bind(Options));
 			preferences.onExit.add(switchPage.bind(Options));
 			volume.onExit.add(switchPage.bind(Options));
 			#if cpp
@@ -186,7 +186,7 @@ class OptionsMenu extends Page
 		createItem('preferences', function() switchPage(Preferences));
 		createItem("controls", function() switchPage(Controls));
 		createItem('volume', function() switchPage(Volume));
-		createItem('colors', function() switchPage(Colors));
+		// createItem('colors', function() switchPage(Colors));
 		#if cpp
 		createItem('mods', function() switchPage(Mods));
 		#end
@@ -205,7 +205,7 @@ class OptionsMenu extends Page
 		else
 			createItem("login", selectLogin);
 		#end
-		// createItem("exit", exit);
+		createItem("exit", exit);
 	}
 
 	function createItem(name:String, callback:Void->Void, fireInstantly = false)

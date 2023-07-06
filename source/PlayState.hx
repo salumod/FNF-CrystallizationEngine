@@ -979,7 +979,7 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		var version:FlxText = new FlxText(5, FlxG.height - 18, 0, "commit b3b4d9e9", 12);
+		var version:FlxText = new FlxText(5, FlxG.height - 18, 0, "commit b c2b9d74", 12);
 		version.scrollFactor.set();
 		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(version);
