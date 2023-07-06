@@ -2232,12 +2232,7 @@ class PlayState extends MusicBeatState
 					dad.holdTimer = 0;
 
 					if (SONG.needsVoices)
-						{
-							if (GameplayMenu.getGameoption('debug'))
-								vocals.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
-							else
-								vocals.volume = FlxG.save.data.volume * FlxG.save.data.SFXVolume;
-						}
+						vocals.volume = FlxG.save.data.volume * FlxG.save.data.SFXVolume;
 
 					daNote.kill();
 					notes.remove(daNote, true);
@@ -2884,7 +2879,11 @@ class PlayState extends MusicBeatState
 			});
 
 			note.wasGoodHit = true;
-			vocals.volume = FlxG.save.data.volume * FlxG.save.data.SFXVolume;
+
+			if (GameplayMenu.getGameoption('debug'))
+			    vocals.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
+            else
+				vocals.volume = FlxG.save.data.volume * FlxG.save.data.SFXVolume;
 
 			if (!note.isSustainNote)
 			{

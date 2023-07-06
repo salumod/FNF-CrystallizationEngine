@@ -35,7 +35,7 @@ class GameplayMenu extends ui.OptionsState.Page
             add(items = new TextMenuList());
     
             createItem('Full screen', 'full-screen', false);
-            createItem('Debug', 'debug', false);
+            createItem('Sound-Debug', 'debug', true);
 
             camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
             if (items != null)
@@ -65,7 +65,7 @@ class GameplayMenu extends ui.OptionsState.Page
     public static function initGameplay():Void
         {
             gameplayCheck('full-screen', false);
-            gameplayCheck('debug', false);
+            gameplayCheck('debug', true);
         }
 
     private function createItem(itemName:String, itemString:String, itemValue:Dynamic):Void
