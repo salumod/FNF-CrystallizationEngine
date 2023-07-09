@@ -33,8 +33,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 
 		add(items = new TextMenuList());
 
-		createPrefItem('loadingstate', 'show-loading-state', false);
-		createPrefItem('rating-text', 'show-rating', false);
+		createPrefItem('rating text', 'show-rating', false);
 		createPrefItem('naughtyness', 'censor-naughty', true);
 		createPrefItem('downscroll', 'downscroll', false);
 		createPrefItem('flashing menu', 'flashing-menu', true);
@@ -72,7 +71,6 @@ class PreferencesMenu extends ui.OptionsState.Page
 
 	public static function initPrefs():Void
 	{
-		preferenceCheck('show-loading-state', false);
 		preferenceCheck('show-rating', false);
 		preferenceCheck('censor-naughty', true);
 		preferenceCheck('downscroll', false);

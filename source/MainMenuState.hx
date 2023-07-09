@@ -151,7 +151,7 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		if (GameplayMenu.getGameoption('sound-debug'))
+		if (GameplayMenu.getGameoption('watermark'))
 			{
 				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "Compilation completed on 202379", 12);
 		        version.scrollFactor.set();

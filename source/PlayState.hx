@@ -998,8 +998,8 @@ class PlayState extends MusicBeatState
 		ratingTxt.scrollFactor.set();
 		ratingTxt.size = 20;
 		add(ratingTxt);
-		if (PreferencesMenu.getPref('show-rating'))
-		    ratingTxt.visible = true;
+		if (!(PreferencesMenu.getPref('show-rating')))
+		    ratingTxt.visible = false;
 
 		iconP1 = new HealthIcon(SONG.player1, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
@@ -1014,7 +1014,8 @@ class PlayState extends MusicBeatState
 		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(version);
 
-		version.visible = false;
+		if (!(GameplayMenu.getGameoption('watermark')))
+		    version.visible = false;
 
 		grpNoteSplashes.cameras = [camHUD];
 		strumLineNotes.cameras = [camHUD];
