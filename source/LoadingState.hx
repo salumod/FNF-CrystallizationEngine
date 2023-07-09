@@ -13,7 +13,7 @@ import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 import lime.utils.Assets as LimeAssets;
 import openfl.utils.Assets;
-import ui.PreferencesMenu;
+import ui.GameplayMenu;
 
 class LoadingState extends MusicBeatState
 {
@@ -180,7 +180,7 @@ class LoadingState extends MusicBeatState
 	{
 		Paths.setCurrentLevel("week" + PlayState.storyWeek);
 		
-		if (PreferencesMenu.getPref('show-loading-state'))
+		if (GameplayMenu.getGameoption('show-loading-state'))
 			{
 				var loaded = isSoundLoaded(getSongPath())
 			        && (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))

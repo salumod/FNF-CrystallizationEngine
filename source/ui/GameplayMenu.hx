@@ -35,7 +35,9 @@ class GameplayMenu extends ui.OptionsState.Page
             add(items = new TextMenuList());
     
             createItem('Full screen', 'full-screen', false);
-            createItem('Sound-Debug', 'debug', true);
+            createItem('Press Any Note miss', 'press-any-notemiss', false);
+            createItem('Sound Debug', 'sound-debug', false);
+            createItem('Loading State', 'show-loading-state', false);
 
             camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
             if (items != null)
@@ -65,7 +67,8 @@ class GameplayMenu extends ui.OptionsState.Page
     public static function initGameplay():Void
         {
             gameplayCheck('full-screen', false);
-            gameplayCheck('debug', true);
+            gameplayCheck('press-any-notemiss', false);
+            gameplayCheck('show-loading-state', false);
         }
 
     private function createItem(itemName:String, itemString:String, itemValue:Dynamic):Void

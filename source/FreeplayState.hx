@@ -267,8 +267,7 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = 2;
 		if (curDifficulty > 2)
 			curDifficulty = 0;
-        if (songs[curSelected].week >= 8)
-			curDifficulty = 2;
+
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 
 		PlayState.storyDifficulty = curDifficulty;

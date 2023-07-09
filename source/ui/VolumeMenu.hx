@@ -41,6 +41,8 @@ class VolumeMenu extends ui.OptionsState.Page
 		{
 			super();
 
+			FlxG.mouse.visible = true;
+
 			FlxG.save.bind("volume-save-data", "The-Funkin-Crew");
 
 			volumeTextThing(-300, 130, 'master-volume');

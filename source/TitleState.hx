@@ -257,7 +257,7 @@ class TitleState extends MusicBeatState
 			}
 		else
 			{
-				var bg:FlxSprite = new FlxSprite(Paths.image('stages/stage0'));
+				var bg:FlxSprite = new FlxSprite(Paths.image('stageimages/stage'));
 				bg.scrollFactor.x = 0;
 		        bg.scrollFactor.y = 0.17;
 		        bg.setGraphicSize(Std.int(bg.width * 1.2));

@@ -41,8 +41,8 @@ class DonateScreenState extends MusicBeatState {
 		add(menuItem);
 		menuItem.antialiasing = true;
 
-	    var txt:FlxText = new FlxText(0, 0, 0, "Your donations help us. \n Develop the funkiest game. \n This side of the internet. \n Support the funky cause. \n Give a lil bit back");
-		txt.setFormat(Paths.font("Font.ttf") , 60, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+	    var txt:FlxText = new FlxText(0, 0, 0, "Your donations help us. \nGive a lil bit back");
+		txt.setFormat(Paths.font("Font.ttf") , 50, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		txt.updateHitbox();
 		txt.screenCenter();
 		add(txt);

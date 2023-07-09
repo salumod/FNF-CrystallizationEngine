@@ -120,7 +120,7 @@ class DialogueBox extends FlxSpriteGroup
 			case 'roses':
 				hasDialog = true;
 				box = new FlxSprite(-20, 45);
-				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX'), FlxG.save.data.volume * FlxG.save.data.SFMVolume);
+				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 
 				box.frames = Paths.getSparrowAtlas(pixelBoxshit +'dialogueBox-senpaiMad');
 				box.animation.addByPrefix('normalOpen', 'SENPAI ANGRY IMPACT SPEECH instance', 24, false);
@@ -206,7 +206,7 @@ class DialogueBox extends FlxSpriteGroup
 			swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 32);
 			swagDialogue.font = pixelFont;
 			swagDialogue.color = 0xFF3F2021;
-			swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6 * FlxG.save.data.volume * FlxG.save.data.SFMVolume)];
+			swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), FlxG.save.data.volume * FlxG.save.data.SFXVolume)];
 
 			swagDialogue.borderStyle = SHADOW;
 		    swagDialogue.borderColor = 0xFFD89494;
@@ -216,11 +216,11 @@ class DialogueBox extends FlxSpriteGroup
 		{
 			swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 40);
 			swagDialogue.font = funkinFont;
-			swagDialogue.sounds = [FlxG.sound.load(Paths.sound('text'), 1.2 * FlxG.save.data.volume * FlxG.save.data.SFMVolume)];
-			swagDialogue.color = 0xFF424242;
+			swagDialogue.sounds = [FlxG.sound.load(Paths.sound('text'), FlxG.save.data.volume * FlxG.save.data.SFXVolume)];
+			swagDialogue.color = 0xFF000000;
 
 			swagDialogue.borderStyle = SHADOW;
-		    swagDialogue.borderColor = 0xFFD89494;
+		    swagDialogue.borderColor = 0xFFD8D8D8;
 		    swagDialogue.borderSize = 2;
 		}
 
@@ -236,7 +236,6 @@ class DialogueBox extends FlxSpriteGroup
 
 	override function update(elapsed:Float)
 	{
-		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
 
 		// HARD CODING CUZ IM STUPDI
 		if (PlayState.SONG.song.toLowerCase() == 'roses')
@@ -280,7 +279,7 @@ class DialogueBox extends FlxSpriteGroup
 		{
 			remove(dialogue);
 				
-			FlxG.sound.play(Paths.sound('clickText'), 0.8 * FlxG.save.data.volume * FlxG.save.data.SFMVolume);
+			FlxG.sound.play(Paths.sound('clickText'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 
 			if (dialogueList[1] == null && dialogueList[0] != null)
 			{

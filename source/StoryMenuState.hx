@@ -52,6 +52,18 @@ class StoryMenuState extends MusicBeatState
 		['none', 'none', 'none']
 	];
 
+	var weekStageNames:Array<String> = [
+		'stage',
+		'stage',
+		'spooky',
+		'philly',
+		'limo',
+		'mall',
+		'school',
+		'tank',
+		'news'
+	];
+
 	var weekNames:Array<String> = [
 		"",
 		"Daddy Dearest",
@@ -66,14 +78,14 @@ class StoryMenuState extends MusicBeatState
 
 	var weekColors:Array<FlxColor> = [
 		0xFFF9CF51,
-		0xff9271fd,
-		0xff223344,
-		0xFF941653,
-		0xFFfc96d7,
-		0xFFa0d1ff,
-		0xffff78bf,
-		0xfff6b604,
-		0xffff8949
+		0x969271fd,
+		0x91223344,
+		0x86941653,
+		0x9cfc96d7,
+		0xa2a0d1ff,
+		0x93ff78c0,
+		0x93f6b604,
+		0x91ff8949
 	];
 
 	var txtWeekTitle:FlxText;
@@ -83,9 +95,10 @@ class StoryMenuState extends MusicBeatState
 	var txtTracklist:FlxText;
 
 	var grpWeekText:FlxTypedGroup<MenuItem>;
+	var grpWeekStage:FlxTypedGroup<MenuStages>;
 	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
-	var weekStage:FlxSprite;
-
+	var weekStage:MenuStages;
+	
 	var grpLocks:FlxTypedGroup<FlxSprite>;
 
 	var difficultySelectors:FlxGroup;
@@ -108,16 +121,15 @@ class StoryMenuState extends MusicBeatState
 		trace('Music-Volume: ' + FlxG.save.data.musicVolume);
 		trace('SFX-Volume: ' + FlxG.save.data.SFXVolume);
 
-		weekStage = new FlxSprite(0, 0);
-
 		scoreText = new FlxText(10, 10, 0, "SCORE: 49324858", 36);
 		scoreText.setFormat("VCR OSD Mono", 32);
 
 		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
 		txtWeekTitle.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
 		txtWeekTitle.alpha = 0.7;
-
-		add(weekStage);
+		
+		grpWeekStage = new FlxTypedGroup<MenuStages>();
+		add(grpWeekStage);
 
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		yellowBG = new FlxSprite(0, 0).makeGraphic(500, FlxG.height);
@@ -127,13 +139,13 @@ class StoryMenuState extends MusicBeatState
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
-
+		
 		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
 		add(blackBarThingie);
 
 		var blackBarDOWNThingie:FlxSprite = new FlxSprite(0, FlxG.height * 0.86).makeGraphic(FlxG.width, 110, FlxColor.BLACK);
 		add(blackBarDOWNThingie);
-
+		
 		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>();
 
 		grpLocks = new FlxTypedGroup<FlxSprite>();
@@ -169,7 +181,6 @@ class StoryMenuState extends MusicBeatState
 				grpLocks.add(lock);
 			}
 		}
-
 		trace("Line 96");
 
 		for (char in 0...3)
@@ -253,7 +264,6 @@ class StoryMenuState extends MusicBeatState
 	{
 		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
 
-		// scoreText.setFormat('VCR OSD Mono', 32);
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.5);
 		FlxTween.cancelTweensOf(yellowBG);
 		FlxTween.color(yellowBG, .5, yellowBG.color, weekColors[curWeek], {ease: FlxEase.linear});
@@ -371,8 +381,6 @@ class StoryMenuState extends MusicBeatState
 			curDifficulty = 2;
 		if (curDifficulty > 2)
 			curDifficulty = 0;
-        if (curWeek >= 8)
-			curDifficulty = 2;
 		sprDifficulty.offset.x = 0;
 
 		switch (curDifficulty)
@@ -409,9 +417,9 @@ class StoryMenuState extends MusicBeatState
 		if (curWeek < 0)
 			curWeek = weekData.length - 1;
 
-		weekStage.loadGraphic(Paths.image('stages/stage' + curWeek));
-		// weekStage.destroy();
-
+		weekStage = new MenuStages(-1000, -500, weekStageNames[curWeek]);
+		grpWeekStage.add(weekStage);
+		
 		var bullShit:Int = 0;
 
 		for (item in grpWeekText.members)
@@ -478,10 +486,4 @@ class StoryMenuState extends MusicBeatState
 
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
 	}
-
-	override function destroy()
-		{
-			super.destroy();
-		}
-
 }

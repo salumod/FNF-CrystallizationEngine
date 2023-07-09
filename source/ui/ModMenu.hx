@@ -4,6 +4,7 @@ import flixel.FlxCamera;
 import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
@@ -37,7 +38,6 @@ class ModMenu extends ui.OptionsState.Page
 	var descBg:FlxSprite;
 	var sayBG:FlxSprite;
 	var sayText:FlxText;
-    var modicon:ModIcon;
 
 	public static var MOD_PATH = "mods";
 
@@ -175,10 +175,13 @@ class ModMenu extends ui.OptionsState.Page
 		for (i in modList)
 		{
 			trace(i.id);
-			var txt:ModMenuItem = new ModMenuItem(0, (70 * loopNum) + 30, 0, i.id, 50);
+			var txt:ModMenuItem = new ModMenuItem(0, (70 * loopNum) + 100, 0, i.id, 50);
 			txt.text = i.id;
 			if (enabledMods.contains(i.id))
 				txt.modEnabled = true;
+
+			var icon:Modicon  = new Modicon(txt.width + 100, txt.y - 100);
+			add(icon);
 
 			grpMods.add(txt);
 
@@ -206,7 +209,7 @@ class ModMenuItem extends FlxText
 	{
 		super(x, y, w, str, size);
 
-		setFormat(Paths.font("Funkin/Funkin.ttf"), 32, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		setFormat(Paths.font("Funkin/Funkin.ttf"), 50, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 	}
 
 	override function update(elapsed:Float)
@@ -220,19 +223,14 @@ class ModMenuItem extends FlxText
 	}
 }
 
-class ModIcon extends FlxSprite
+class Modicon extends FlxSpriteGroup
 {
 	var icon:FlxSprite;
 
-	public function new(x:Float, y:Float, str:String)
+	public function new(x:Float, y:Float)
 		{
 			super();
-
-	        icon = new FlxSprite(x + 300, y).loadGraphic(Paths.image(str));
-		}
-
-	override function update(elapsed:Float)
-		{
-			super.update(elapsed);
+			icon = new FlxSprite(x, y).loadGraphic(Paths.image('modIcon'));
+	        add(icon);
 		}
 }

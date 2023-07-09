@@ -34,6 +34,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 		add(items = new TextMenuList());
 
 		createPrefItem('loadingstate', 'show-loading-state', false);
+		createPrefItem('rating-text', 'show-rating', false);
 		createPrefItem('naughtyness', 'censor-naughty', true);
 		createPrefItem('downscroll', 'downscroll', false);
 		createPrefItem('flashing menu', 'flashing-menu', true);
@@ -42,7 +43,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 		createPrefItem('Auto Pause', 'auto-pause', false);
 		createPrefItem('Shader', 'shader-on', true);
 		createPrefItem('dialogue', 'dialogue', true);
-		createPrefItem('NoteSplash-ALPHA', 'notesplash-alpha', true);
+		createPrefItem('Note-Alpha', 'notes-alpha', true);
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
 			camFollow.y = items.selectedItem.y;
@@ -72,6 +73,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 	public static function initPrefs():Void
 	{
 		preferenceCheck('show-loading-state', false);
+		preferenceCheck('show-rating', false);
 		preferenceCheck('censor-naughty', true);
 		preferenceCheck('downscroll', false);
 		preferenceCheck('flashing-menu', true);
@@ -80,7 +82,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferenceCheck('auto-pause', false);
 		preferenceCheck('shader-on', true);
 		preferenceCheck('dialogue', true);
-		preferenceCheck('notesplash-alpha', true);
+		preferenceCheck('notes-alpha', true);
 		#if muted
 		setPref('master-volume', 0);
 		FlxG.sound.muted = true;

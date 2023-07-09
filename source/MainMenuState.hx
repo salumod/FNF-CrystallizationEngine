@@ -23,6 +23,7 @@ import ui.OptionsState;
 import ui.PreferencesMenu;
 import ui.Prompt;
 import ui.VolumeMenu;
+import ui.GameplayMenu;
 
 using StringTools;
 
@@ -43,7 +44,7 @@ class MainMenuState extends MusicBeatState
 	var backspace:MenuItem;
 	override function create()
 	{
-		FlxG.mouse.visible = true;
+		FlxG.mouse.visible = false;
 		
 		trace('Master-Volume: ' + FlxG.save.data.volume);
 		trace('Music-Volume: ' + FlxG.save.data.musicVolume);
@@ -135,9 +136,10 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...menuItems.length)
 		{
 			var menuItem = menuItems.members[i];
-			menuItem.x = 400;
-			menuItem.x += 100 * i;
+			menuItem.x = 0;
 			menuItem.y = top + spacing * i;
+
+			FlxTween.tween(menuItem, { x: 400}, 0.7);
 		}
 
 		FlxG.cameras.reset(new SwagCamera());
@@ -149,11 +151,13 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "commit b c2b9d74", 12);
-		version.scrollFactor.set();
-		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(version);
-
+		if (GameplayMenu.getGameoption('sound-debug'))
+			{
+				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "Compilation completed on 202379", 12);
+		        version.scrollFactor.set();
+		        version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		        add(version);
+			}
 		// NG.core.calls.event.logEvent('swag').send();
 
 		super.create();

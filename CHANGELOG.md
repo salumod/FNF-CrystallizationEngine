@@ -6,20 +6,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.1]2023-07-5
 ### Added
-- Week 8 song(Lit-Up)!
+- Week 8 song(LIT-UP)!
 - StageBG in story mode now! 
-- Time bar
-- Volume things(not used yet)
+- Time bar!
+- Volume things!
+- Mods icon into option menu.
 ### Changed
 - Diff change!
+- Note miss rating.
 ### Fixed
-- error song BPM!
+- Error song BPM in week 8!
 
 ## [0.3]2023-04-02
 ### Added
 - Week 8
 - Option things
-- More HUD
+- More rating things
+- beat bar.
+### Changed
+- Option menu.
 
 ## [0.2.8]2023-02-01
 ### Added
@@ -39,7 +44,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Easter eggs
 - readme's in desktop versions of the game
 ### Changed
-
 - New icons, old one was placeholder since October woops!
 - Made the transitions between the story mode levels more seamless.
 - Offset of the Newgrounds logo on boot screen.
