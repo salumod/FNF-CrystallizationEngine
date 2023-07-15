@@ -24,26 +24,25 @@ class ColorsMenu extends ui.OptionsState.Page
 		grpNotes = new FlxTypedGroup<Note>();
 		add(grpNotes);
 
-
 		for (i in 0...4)
 		{
 			var note:Note = new Note(0, i);
-
-			note.x = (130 * i) + i;
+			note.x = 400;
+			note.x += (130 * i) + i;
 			note.screenCenter(Y);
+			note.scrollFactor.set();
 
-			var _effectSpr:FlxEffectSprite = new FlxEffectSprite(note, [new FlxOutlineEffect(FlxOutlineMode.FAST, FlxColor.WHITE, 4, 1)]);
-			add(_effectSpr);//this is note list 1
+			// var _effectSpr:FlxEffectSprite = new FlxEffectSprite(note, [new FlxOutlineEffect(FlxOutlineMode.FAST, FlxColor.WHITE, 4, 1)]);
+			// add(_effectSpr);//this is note list 1
 
-			_effectSpr.y = 100;
-			_effectSpr.x = i * 130;
-			_effectSpr.antialiasing = true;
-			_effectSpr.scale.x = _effectSpr.scale.y = 0.7;
-			_effectSpr.setGraphicSize();
-			_effectSpr.height = note.height;
-			_effectSpr.width = note.width;
-
-			_effectSpr.updateHitbox();
+			// _effectSpr.x = note.x;
+			// _effectSpr.antialiasing = true;
+			// _effectSpr.scale.x = _effectSpr.scale.y = 0.7;
+			// _effectSpr.setGraphicSize();
+			// _effectSpr.height = note.height;
+			// _effectSpr.width = note.width;
+			// _effectSpr.y = note.y;
+			// _effectSpr.updateHitbox();
 
 			grpNotes.add(note);
 		}
@@ -52,9 +51,14 @@ class ColorsMenu extends ui.OptionsState.Page
 	override function update(elapsed:Float)
 	{
 		if (controls.UI_RIGHT_P)
-			curSelected += 1;
+			{
+				curSelected += 1;
+			}
+
 		if (controls.UI_LEFT_P)
-			curSelected -= 1;
+			{
+				curSelected -= 1;
+			}
 
 		if (curSelected < 0)
 			curSelected = grpNotes.members.length - 1;

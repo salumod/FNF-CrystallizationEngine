@@ -242,8 +242,8 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + 'southDialogue'));
 			case 'pico':
 				dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + 'picoDialogue'));
-			case 'philly':
-				dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + 'phillyDialogue'));
+			case 'philly-nice':
+				dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + 'philly-niceDialogue'));
 			case 'blammed':
 				dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + 'blammedDialogue'));
 			case 'satin-panties':
@@ -264,6 +264,8 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + 'thornsDialogue'));
 			case 'score':
 				dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + 'scoreDialogue'));
+			case '2hot':
+				dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + '2hotDialogue'));
 			case 'lit-up':
 				dialogue = CoolUtil.coolTextFile(Paths.txt(dialogueLoad + 'lit-upDialogue'));
 		}
@@ -289,7 +291,7 @@ class PlayState extends MusicBeatState
 				add(halloweenBG);
 
 				isHalloween = true;
-			case 'pico' | 'blammed' | 'philly':
+			case 'pico' | 'blammed' | 'philly-nice':
 				curStage = 'philly';
 
 				var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('philly/sky'));
@@ -435,10 +437,10 @@ class PlayState extends MusicBeatState
 				santa.antialiasing = true;
 				add(santa);
 
-				var bgrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('christmas/christmasWall'));
-				bgrtx.alpha = 0.7;
-				add(bgrtx);
-				bgrtx.cameras = [rtxHUD];
+				// var bgrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('christmas/christmasWall'));
+				// bgrtx.alpha = 0.7;
+				// add(bgrtx);
+				// bgrtx.cameras = [rtxHUD];
 
 			case 'winter-horrorland':
 				curStage = 'mallEvil';
@@ -459,10 +461,10 @@ class PlayState extends MusicBeatState
 				evilSnow.antialiasing = true;
 				add(evilSnow);
 
-				var bgrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('christmas/christmasWall'));
-				bgrtx.alpha = 0.1;
-				add(bgrtx);
-				bgrtx.cameras = [rtxHUD];
+				// var bgrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('christmas/christmasWall'));
+				// bgrtx.alpha = 0.1;
+				// add(bgrtx);
+				// bgrtx.cameras = [rtxHUD];
 
 			case 'senpai' | 'roses':
 				curStage = 'school';
@@ -961,6 +963,13 @@ class PlayState extends MusicBeatState
 		add(timeBG);
         add(songNameTxt);
 
+		if (!(PreferencesMenu.getPref('time-bar')))
+			{
+				timeBG.visible = false;
+				timeBar.visible = false;
+				songNameTxt.visible = false;
+			}
+
 		function reloadHealthBarColors()
 			{
 				healthBar.createFilledBar(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
@@ -1009,7 +1018,7 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		var version:FlxText = new FlxText(5, FlxG.height - 18, 0, "Compilation completed on 202379", 12);
+		var version:FlxText = new FlxText(5, FlxG.height - 18, 0, "FNF-CrystallizationEngine v0.5", 12);
 		version.scrollFactor.set();
 		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(version);
@@ -1060,7 +1069,7 @@ class PlayState extends MusicBeatState
 							intro(doof);
 						case 'pico':
 							intro(doof);
-						case 'philly':
+						case 'philly-nice':
 							intro(doof);
 						case 'blammed':
 							intro(doof);
@@ -1092,8 +1101,8 @@ class PlayState extends MusicBeatState
 							scoreIntro(doof);
 						case 'lit-up':
 							intro(doof);
-						case 'two-hot':
-							hotIntro();
+						case '2hot':
+							hotIntro(doof);
 				}
 			}
 			else
@@ -1341,8 +1350,10 @@ class PlayState extends MusicBeatState
 			});
 		}
 
-	function hotIntro()
+	function hotIntro(?dialogueBox:DialogueBox)
 		{
+			songNameTxt.text = 'dialogue';
+
 			Events.playSound('Boom');
 			camHUD.alpha = 0;
 			Events.cameraFade('rad', 1);
@@ -1350,7 +1361,13 @@ class PlayState extends MusicBeatState
 
 			FlxTween.tween(camHUD, {alpha: 10}, 3, {ease: FlxEase.backIn, onComplete: function(twe:FlxTween)
 				{
-					startCountdown();
+					if (dialogueBox != null)
+						{
+							inCutscene = true;
+							add(dialogueBox);
+						}
+						else
+							startCountdown();
 				}});
 		}
 
@@ -1440,7 +1457,7 @@ class PlayState extends MusicBeatState
 							else
 							{
 								senpaiEvil.animation.play('idle');
-								FlxG.sound.play(Paths.sound('Senpai_Dies'), FlxG.save.data.volume * FlxG.save.data.SFMVolume, false, null, true, function()
+								FlxG.sound.play(Paths.sound('Senpai_Dies'), FlxG.save.data.volume * FlxG.save.data.SFXVolume, false, null, true, function()
 								{
 									remove(senpaiEvil);
 									remove(red);
@@ -1973,21 +1990,20 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		if(songScore != 0)
+
+		if (sick != 0 || good != 0 || bad != 0 || shit != 0|| comboBreak !=0)
 			{
-		        rankTxt.text = "Score: " + songScore
+				rankTxt.text = "Score: " + songScore
 				    + ' | Misses: ' + misses
 		            + '| Accuracy: ' + truncateFloat(accuracy, 2) + "%"
 		            +  '| Rank: ' + rank;
-			}
 
-		if (sick != 0 || good != 0 || bad != 0 || shit != 0|| comboBreak !=0)
 				ratingTxt.text = 'sick: ' + sick 
 			        + '\ngood: ' + good
 			        + '\nbad: ' + bad 
 					+'\nshit: ' + shit 
 					+'\ncombo break: ' + comboBreak;
-
+			}
 			songInTime = FlxG.sound.music.time / FlxG.sound.music.length;
 
 		    // songNameTxt.text = '' + SONG.song;
@@ -2439,7 +2455,7 @@ class PlayState extends MusicBeatState
 					camHUD.visible = false;
 					inCutscene = true;
 
-					FlxG.sound.play(Paths.sound('Lights_Shut_off'), FlxG.save.data.volume * FlxG.save.data.SFMVolume, function()
+					FlxG.sound.play(Paths.sound('Lights_Shut_off'), FlxG.save.data.volume * FlxG.save.data.SFXVolume, function()
 					{
 						// no camFollow so it centers on horror tree
 						SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase() + difficulty, storyPlaylist[0]);
@@ -2858,7 +2874,7 @@ class PlayState extends MusicBeatState
 			songScore -= 10;
 
 		vocals.volume = 0;  
-		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1 * FlxG.save.data.volume * FlxG.save.data.SFMVolume, 0.2 * FlxG.save.data.volume * FlxG.save.data.SFMVolume));
+		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1 * FlxG.save.data.volume * FlxG.save.data.SFXVolume, 0.2 * FlxG.save.data.volume * FlxG.save.data.SFXVolume));
 
 		/* boyfriend.stunned = true;
 
@@ -2966,7 +2982,7 @@ class PlayState extends MusicBeatState
 
 	function fastCarDrive()
 	{
-		FlxG.sound.play(Paths.soundRandom('carPass', 0, 1), 0.7 * FlxG.save.data.volume * FlxG.save.data.SFMVolume);
+		FlxG.sound.play(Paths.soundRandom('carPass', 0, 1), 0.7 * FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 
 		fastCar.velocity.x = (FlxG.random.int(170, 220) / FlxG.elapsed) * 3;
 		fastCarCanDrive = false;
@@ -3050,7 +3066,7 @@ class PlayState extends MusicBeatState
 
 	function lightningStrikeShit():Void
 	{
-		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2), FlxG.save.data.volume * FlxG.save.data.SFMVolume);
+		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 		halloweenBG.animation.play('lightning');
 
 		lightningStrikeBeat = curBeat;

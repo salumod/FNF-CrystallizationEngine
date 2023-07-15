@@ -50,6 +50,7 @@ import sys.thread.Thread;
 import polymod.Polymod;
 #end
 import ui.VolumeMenu;
+
 class TitleState extends MusicBeatState
 {
 	public static var initialized:Bool = false;
@@ -70,6 +71,8 @@ class TitleState extends MusicBeatState
 
 	var video:Video;
 	var netStream:NetStream;
+
+	public static var onlineVersion:String;
 	private var overlay:Sprite;
 
 	override public function create():Void
@@ -79,7 +82,8 @@ class TitleState extends MusicBeatState
 		//FlxG.log.redirectTraces = true;
 		#end
 		startedIntro = false;
-
+		FlxG.mouse.visible = false;
+		
 		FlxG.game.focusLostFramerate = 60;
 
 		swagShader = new ColorSwap();
@@ -435,6 +439,35 @@ class TitleState extends MusicBeatState
 
 			transitioning = true;
 			// FlxG.sound.music.stop();
+
+			if (!OutdatedSubState.leftState)
+				{
+					// var ver = "v" + Application.current.meta.get('version');
+					var ver = "v0.5";
+                    var versionHttp = "https://raw.githubusercontent.com/salumod/FNF-CrystallizationEngine/week8/onlineVersion.txt";
+					var http = new haxe.Http(versionHttp);
+
+			        http.onData = function (data:String)
+			        {
+				        onlineVersion = data.split('\n')[0].trim();
+						trace(onlineVersion);
+				        if(ver.trim() !=  "v" + onlineVersion) 
+						{
+						    FlxG.switchState(new OutdatedSubState());
+				        }
+						else
+							FlxG.switchState(new MainMenuState());
+			        }
+
+			        http.onError = function (error) {
+				    trace('error: $error');
+			    }
+
+			        http.request();
+				}
+			else
+				FlxG.switchState(new MainMenuState());
+
 			#if web
 			/*
 			if (!OutdatedSubState.leftState)
@@ -467,10 +500,10 @@ class TitleState extends MusicBeatState
 				FlxG.switchState(new MainMenuState());
 			});
 			#else
-			new FlxTimer().start(1, function(tmr:FlxTimer)
-			{
-				FlxG.switchState(new MainMenuState());
-			});
+			// new FlxTimer().start(1, function(tmr:FlxTimer)
+			// {
+			// 	FlxG.switchState(new MainMenuState());
+			// });
 			#end
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
@@ -497,6 +530,9 @@ class TitleState extends MusicBeatState
 		if (controls.UI_RIGHT)
 			swagShader.update(elapsed * 0.1);
 
+		if (controls.BACK)
+			FlxG.switchState(new CloseGameState());
+		
 		super.update(elapsed);
 	}
 

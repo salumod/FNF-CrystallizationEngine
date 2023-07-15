@@ -159,6 +159,7 @@ class ChartingState extends MusicBeatState
 		var tabs = [
 			{name: "Song", label: 'Song'},
 			{name: "Section", label: 'Section'},
+			{name: "Event", label: 'Event'},
 			{name: "Note", label: 'Note'}
 		];
 
@@ -171,6 +172,7 @@ class ChartingState extends MusicBeatState
 
 		addSongUI();
 		addSectionUI();
+		addEventUI();
 		addNoteUI();
 
 		add(curRenderedNotes);
@@ -310,20 +312,10 @@ class ChartingState extends MusicBeatState
 		check_mustHitSection = new FlxUICheckBox(10, 30, null, null, "Must hit section", 100);
 		check_mustHitSection.name = 'check_mustHit';
 		check_mustHitSection.checked = true;
-		// _song.needsVoices = check_mustHit.checked;
-
-		check_altAnim = new FlxUICheckBox(10, 400, null, null, "Alt Animation", 100);
-		check_altAnim.name = 'check_altAnim';
-
-		check_changeBPM = new FlxUICheckBox(10, 60, null, null, 'Change BPM', 100);
-		check_changeBPM.name = 'check_changeBPM';
-
 		tab_group_section.add(stepperLength);
 		tab_group_section.add(stepperSectionBPM);
 		tab_group_section.add(stepperCopy);
 		tab_group_section.add(check_mustHitSection);
-		tab_group_section.add(check_altAnim);
-		tab_group_section.add(check_changeBPM);
 		tab_group_section.add(copyButton);
 		tab_group_section.add(clearSectionButton);
 		tab_group_section.add(swapSection);
@@ -348,6 +340,23 @@ class ChartingState extends MusicBeatState
 		tab_group_note.add(applyLength);
 
 		UI_box.addGroup(tab_group_note);
+	}
+
+	function addEventUI():Void
+	{
+		var tab_group_event = new FlxUI(null, UI_box);
+		tab_group_event.name = 'Event';
+	
+		check_altAnim = new FlxUICheckBox(10, 30, null, null, "Alt Animation in this section", 100);
+		check_altAnim.name = 'check_altAnim';
+	
+		check_changeBPM = new FlxUICheckBox(10, 60, null, null, 'Change BPM', 100);
+		check_changeBPM.name = 'check_changeBPM';
+
+		tab_group_event.add(check_altAnim);
+		tab_group_event.add(check_changeBPM);
+	
+		UI_box.addGroup(tab_group_event);
 	}
 
 	function loadSong(daSong:String):Void

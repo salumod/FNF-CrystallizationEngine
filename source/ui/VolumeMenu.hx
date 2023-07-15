@@ -54,6 +54,7 @@ class VolumeMenu extends ui.OptionsState.Page
 			barThing(540, FlxG.height * 0.8, 'sfx-volume', Std.int(FlxG.width * 0.7), Std.int(FlxG.height * 0.8), 513, Std.int(FlxG.height * 0.8) + 1.5);
 
 			descBg = new FlxSprite(0, FlxG.height - 90).makeGraphic(FlxG.width, 90, 0xFF000000);
+			descBg.scrollFactor.set();
 		    descBg.alpha = 0.4;
 		    add(descBg);
 		
@@ -85,6 +86,7 @@ class VolumeMenu extends ui.OptionsState.Page
 					volumeNameText.text = 'SFX volume';
 			}
 			volumeNameText.text = volumeNameText.text.toUpperCase();
+			volumeNameText.scrollFactor.set();
 			add(volumeNameText);
 		}
 
@@ -105,14 +107,18 @@ class VolumeMenu extends ui.OptionsState.Page
 						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickVolumeUp);
 						volumeDownButton.loadGraphic(Paths.image('Button_Down'));
 		                volumeUpButton.loadGraphic(Paths.image('Button_Up'));
+						volumeDownButton.scrollFactor.set();
+						volumeUpButton.scrollFactor.set();
 				        add(volumeDownButton);
 				        add(volumeUpButton);
 
 						masterVolumeBar = new FlxBar(x + 4, y + 4, LEFT_TO_RIGHT, barHeight - 8, barWidth - 8);
+						masterVolumeBar.scrollFactor.set();
 						masterVolumeBar.createFilledBar(FlxColor.BLACK, FlxColor.WHITE, true);
 						add(masterVolumeBar);
 			
 						masterVolumeAmountText = new FlxText(txtX, txtY, 200, (FlxG.sound.volume * 100) + "%", 30);
+						masterVolumeAmountText.scrollFactor.set();
 						masterVolumeAmountText.setFormat(Paths.font("Funkin/Funkin.ttf"), 40, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 						masterVolumeAmountText.borderColor = 0xff464646;
 						masterVolumeAmountText.y = masterVolumeBar.y + (masterVolumeBar.height / 2) - (masterVolumeAmountText.height / 2);
@@ -122,14 +128,18 @@ class VolumeMenu extends ui.OptionsState.Page
 						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickMusicVolumeUp);
 						volumeDownButton.loadGraphic(Paths.image('Button_Down'));
 		                volumeUpButton.loadGraphic(Paths.image('Button_Up'));
+						volumeDownButton.scrollFactor.set();
+						volumeUpButton.scrollFactor.set();
 				        add(volumeDownButton);
 				        add(volumeUpButton);
 
                         musicBar = new FlxBar(x + 4, y + 4, LEFT_TO_RIGHT, barHeight - 8, barWidth - 8);
 						musicBar.createFilledBar(FlxColor.BLACK, FlxColor.WHITE, true);
+						musicBar.scrollFactor.set();
 						add(musicBar);
 			
 						musicAmountText = new FlxText(txtX, txtY, 200, musicVolume * 100 + "%", 30);
+						musicAmountText.scrollFactor.set();
 						musicAmountText.setFormat(Paths.font("Funkin/Funkin.ttf"), 40, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 						musicAmountText.borderColor = 0xff464646;
 						musicAmountText.y = musicBar.y + (musicBar.height / 2) - (musicAmountText.height / 2);
@@ -139,14 +149,18 @@ class VolumeMenu extends ui.OptionsState.Page
 						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickSFXVolumeUp);
 						volumeDownButton.loadGraphic(Paths.image('Button_Down'));
 						volumeUpButton.loadGraphic(Paths.image('Button_Up'));
+						volumeDownButton.scrollFactor.set();
+						volumeUpButton.scrollFactor.set();
 						add(volumeDownButton);
 						add(volumeUpButton);
 
 						sfxBar = new FlxBar(x + 4, y + 4, LEFT_TO_RIGHT, barHeight - 8, barWidth - 8);
+						sfxBar.scrollFactor.set();
 						sfxBar.createFilledBar(FlxColor.BLACK, FlxColor.WHITE, true);
 						add(sfxBar);
 			
 						sfxAmountText = new FlxText(txtX, txtY, 200, sfxVolume * 100 + "%", 30);
+						sfxAmountText.scrollFactor.set();
 						sfxAmountText.setFormat(Paths.font("Funkin/Funkin.ttf"), 40, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 						sfxAmountText.borderColor = 0xff464646;
 						sfxAmountText.y = sfxBar.y + (sfxBar.height / 2) - (sfxAmountText.height / 2);

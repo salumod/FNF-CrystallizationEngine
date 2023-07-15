@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.mouse.FlxMouse;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -7,13 +8,21 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.util.FlxTimer;
+import flixel.ui.FlxButton;
+import flixel.tweens.FlxTween;
 
 class CloseGameState extends MusicBeatState
 {
+	var buttonYes:FlxButton;
+	var buttonNo:FlxButton;
+	var yes:FlxText;
+	var no:FlxText;
+
 	override public function create()
 	{
+		FlxG.mouse.visible = true;
+
 		var bg:FlxSprite = new FlxSprite(Paths.image('menuDesat'));
-		bg.color = 0xFF161616;
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.17;
 		bg.setGraphicSize(Std.int(bg.width * 1.2));
@@ -22,17 +31,33 @@ class CloseGameState extends MusicBeatState
 		bg.antialiasing = true;
 		add(bg);
 		
-		var txt = new FlxText(0, 0, 0, "Do you want to EXIT GAME?", 20);
+		var txt = new FlxText(0, 0, 0, "Do you want to EXIT?", 20);
 		txt.setFormat(Paths.font("Funkin/Funkin.ttf"), 70, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		txt.screenCenter();
 
-		var txt2 = new FlxText(490, 470, 0, "Y: yes      N: no", 20);
-		txt2.setFormat(Paths.font("Funkin/Funkin.ttf"), 50, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		
+		buttonYes = new FlxButton(200, 470, gameExit);
+		buttonYes.loadGraphic(Paths.image('Button'));
+		buttonYes.setGraphicSize(Std.int(bg.width * 0.2));
+		buttonYes.updateHitbox();
+
+		yes = new FlxText(270, 480, 0, "YES", 20);
+		yes.setFormat(Paths.font("Funkin/Funkin.ttf"), 70, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+
+		buttonNo = new FlxButton(800, 470, exitState);
+		buttonNo.loadGraphic(Paths.image('Button'));
+		buttonNo.setGraphicSize(Std.int(bg.width * 0.2));
+		buttonNo.updateHitbox();
+
+		no = new FlxText(890, 480, 0, "NO", 20);
+		no.setFormat(Paths.font("Funkin/Funkin.ttf"), 70, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
 		gamePrompt('normal');
-
+		add(buttonYes);
+		add(buttonNo);
 		add(txt);
-		add(txt2);
+        add(yes);
+		add(no);
 
 		super.create();
 	}
@@ -57,20 +82,53 @@ class CloseGameState extends MusicBeatState
 
 	function gameExit()
 		{
-			#if cpp
-			Sys.exit(0);
-			#end
-			FlxG.log.redirectTraces = true;
+			yes.color = FlxColor.YELLOW;
+			
+			FlxTween.tween(no, {alpha: 0}, 0.4, 
+				{
+					onComplete: function(twn:FlxTween)
+					{
+                        remove(no);
+						#if cpp
+			            Sys.exit(0);
+			            #end
+					}
+				});
+
+			FlxTween.tween(buttonNo, {alpha: 0}, 0.4, 
+				{
+					onComplete: function(twn:FlxTween)
+					{
+						remove(buttonNo);
+					}
+				});
+				FlxG.log.redirectTraces = true;
 		}
+
+	function exitState() 
+	{
+		no.color = FlxColor.YELLOW;
+
+		FlxTween.tween(yes, {alpha: 0}, 0.4, 
+		{
+			onComplete: function(twn:FlxTween)
+			{
+				remove(yes);
+				FlxG.switchState(new TitleState());
+			}
+		});
+
+		FlxTween.tween(buttonYes, {alpha: 0}, 0.4, 
+		{
+			onComplete: function(twn:FlxTween)
+			{
+				remove(buttonYes);
+			}
+		});
+	}
 
 	override function update(elapsed:Float):Void
 	{
-		if (FlxG.keys.justPressed.Y)
-			gameExit();
-
-		if (FlxG.keys.justPressed.N)
-			FlxG.switchState(new MainMenuState());
-
 		super.update(elapsed);
 	}
 }

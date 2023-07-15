@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Text_Boxes.png">
+	<!-- Created with Adobe Animate version 23.0.0.407 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Text Box Appear0000" x="0" y="0" width="248" height="144"/>
+	<SubTexture name="Text Box Appear0001" x="248" y="0" width="248" height="144"/>
+	<SubTexture name="Text Box Appear0002" x="496" y="0" width="248" height="144"/>
+	<SubTexture name="Text Box Appear0003" x="744" y="0" width="248" height="144"/>
+	<SubTexture name="Text Box Appear0004" x="744" y="0" width="248" height="144"/>
+	<SubTexture name="Text Box CLICK0000" x="0" y="144" width="248" height="144"/>
+	<SubTexture name="Text Box CLICK0001" x="0" y="144" width="248" height="144"/>
+	<SubTexture name="Text Box CLICK0002" x="248" y="144" width="248" height="144"/>
+	<SubTexture name="Text Box CLICK0003" x="744" y="0" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0000" x="496" y="144" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0001" x="744" y="144" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0002" x="744" y="144" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0003" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0004" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0005" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0006" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0007" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0008" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0009" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0010" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0011" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0012" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box Sentence End0013" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0000" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0001" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0002" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0003" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0004" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0005" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0006" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0007" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0008" x="248" y="144" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0009" x="248" y="144" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0010" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0011" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0012" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0013" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0014" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0015" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0016" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0017" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0018" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0019" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0020" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0021" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0022" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0023" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0024" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Text Box wait to click0025" x="0" y="288" width="248" height="144"/>
+</TextureAtlas>

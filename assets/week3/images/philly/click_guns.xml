@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="click_guns.png">
+	<!-- Created with Adobe Animate version 23.0.0.407 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="blood 10000" x="0" y="0" width="383" height="380"/>
+	<SubTexture name="blood 10001" x="383" y="0" width="383" height="380"/>
+	<SubTexture name="blood 10002" x="766" y="0" width="383" height="380"/>
+	<SubTexture name="blood 10003" x="1149" y="0" width="383" height="380"/>
+	<SubTexture name="blood 10004" x="1149" y="0" width="383" height="380"/>
+	<SubTexture name="blood 10005" x="1532" y="0" width="383" height="380"/>
+	<SubTexture name="blood 10006" x="1532" y="0" width="383" height="380"/>
+	<SubTexture name="blood 10007" x="0" y="380" width="383" height="380"/>
+	<SubTexture name="blood 10008" x="383" y="380" width="383" height="380"/>
+	<SubTexture name="blood 10009" x="766" y="380" width="383" height="380"/>
+	<SubTexture name="blood 10010" x="1149" y="380" width="383" height="380"/>
+	<SubTexture name="impact particles0000" x="1532" y="380" width="414" height="340"/>
+	<SubTexture name="impact particles0001" x="0" y="760" width="414" height="340"/>
+	<SubTexture name="impact particles0002" x="414" y="760" width="414" height="340"/>
+	<SubTexture name="impact particles0003" x="828" y="760" width="414" height="340"/>
+</TextureAtlas>

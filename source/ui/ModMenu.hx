@@ -38,12 +38,29 @@ class ModMenu extends ui.OptionsState.Page
 	var descBg:FlxSprite;
 	var sayBG:FlxSprite;
 	var sayText:FlxText;
-
+    var icon:Modicon;
 	public static var MOD_PATH = "mods";
 
 	public function new():Void
 	{
 		super();
+
+		menuCamera = new SwagCamera();
+		FlxG.cameras.add(menuCamera, false);
+		menuCamera.bgColor = 0x0;
+		camera = menuCamera;
+
+		camFollow = new FlxObject(FlxG.width / 2, 0, 70, 70);
+
+		menuCamera.follow(camFollow, null, 0.06);
+		var margin = 160;
+		menuCamera.deadzone.set(0, margin, menuCamera.width, 70);
+		menuCamera.minScrollY = 0;
+
+		// items.onChange.add(function(selected)
+		// {
+		// 	camFollow.y = selected.y;
+		// });
 
 		grpMods = new FlxTypedGroup<ModMenuItem>();
 		add(grpMods);
@@ -111,6 +128,8 @@ class ModMenu extends ui.OptionsState.Page
 	{
 		curSelected += change;
 
+		camFollow.y = modList.length;
+
 		if (curSelected >= modList.length)
 			curSelected = 0;
 		if (curSelected < 0)
@@ -175,13 +194,17 @@ class ModMenu extends ui.OptionsState.Page
 		for (i in modList)
 		{
 			trace(i.id);
-			var txt:ModMenuItem = new ModMenuItem(0, (70 * loopNum) + 100, 0, i.id, 50);
+			var txt:ModMenuItem = new ModMenuItem(0, (70 * loopNum) + 100, 0, i.id, 25);
 			txt.text = i.id;
 			if (enabledMods.contains(i.id))
 				txt.modEnabled = true;
 
-			var icon:Modicon  = new Modicon(txt.width + 100, txt.y - 100);
-			add(icon);
+			if (txt != null && !txt.modEnabled)
+            {
+				// camFollow.y = txt.y;
+	            icon = new Modicon(txt.width + 100, (40 * loopNum), i.id);
+			    add(icon);
+            }
 
 			grpMods.add(txt);
 
@@ -227,10 +250,10 @@ class Modicon extends FlxSpriteGroup
 {
 	var icon:FlxSprite;
 
-	public function new(x:Float, y:Float)
+	public function new(x:Float, y:Float, spr:String)
 		{
 			super();
-			icon = new FlxSprite(x, y).loadGraphic(Paths.image('modIcon'));
+			icon = new FlxSprite(x, y).loadGraphic(Paths.image(spr));
 	        add(icon);
 		}
 }

@@ -1,12 +1,17 @@
 package ui;
 
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.FlxObject;
 import flixel.FlxSubState;
+import flixel.FlxCamera;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.transition.TransitionData;
 import flixel.group.FlxGroup;
 import flixel.util.FlxSignal;
-
+import flixel.util.FlxTimer;
 // typedef OptionsState = OptionsMenu_old;
 // class OptionsState_new extends MusicBeatState
 class OptionsState extends MusicBeatState
@@ -28,11 +33,11 @@ class OptionsState extends MusicBeatState
 		menuBG.scrollFactor.set(0, 0);
 		add(menuBG);
 
-		var options = addPage(Options, new OptionsMenu(false));
+		var options = addPage(Options, new OptionsMenu(true));
 		var gameplay = addPage(Gameplay, new GameplayMenu());
 		var preferences = addPage(Preferences, new PreferencesMenu());
 		var controls = addPage(Controls, new ControlsMenu());
-		// var colors = addPage(Colors, new ColorsMenu());
+		var colors = addPage(Colors, new ColorsMenu());
 		var volume = addPage(Volume, new VolumeMenu());
 
 		#if cpp
@@ -44,7 +49,7 @@ class OptionsState extends MusicBeatState
 			options.onExit.add(exitToMainMenu);
 			gameplay.onExit.add(switchPage.bind(Options));
 			controls.onExit.add(switchPage.bind(Options));
-			// colors.onExit.add(switchPage.bind(Options));
+			colors.onExit.add(switchPage.bind(Options));
 			preferences.onExit.add(switchPage.bind(Options));
 			volume.onExit.add(switchPage.bind(Options));
 			#if cpp
@@ -83,7 +88,7 @@ class OptionsState extends MusicBeatState
 			currentPage.exists = true;
 	}
 
-	override function finishTransIn()
+	override public function finishTransIn()
 	{
 		super.finishTransIn();
 
@@ -176,20 +181,49 @@ class Page extends FlxGroup
 class OptionsMenu extends Page
 {
 	var items:TextMenuList;
+	var menuCamera:FlxCamera;
+	var camFollow:FlxObject;
 
 	public function new(showDonate:Bool)
 	{
 		super();
+		
+		// FlxTween.tween(items, {alpha: 1}, 0.4, {ease: FlxEase.quadOut});
+
+		menuCamera = new SwagCamera();
+		FlxG.cameras.add(menuCamera, true);
+		menuCamera.bgColor = 0x0;
+		camera = menuCamera;
 
 		add(items = new TextMenuList());
+
 		createItem('gameplay', function() switchPage(Gameplay));
 		createItem('preferences', function() switchPage(Preferences));
 		createItem("controls", function() switchPage(Controls));
 		createItem('volume', function() switchPage(Volume));
-		// createItem('colors', function() switchPage(Colors));
+		createItem('colors', function() switchPage(Colors));
 		#if cpp
 		createItem('mods', function() switchPage(Mods));
 		#end
+
+		// if (NGio.isLoggedIn)
+		// 	createItem("logout", selectLogout);
+		// else
+		// 	createItem("login", selectLogin);
+		
+		camFollow = new FlxObject(FlxG.width / 2, 0, 70, 70);
+		if (items != null)
+			camFollow.y = items.selectedItem.y;
+
+		menuCamera.follow(camFollow, null, 0.06);
+		var margin = 160;
+		menuCamera.deadzone.set(0, margin, menuCamera.width, 70);
+		menuCamera.minScrollY = 0;
+
+		items.onChange.add(function(selected)
+		{
+			camFollow.y = selected.y;
+		});
 
 		#if CAN_OPEN_LINKS
 		if (showDonate)

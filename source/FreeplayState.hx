@@ -242,7 +242,7 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFMVolume);
+			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			FlxG.switchState(new MainMenuState());
 		}
 
@@ -285,7 +285,7 @@ class FreeplayState extends MusicBeatState
 
 		// NGio.logEvent('Fresh');
 		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
-		FlxG.sound.play(Paths.sound('scrollMenu'), FlxG.save.data.volume * FlxG.save.data.SFMVolume);
+		FlxG.sound.play(Paths.sound('scrollMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 
 		curSelected += change;
 

@@ -43,6 +43,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 		createPrefItem('Shader', 'shader-on', true);
 		createPrefItem('dialogue', 'dialogue', true);
 		createPrefItem('Note-Alpha', 'notes-alpha', true);
+		createPrefItem('Time Bar', 'time-bar', true);
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
 			camFollow.y = items.selectedItem.y;
@@ -81,6 +82,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferenceCheck('shader-on', true);
 		preferenceCheck('dialogue', true);
 		preferenceCheck('notes-alpha', true);
+		preferenceCheck('time-bar', true);
 		#if muted
 		setPref('master-volume', 0);
 		FlxG.sound.muted = true;

@@ -46,10 +46,6 @@ class MainMenuState extends MusicBeatState
 	{
 		FlxG.mouse.visible = false;
 		
-		trace('Master-Volume: ' + FlxG.save.data.volume);
-		trace('Music-Volume: ' + FlxG.save.data.musicVolume);
-		trace('SFX-Volume: ' + FlxG.save.data.SFXVolume);
-
 		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -139,7 +135,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.x = 0;
 			menuItem.y = top + spacing * i;
 
-			FlxTween.tween(menuItem, { x: 400}, 0.7);
+			FlxTween.tween(menuItem, { x: 600}, 0.4);
 		}
 
 		FlxG.cameras.reset(new SwagCamera());
@@ -153,7 +149,7 @@ class MainMenuState extends MusicBeatState
 
 		if (GameplayMenu.getGameoption('watermark'))
 			{
-				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "Compilation completed on 202379", 12);
+				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "FNF-CrystallizationEngine v0.5", 12);
 		        version.scrollFactor.set();
 		        version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		        add(version);
@@ -270,13 +266,10 @@ class MainMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			backspace.animation.play('click');
-			backspace.offset.x = 50;
+			backspace.offset.x = 25;
 			backspace.offset.y = 50;
-			#if !web
 			FlxG.switchState(new CloseGameState());
-			#else
-		    FlxG.switchState(new TitleState());
-			#end
+		    // FlxG.switchState(new TitleState());
 		}
 
 		super.update(elapsed);

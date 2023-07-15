@@ -6,8 +6,11 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.animation.FlxAnimation;
 
-class DonateScreenState extends MusicBeatState {
+class DonateScreenState extends MusicBeatState 
+{
+	var menuItem:FlxSprite;
 
 	override function create()
 	{
@@ -28,21 +31,24 @@ class DonateScreenState extends MusicBeatState {
 
 		var tex = Paths.getSparrowAtlas('main_menu');
 
-		var menuItem:FlxSprite = new FlxSprite(0, 520);
+		menuItem = new FlxSprite(0, 520);
 		menuItem.frames = tex;
-		menuItem.animation.addByPrefix('selected', "donate idle", 24);
-        menuItem.animation.addByPrefix('kickstarter selected', "kickstarter idle", 24);
+		menuItem.animation.addByPrefix('donate idle', "donate idle", 24);
+		menuItem.animation.addByPrefix('donate selected', "donate selected", 24);
+		menuItem.animation.addByPrefix('kickstarter idle', "kickstarter idle", 24);
+        menuItem.animation.addByPrefix('kickstarter selected', "kickstarter selected", 24);
         if (VideoState.seenVideo)
-		    menuItem.animation.play('kickstarter selected');
+		    menuItem.animation.play('kickstarter idle');
         else
-            menuItem.animation.play('selected');
+            menuItem.animation.play('donate idle');
+
 		menuItem.updateHitbox();
 		menuItem.screenCenter(X);
 		add(menuItem);
 		menuItem.antialiasing = true;
 
-	    var txt:FlxText = new FlxText(0, 0, 0, "Your donations help us. \nGive a lil bit back");
-		txt.setFormat(Paths.font("Font.ttf") , 50, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+	    var txt:FlxText = new FlxText(0, 0, 0, "Give a lil bit back");
+		txt.setFormat(Paths.font("Font.ttf") , 60, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		txt.updateHitbox();
 		txt.screenCenter();
 		add(txt);
@@ -75,19 +81,38 @@ class DonateScreenState extends MusicBeatState {
 		{
 			#if linux
             if (VideoState.seenVideo)
-			    Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
+				{
+					menuItem.animation.play('kickstarter selected');
+					Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
+				}
             else
-		        Sys.command('/usr/bin/xdg-open', [
-			    "https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game",
-			    "&"
-		    ]);
+				{
+					menuItem.animation.play('donate selected');
+					Sys.command('/usr/bin/xdg-open', [
+						"https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game",
+						"&"]);
+				}
 			#else
             if (VideoState.seenVideo)
-                FlxG.openURL('https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game');
+				{
+					menuItem.animation.play('kickstarter selected');
+					FlxG.openURL('https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game');
+				}
             else
-			    FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
+				{
+					menuItem.animation.play('donate selected');
+					FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
+				}
 			#end
 		}
+
+		if (menuItem.animation.finished && menuItem.animation.curAnim.name == 'donate selected' || menuItem.animation.finished && menuItem.animation.curAnim.name == 'kickstarter selected')
+			{
+				if (VideoState.seenVideo)
+					menuItem.animation.play('kickstarter idle');
+				else
+					menuItem.animation.play('donate idle');
+			}
 
 		super.update(elapsed);
 	}
