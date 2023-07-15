@@ -347,7 +347,7 @@ class ChartingState extends MusicBeatState
 		var tab_group_event = new FlxUI(null, UI_box);
 		tab_group_event.name = 'Event';
 	
-		check_altAnim = new FlxUICheckBox(10, 30, null, null, "Alt Animation in this section", 100);
+		check_altAnim = new FlxUICheckBox(10, 30, null, null, "Alt Animation", 100);
 		check_altAnim.name = 'check_altAnim';
 	
 		check_changeBPM = new FlxUICheckBox(10, 60, null, null, 'Change BPM', 100);
