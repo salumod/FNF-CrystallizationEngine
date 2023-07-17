@@ -460,6 +460,7 @@ class TitleState extends MusicBeatState
 			        }
 
 			        http.onError = function (error) {
+					FlxG.switchState(new MainMenuState());
 				    trace('error: $error');
 			    }
 
