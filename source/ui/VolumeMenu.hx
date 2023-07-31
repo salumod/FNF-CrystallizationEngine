@@ -41,8 +41,6 @@ class VolumeMenu extends ui.OptionsState.Page
 		{
 			super();
 
-			FlxG.mouse.visible = true;
-
 			FlxG.save.bind("volume-save-data", "The-Funkin-Crew");
 
 			volumeTextThing(-300, 130, 'master-volume');
@@ -105,8 +103,8 @@ class VolumeMenu extends ui.OptionsState.Page
 					case 'master-volume':
 						var volumeDownButton = new FlxButton(buttonX, buttonY, clickVolumeDown);
 						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickVolumeUp);
-						volumeDownButton.loadGraphic(Paths.image('Button_Down'));
-		                volumeUpButton.loadGraphic(Paths.image('Button_Up'));
+						volumeDownButton.loadGraphic(Paths.image('gameUI/Button_Down'));
+		                volumeUpButton.loadGraphic(Paths.image('gameUI/Button_Up'));
 						volumeDownButton.scrollFactor.set();
 						volumeUpButton.scrollFactor.set();
 				        add(volumeDownButton);
@@ -126,8 +124,8 @@ class VolumeMenu extends ui.OptionsState.Page
 				    case 'music-volume':
 						var volumeDownButton = new FlxButton(buttonX, buttonY, clickMusicVolumeDown);
 						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickMusicVolumeUp);
-						volumeDownButton.loadGraphic(Paths.image('Button_Down'));
-		                volumeUpButton.loadGraphic(Paths.image('Button_Up'));
+						volumeDownButton.loadGraphic(Paths.image('gameUI/Button_Down'));
+		                volumeUpButton.loadGraphic(Paths.image('gameUI/Button_Up'));
 						volumeDownButton.scrollFactor.set();
 						volumeUpButton.scrollFactor.set();
 				        add(volumeDownButton);
@@ -147,8 +145,8 @@ class VolumeMenu extends ui.OptionsState.Page
 					case 'sfx-volume':
 						var volumeDownButton = new FlxButton(buttonX, buttonY, clickSFXVolumeDown);
 						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickSFXVolumeUp);
-						volumeDownButton.loadGraphic(Paths.image('Button_Down'));
-						volumeUpButton.loadGraphic(Paths.image('Button_Up'));
+						volumeDownButton.loadGraphic(Paths.image('gameUI/Button_Down'));
+						volumeUpButton.loadGraphic(Paths.image('gameUI/Button_Up'));
 						volumeDownButton.scrollFactor.set();
 						volumeUpButton.scrollFactor.set();
 						add(volumeDownButton);

@@ -50,10 +50,10 @@ class DialogueBox extends FlxSpriteGroup
 			case 'thorns':
 				FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8 * FlxG.save.data.volume * FlxG.save.data.musicVolume);
-			case 'tutorial' | 'pico' | 'philly': 
+			case 'tutorial': 
 			    FlxG.sound.playMusic(Paths.music('breakfast'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8 * FlxG.save.data.volume * FlxG.save.data.musicVolume);
-			case 'bopeebo' |'fresh' | 'blammed':
+			case 'bopeebo' |'fresh':
 				FlxG.sound.playMusic(Paths.music('dailogue'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8 * FlxG.save.data.volume * FlxG.save.data.musicVolume);
 		}
@@ -275,7 +275,7 @@ class DialogueBox extends FlxSpriteGroup
 			dialogueStarted = true;
 		}
 
-		if (FlxG.keys.justPressed.ENTER && dialogueEnded)
+		if (FlxG.keys.justPressed.ANY && dialogueEnded)
 		{
 			remove(dialogue);
 				
@@ -370,9 +370,7 @@ class DialogueBox extends FlxSpriteGroup
 
 			if (PlayState.SONG.song.toLowerCase() == 'senpai' || PlayState.SONG.song.toLowerCase() == 'roses' || PlayState.SONG.song.toLowerCase() == 'thorns')
 				{
-					if (box.animation.curAnim.name == 'normal' || 
-						box.animation.curAnim.name == 'click' && box.animation.curAnim.finished || 
-					    box.animation.curAnim.name == 'wait' && box.animation.curAnim.finished)
+					if (box.animation.curAnim != null)
 						box.animation.play('dialogue-end');
 				}
 
@@ -385,11 +383,8 @@ class DialogueBox extends FlxSpriteGroup
 
 		if (box.animation.curAnim != null)
 			{
-				if (box.animation.curAnim.name == 'dialogue-end' && box.animation.curAnim.finished || 
-					box.animation.curAnim.name == 'wait' && box.animation.curAnim.finished ||
-				    box.animation.curAnim.name == 'click' && box.animation.curAnim.finished)
-				    box.animation.play('normal');
-					trace('play Anim: normal');
+			    box.animation.play('normal');
+				trace('play Anim: normal');
 			}
 
 		switch (curCharacter)

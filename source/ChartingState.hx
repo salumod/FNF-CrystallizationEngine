@@ -1084,7 +1084,7 @@ class ChartingState extends MusicBeatState
 		if (PlayState.storyDifficulty == 2)
 			diffic = "-hard";
 
-		var data:String = Json.stringify(json);
+		var data:String = Json.stringify(json, "\t");
 
 		if ((data != null) && (data.length > 0))
 		{

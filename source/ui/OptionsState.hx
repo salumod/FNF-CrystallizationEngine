@@ -25,6 +25,8 @@ class OptionsState extends MusicBeatState
 
 	override function create()
 	{
+		FlxG.mouse.visible = true;
+		
 		var menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		menuBG.color = 0xFFea71fd;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
@@ -33,16 +35,12 @@ class OptionsState extends MusicBeatState
 		menuBG.scrollFactor.set(0, 0);
 		add(menuBG);
 
-		var options = addPage(Options, new OptionsMenu(true));
+		var options = addPage(Options, new OptionsMenu(false));
 		var gameplay = addPage(Gameplay, new GameplayMenu());
 		var preferences = addPage(Preferences, new PreferencesMenu());
 		var controls = addPage(Controls, new ControlsMenu());
 		var colors = addPage(Colors, new ColorsMenu());
 		var volume = addPage(Volume, new VolumeMenu());
-
-		#if cpp
-		var mods = addPage(Mods, new ModMenu());
-		#end
 
 		if (options.hasMultipleOptions())
 		{
@@ -52,9 +50,6 @@ class OptionsState extends MusicBeatState
 			colors.onExit.add(switchPage.bind(Options));
 			preferences.onExit.add(switchPage.bind(Options));
 			volume.onExit.add(switchPage.bind(Options));
-			#if cpp
-			mods.onExit.add(switchPage.bind(Options));
-			#end
 		}
 		else
 		{
@@ -201,11 +196,8 @@ class OptionsMenu extends Page
 		createItem('preferences', function() switchPage(Preferences));
 		createItem("controls", function() switchPage(Controls));
 		createItem('volume', function() switchPage(Volume));
-		createItem('colors', function() switchPage(Colors));
-		#if cpp
-		createItem('mods', function() switchPage(Mods));
-		#end
-
+		createItem('note color', function() switchPage(Colors));
+		createItem('latency', function() FlxG.switchState(new LatencyState()));
 		// if (NGio.isLoggedIn)
 		// 	createItem("logout", selectLogout);
 		// else
@@ -325,7 +317,7 @@ enum PageName
 	Gameplay;
 	Controls;
 	Volume;
+	Latency;
 	Colors;
-	Mods;
 	Preferences;
 }

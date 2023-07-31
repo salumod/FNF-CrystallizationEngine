@@ -51,7 +51,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		camFollow = new FlxObject(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y, 1, 1);
 		add(camFollow);
 
-		FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix));
+		FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 		Conductor.changeBPM(100);
 
 		// FlxG.camera.followLerp = 1;
@@ -115,7 +115,7 @@ class GameOverSubstate extends MusicBeatSubstate
 					bf.startedDeath = true;
 					coolStartDeath(0.2);
 
-					FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + randomGameover), 1, false, null, true, function()
+					FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + randomGameover), FlxG.save.data.volume * FlxG.save.data.SFXVolume, false, null, true, function()
 					{
 						if (!isEnding)
 							FlxG.sound.music.fadeIn(4, 0.2, 1);
@@ -125,7 +125,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
 				{
 					bf.startedDeath = true;
-					coolStartDeath();
+					coolStartDeath(FlxG.save.data.volume * FlxG.save.data.musicVolume);
 				}
 		}
 
@@ -157,7 +157,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			isEnding = true;
 			bf.playAnim('deathConfirm', true);
 			FlxG.sound.music.stop();
-			FlxG.sound.play(Paths.music('gameOverEnd' + stageSuffix));
+			FlxG.sound.play(Paths.music('gameOverEnd' + stageSuffix), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)
 			{
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()

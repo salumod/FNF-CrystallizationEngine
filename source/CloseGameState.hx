@@ -37,7 +37,7 @@ class CloseGameState extends MusicBeatState
 
 		
 		buttonYes = new FlxButton(200, 470, gameExit);
-		buttonYes.loadGraphic(Paths.image('Button'));
+		buttonYes.loadGraphic(Paths.image('gameUI/Normal_Button'));
 		buttonYes.setGraphicSize(Std.int(bg.width * 0.2));
 		buttonYes.updateHitbox();
 
@@ -45,7 +45,7 @@ class CloseGameState extends MusicBeatState
 		yes.setFormat(Paths.font("Funkin/Funkin.ttf"), 70, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
 		buttonNo = new FlxButton(800, 470, exitState);
-		buttonNo.loadGraphic(Paths.image('Button'));
+		buttonNo.loadGraphic(Paths.image('gameUI/Normal_Button'));
 		buttonNo.setGraphicSize(Std.int(bg.width * 0.2));
 		buttonNo.updateHitbox();
 

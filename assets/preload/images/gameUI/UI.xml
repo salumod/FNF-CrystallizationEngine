@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="UI.png">
+	<!-- Created with Adobe Animate version 23.0.0.407 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="O0000" x="0" y="0" width="41" height="41"/>
+	<SubTexture name="X0000" x="41" y="0" width="55" height="47"/>
+	<SubTexture name="□0000" x="0" y="47" width="47" height="48"/>
+	<SubTexture name="△0000" x="47" y="47" width="53" height="46"/>
+</TextureAtlas>

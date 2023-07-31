@@ -36,7 +36,8 @@ class GameplayMenu extends ui.OptionsState.Page
     
             createItem('Full screen', 'full-screen', false);
             createItem('Press Any Note miss', 'press-any-notemiss', false);
-            createItem('Watermark', 'watermark', false);
+            //This is not a release version,SO
+            // createItem('Watermark', 'watermark', false);
             createItem('Loading State', 'show-loading-state', false);
 
             camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
@@ -68,7 +69,6 @@ class GameplayMenu extends ui.OptionsState.Page
         {
             gameplayCheck('full-screen', false);
             gameplayCheck('press-any-notemiss', false);
-            gameplayCheck('watermark', false);
             gameplayCheck('show-loading-state', false);
         }
 

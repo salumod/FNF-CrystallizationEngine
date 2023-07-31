@@ -471,8 +471,8 @@ class Controls extends FlxActionSet
 				bindKeys(Control.NOTE_RIGHT, [D, FlxKey.RIGHT]);
 				bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
 				bindKeys(Control.BACK, [X, BACKSPACE, ESCAPE]);
-				bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
-				bindKeys(Control.RESET, [R]);
+				bindKeys(Control.PAUSE, [P, C]);
+				bindKeys(Control.RESET, [R, V]);
 			case Duo(true):
 				bindKeys(Control.UI_UP, [W]);
 				bindKeys(Control.UI_DOWN, [S]);

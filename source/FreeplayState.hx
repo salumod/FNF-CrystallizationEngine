@@ -1,5 +1,7 @@
 package;
 
+import GamePadButton.ButtonADD;
+import GamePadButton.GamePadOn;
 #if discord_rpc
 import Discord.DiscordClient;
 #end
@@ -34,7 +36,9 @@ class FreeplayState extends MusicBeatState
 	var scoreText:FlxText;
 	var diffText:FlxText;
 	var lerpScore:Float = 0;
+	var lerpAccuracy:Float = 0;
 	var intendedScore:Int = 0;
+	var intendedRating:Float = 0.00;
 
 	var coolColors:Array<Int> = [
 		0xff9271fd,
@@ -59,6 +63,8 @@ class FreeplayState extends MusicBeatState
 	var descBg:FlxSprite;
 	var desctxt:FlxText;
 	
+	var gamePad:GamePadOn;
+
 	override function create()
 	{
 		#if discord_rpcinitSonglist
@@ -103,7 +109,7 @@ class FreeplayState extends MusicBeatState
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
 			songText.isMenuItem = true;
 			songText.targetY = i;
-			songText.screenCenter(X); 
+
 			grpSongs.add(songText);
 
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
@@ -113,7 +119,7 @@ class FreeplayState extends MusicBeatState
 			iconArray.push(icon);
 			add(icon);
 
-			// songText.x += 40;
+			songText.x += 40;
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 			// songText.screenCenter(X);
 		}
@@ -127,7 +133,7 @@ class FreeplayState extends MusicBeatState
 		scoreBG.antialiasing = false;
 		add(scoreBG);
 
-		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
+		diffText = new FlxText(scoreText.x, scoreText.y - 100, 0, "", 24);
 		diffText.font = scoreText.font;
 		add(diffText);
 
@@ -146,16 +152,10 @@ class FreeplayState extends MusicBeatState
 
 		descBg = new FlxSprite(0, FlxG.height - 90).makeGraphic(FlxG.width, 90, 0xFF000000);
 		descBg.alpha = 0.4;
-		add(descBg);
-		
-		desctxt = new FlxText(descBg.x, descBg.y + 4, FlxG.width, "Press E to listen the song", 18);
-		desctxt.setFormat(Paths.font("Funkin/Funkin.ttf"), 24, FlxColor.WHITE, CENTER);
-		desctxt.borderColor = FlxColor.BLACK;
-		desctxt.borderSize = 1;
-		desctxt.borderStyle = OUTLINE;
-		desctxt.scrollFactor.set();
-		desctxt.screenCenter(X);
-		add(desctxt);
+		// add(descBg);
+
+		gamePad = new GamePadOn("PLAY", "LISTEN", "CLEAR", "BACK");
+		// add(gamePad);
 
 		var swag:Alphabet = new Alphabet(1, 0, "swag");
 
@@ -205,8 +205,13 @@ class FreeplayState extends MusicBeatState
 
 		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
 
-		if (FlxG.keys.justPressed.E)
+		if (controls.PAUSE)
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+
+		if (controls.RESET)
+			{
+				Highscore.resetSong(songs[curSelected].songName, curDifficulty);
+			}
 
 		if (FlxG.sound.music != null)
 		{
@@ -217,9 +222,10 @@ class FreeplayState extends MusicBeatState
 		}
 
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.4);
+		lerpAccuracy = CoolUtil.coolLerp(lerpAccuracy, intendedRating, 0.4);
 		bg.color = FlxColor.interpolate(bg.color, coolColors[songs[curSelected].week % coolColors.length], CoolUtil.camLerpShit(0.045));
 
-		scoreText.text = "PERSONAL BEST:" + Math.round(lerpScore);
+		scoreText.text = "PERSONAL BEST:" + Math.round(lerpScore) + "(ACCURACY: "+ Math.round(lerpAccuracy) + "%)";
 
 		positionHighscore();
 
@@ -269,6 +275,7 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = 0;
 
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
 
 		PlayState.storyDifficulty = curDifficulty;
 
@@ -297,6 +304,8 @@ class FreeplayState extends MusicBeatState
 		// selector.y = (70 * curSelected) + 30;
 
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
+
 		// lerpScore = 0;
 
 		var bullShit:Int = 0;

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="AMnotecombo.png">
+<SubTexture name="NOTE COMBO0000" x="0" y="0" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0001" x="810" y="0" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0002" x="1620" y="0" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0003" x="0" y="610" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0004" x="810" y="610" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0005" x="1620" y="610" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0006" x="0" y="1220" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0007" x="810" y="1220" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0008" x="1620" y="1220" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0009" x="0" y="1830" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0010" x="810" y="1830" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0011" x="1620" y="1830" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0012" x="0" y="2440" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<SubTexture name="NOTE COMBO0013" x="810" y="3050" width="810" height="610" frameX="0" frameY="0" frameWidth="810" frameHeight="610" />
+<!-- This is an empty loop! -->
+<!-- because I don't want to add more code for this ani -->
+<SubTexture name="NOTE COMBO0014" x="1" y="1" width="1" height="1" frameX="0" frameY="0" frameWidth="1" frameHeight="1" />
+</TextureAtlas>

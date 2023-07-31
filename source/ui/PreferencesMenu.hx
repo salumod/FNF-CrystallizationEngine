@@ -38,10 +38,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 		createPrefItem('downscroll', 'downscroll', false);
 		createPrefItem('flashing menu', 'flashing-menu', true);
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
-		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
-		createPrefItem('Shader', 'shader-on', true);
-		createPrefItem('dialogue', 'dialogue', true);
 		createPrefItem('Note-Alpha', 'notes-alpha', true);
 		createPrefItem('Time Bar', 'time-bar', true);
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
@@ -77,19 +74,13 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferenceCheck('downscroll', false);
 		preferenceCheck('flashing-menu', true);
 		preferenceCheck('camera-zoom', true);
-		preferenceCheck('fps-counter', true);
 		preferenceCheck('auto-pause', false);
-		preferenceCheck('shader-on', true);
-		preferenceCheck('dialogue', true);
 		preferenceCheck('notes-alpha', true);
 		preferenceCheck('time-bar', true);
 		#if muted
 		setPref('master-volume', 0);
 		FlxG.sound.muted = true;
 		#end
-
-		if (!getPref('fps-counter'))
-			FlxG.stage.removeChild(Main.fpsCounter);
 
 		FlxG.autoPause = getPref('auto-pause');
 	}
@@ -139,19 +130,6 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferences.set(prefName, daSwap);
 		checkboxes[items.selectedIndex].daValue = daSwap;
 		trace('toggled? ' + preferences.get(prefName));
-
-		switch (prefName)
-		{
-			case 'fps-counter':
-				if (getPref('fps-counter'))
-					FlxG.stage.addChild(Main.fpsCounter);
-				else
-					FlxG.stage.removeChild(Main.fpsCounter);
-			case 'auto-pause':
-				FlxG.autoPause = getPref('auto-pause');
-		}
-
-		if (prefName == 'fps-counter') {}
 	}
 
 	override function update(elapsed:Float)

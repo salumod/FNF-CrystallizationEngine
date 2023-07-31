@@ -1,5 +1,9 @@
 package;
 
+import GamePadButton.GamePadOn;
+import cpp.Function;
+import GamePadButton.ButtonADD;
+import flixel.group.FlxGroup;
 import flixel.util.FlxSave;
 import NGio;
 import flixel.FlxG;
@@ -41,7 +45,8 @@ class MainMenuState extends MusicBeatState
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
-	var backspace:MenuItem;
+    var gamePad:GamePadOn;
+
 	override function create()
 	{
 		FlxG.mouse.visible = false;
@@ -87,23 +92,13 @@ class MainMenuState extends MusicBeatState
 			add(magenta);
 		// magenta.scrollFactor.set();
 
-		backspace = new MenuItem(960, 600, 'backspace', null);
-		backspace.frames = Paths.getSparrowAtlas('backspace');
-		backspace.animation.addByPrefix('keep', 'backspace to exit', 24);
-		backspace.animation.addByPrefix('click', 'backspace PRESSED', 24);
-		backspace.animation.play('keep');
-		backspace.updateHitbox();
-        add(backspace);
-		backspace.antialiasing = true;
-		backspace.scrollFactor.set(0, 0);
-
 		menuItems = new MainMenuList();
 		add(menuItems);
+		
 		menuItems.onChange.add(onMenuItemChange);
 		menuItems.onAcceptPress.add(function(_)
 		{
 			FlxFlicker.flicker(magenta, 1.1, 0.15, false, true);
-			FlxFlicker.flicker(backspace, 1.1, 0.15, false, true);
 		});
 
 		menuItems.enabled = false; // disable for intro
@@ -114,9 +109,9 @@ class MainMenuState extends MusicBeatState
 		var hasPopupBlocker = #if web true #else false #end;
 
 		if (VideoState.seenVideo)
-			menuItems.createItem('kickstarter', function() startExitState(new DonateScreenState()));
+			menuItems.createItem('kickstarter', selectKickstarter);
 		else
-			menuItems.createItem('donate', function() startExitState(new DonateScreenState()));
+			menuItems.createItem('donate', selectDonate);
 		#end
 		menuItems.createItem('options', function() startExitState(new OptionsState()));
 		// #if newgrounds
@@ -135,7 +130,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.x = 0;
 			menuItem.y = top + spacing * i;
 
-			FlxTween.tween(menuItem, { x: 600}, 0.4);
+			FlxTween.tween(menuItem, {x: 600}, 0.2, {ease: FlxEase.quadIn});
 		}
 
 		FlxG.cameras.reset(new SwagCamera());
@@ -147,13 +142,16 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		if (GameplayMenu.getGameoption('watermark'))
-			{
-				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "FNF-CrystallizationEngine v0.5", 12);
+		gamePad = new GamePadOn("ENTER", "", "", "BACK");
+		// add(gamePad);
+		
+		// if (GameplayMenu.getGameoption('watermark'))
+		// 	{
+				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "(Build NE731)", 12);
 		        version.scrollFactor.set();
 		        version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		        add(version);
-			}
+			// }
 		// NG.core.calls.event.logEvent('swag').send();
 
 		super.create();
@@ -192,6 +190,23 @@ class MainMenuState extends MusicBeatState
 		openNgPrompt(NgPrompt.showSavedSessionFailed());
 	}
 
+	function selectDonate()
+	{
+		#if linux
+		Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
+		#else
+		FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
+		#end
+	}
+
+	function selectKickstarter()
+	{
+		#if linux
+		Sys.command('/usr/bin/xdg-open', ["https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game/", "&"]);
+		#else
+		FlxG.openURL('https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game/');
+		#end
+	}
 	/**
 	 * Calls openPrompt and redraws the login/logout button
 	 * @param prompt 
@@ -243,7 +258,7 @@ class MainMenuState extends MusicBeatState
 		{
 			if (menuItems.selectedIndex != item.ID)
 			{
-				FlxTween.tween(item, {alpha: 0}, duration, {ease: FlxEase.quadOut});
+				FlxTween.tween(item, {x: item.x + 1200}, 0.2, {ease: FlxEase.quadInOut});
 			}
 			else
 			{
@@ -265,11 +280,8 @@ class MainMenuState extends MusicBeatState
 		if (controls.BACK && menuItems.enabled && !menuItems.busy)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
-			backspace.animation.play('click');
-			backspace.offset.x = 25;
-			backspace.offset.y = 50;
-			FlxG.switchState(new CloseGameState());
-		    // FlxG.switchState(new TitleState());
+			// FlxG.switchState(new CloseGameState());
+		    FlxG.switchState(new TitleState());
 		}
 
 		super.update(elapsed);

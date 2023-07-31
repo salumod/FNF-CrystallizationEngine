@@ -10,25 +10,32 @@ class Highscore
 	public static var songScores:Map<String, Int> = new Map<String, Int>();
 	#end
 
+	public static var songRating:Map<String, Float> = new Map<String, Float>();
 
-	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0):Void
+	public static function resetSong(song:String, diff:Int = 0):Void
 	{
-		var formattedSong:String = formatSong(song, diff);
+	    var daSong:String = formatSong(song, diff);
+		setScore(daSong, 0);
+		setRating(daSong, 0);
+	}
+	
+	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0, ?rating:Float = 0):Void
+	{
+		var daSong:String = formatSong(song, diff);
 
-		#if newgrounds
-		// NGio.postScore(score, song);
-		#end
-
-		if (songScores.exists(formattedSong))
-		{
-			if (songScores.get(formattedSong) < score)
-				setScore(formattedSong, score);
+		if (songScores.exists(daSong)) {
+			if (songScores.get(daSong) < score) {
+				setScore(daSong, score);
+				if(rating >= 0) setRating(daSong, rating);
+			}
 		}
-		else
-			setScore(formattedSong, score);
+		else {
+			setScore(daSong, score);
+			if(rating >= 0) setRating(daSong, rating);
+		}
 	}
 
-	public static function saveWeekScore(week:Int = 1, score:Int = 0, ?diff:Int = 0):Void
+	public static function saveWeekScore(week:Int = 1, score:Int = 0, ?diff:Int = 0, ?rating:Float):Void
 	{
 		#if newgrounds
 		NGio.postScore(score, "Week " + week);
@@ -43,12 +50,14 @@ class Highscore
 		}
 		else
 			setScore(formattedSong, score);
+
+		setRating(formattedSong, rating);
 	}
 
 	/**
 	 * YOU SHOULD FORMAT SONG WITH formatSong() BEFORE TOSSING IN SONG VARIABLE
 	 */
-	static function setScore(formattedSong:String, score:Int):Void
+	static function setScore(formattedSong:String, score:Int, ?accuracy:Float):Void
 	{
 		/** GeoKureli
 		 * References to Highscore were wrapped in `#if !switch` blocks. I wasn't sure if this
@@ -62,6 +71,14 @@ class Highscore
 		FlxG.save.data.songScores = songScores;
 		FlxG.save.flush();
 		#end
+	}
+
+	static function setRating(song:String, rating:Float):Void
+	{
+	    // Reminder that I don't need to format this song, it should come formatted!
+		songRating.set(song, rating);
+		FlxG.save.data.songRating = songRating;
+		FlxG.save.flush();
 	}
 
 	public static function formatSong(song:String, diff:Int):String
@@ -84,7 +101,16 @@ class Highscore
 		return songScores.get(formatSong(song, diff));
 	}
 
-	public static function getWeekScore(week:Int, diff:Int):Int
+	public static function getRating(song:String, diff:Int):Float
+	{
+		var daSong:String = formatSong(song, diff);
+		if (!songRating.exists(daSong))
+				setRating(daSong, 0);
+	
+		return songRating.get(daSong);
+	}
+
+	public static function getWeekScore(week:Int, diff:Int, ?accuracy:Float):Int
 	{
 		if (!songScores.exists(formatSong('week' + week, diff)))
 			setScore(formatSong('week' + week, diff), 0);
@@ -97,6 +123,11 @@ class Highscore
 		if (FlxG.save.data.songScores != null)
 		{
 			songScores = FlxG.save.data.songScores;
+		}
+
+		if (FlxG.save.data.songRating != null)
+		{
+			songRating = FlxG.save.data.songRating;
 		}
 	}
 }
