@@ -25,8 +25,6 @@ class OptionsState extends MusicBeatState
 
 	override function create()
 	{
-		FlxG.mouse.visible = true;
-		
 		var menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		menuBG.color = 0xFFea71fd;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
@@ -268,47 +266,47 @@ class OptionsMenu extends Page
 	}
 	#end
 
-	#if newgrounds
-	function selectLogin()
-	{
-		openNgPrompt(NgPrompt.showLogin());
-	}
+	// #if newgrounds
+	// function selectLogin()
+	// {
+	// 	openNgPrompt(NgPrompt.showLogin());
+	// }
 
-	function selectLogout()
-	{
-		openNgPrompt(NgPrompt.showLogout());
-	}
+	// function selectLogout()
+	// {
+	// 	openNgPrompt(NgPrompt.showLogout());
+	// }
 
-	/**
-	 * Calls openPrompt and redraws the login/logout button
-	 * @param prompt 
-	 * @param onClose 
-	 */
-	public function openNgPrompt(prompt:Prompt, ?onClose:Void->Void)
-	{
-		var onPromptClose = checkLoginStatus;
-		if (onClose != null)
-		{
-			onPromptClose = function()
-			{
-				checkLoginStatus();
-				onClose();
-			}
-		}
+	// /**
+	//  * Calls openPrompt and redraws the login/logout button
+	//  * @param prompt 
+	//  * @param onClose 
+	//  */
+	// public function openNgPrompt(prompt:Prompt, ?onClose:Void->Void)
+	// {
+	// 	var onPromptClose = checkLoginStatus;
+	// 	if (onClose != null)
+	// 	{
+	// 		onPromptClose = function()
+	// 		{
+	// 			checkLoginStatus();
+	// 			onClose();
+	// 		}
+	// 	}
 
-		openPrompt(prompt, onPromptClose);
-	}
+	// 	openPrompt(prompt, onPromptClose);
+	// }
 
-	function checkLoginStatus()
-	{
-		// this shit don't work!! wtf!!!!
-		var prevLoggedIn = items.has("logout");
-		if (prevLoggedIn && !NGio.isLoggedIn)
-			items.resetItem("logout", "login", selectLogin);
-		else if (!prevLoggedIn && NGio.isLoggedIn)
-			items.resetItem("login", "logout", selectLogout);
-	}
-	#end
+	// function checkLoginStatus()
+	// {
+	// 	// this shit don't work!! wtf!!!!
+	// 	var prevLoggedIn = items.has("logout");
+	// 	if (prevLoggedIn && !NGio.isLoggedIn)
+	// 		items.resetItem("logout", "login", selectLogin);
+	// 	else if (!prevLoggedIn && NGio.isLoggedIn)
+	// 		items.resetItem("login", "logout", selectLogout);
+	// }
+	// #end
 }
 
 enum PageName

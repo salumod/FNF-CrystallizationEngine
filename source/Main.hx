@@ -6,7 +6,6 @@ import flixel.FlxState;
 import flixel.util.FlxSave;
 import openfl.Assets;
 import openfl.Lib;
-import Fpspackshow;
 import openfl.display.Sprite;
 import openfl.events.AsyncErrorEvent;
 import openfl.events.Event;
@@ -69,7 +68,7 @@ class Main extends Sprite
 	var netStream:NetStream;
 	private var overlay:Sprite;
 
-	public static var fpsCounter:Fpspackshow;
+	// public static var fpsCounter:FPS;
 
 	private function setupGame():Void
 	{
@@ -130,8 +129,9 @@ class Main extends Sprite
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
-		fpsCounter = new Fpspackshow(10, 3, 0xFFFFFF);
-		addChild(fpsCounter);
+		var fps:FPS = new FPS(10, 3, 0xffffff);
+        addChild(fps);
+		
 		#end
 		/* 
 			video = new Video();

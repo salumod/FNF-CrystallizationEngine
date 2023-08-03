@@ -285,10 +285,6 @@ class ChartingState extends MusicBeatState
 		stepperLength.value = _song.notes[curSection].lengthInSteps;
 		stepperLength.name = "section_length";
 
-		stepperSectionBPM = new FlxUINumericStepper(10, 80, 1, Conductor.bpm, 1, 999, 3);
-		stepperSectionBPM.value = Conductor.bpm;
-		stepperSectionBPM.name = 'section_bpm';
-
 		var stepperCopy:FlxUINumericStepper = new FlxUINumericStepper(110, 130, 1, 1, -999, 999, 0);
 
 		var copyButton:FlxButton = new FlxButton(10, 130, "Copy last section", function()
@@ -313,7 +309,6 @@ class ChartingState extends MusicBeatState
 		check_mustHitSection.name = 'check_mustHit';
 		check_mustHitSection.checked = true;
 		tab_group_section.add(stepperLength);
-		tab_group_section.add(stepperSectionBPM);
 		tab_group_section.add(stepperCopy);
 		tab_group_section.add(check_mustHitSection);
 		tab_group_section.add(copyButton);
@@ -353,9 +348,14 @@ class ChartingState extends MusicBeatState
 		check_changeBPM = new FlxUICheckBox(10, 60, null, null, 'Change BPM', 100);
 		check_changeBPM.name = 'check_changeBPM';
 
+		stepperSectionBPM = new FlxUINumericStepper(100, 60, 1, Conductor.bpm, 1, 999, 3);
+		stepperSectionBPM.value = Conductor.bpm;
+		stepperSectionBPM.name = 'section_bpm';
+
 		tab_group_event.add(check_altAnim);
 		tab_group_event.add(check_changeBPM);
-	
+		tab_group_event.add(stepperSectionBPM);
+
 		UI_box.addGroup(tab_group_event);
 	}
 

@@ -36,7 +36,7 @@ import Discord.DiscordClient;
 #end
 #if newgrounds
 import io.newgrounds.NG;
-import ui.NgPrompt;
+
 #end
 
 class MainMenuState extends MusicBeatState
@@ -49,8 +49,10 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-		FlxG.mouse.visible = false;
-		
+		// FlxG.mouse.visible = false;
+		FlxG.mouse.visible = true;
+		FlxG.mouse.load(Paths.image('gameUI/MOUSE'), 2);
+
 		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -147,7 +149,7 @@ class MainMenuState extends MusicBeatState
 		
 		// if (GameplayMenu.getGameoption('watermark'))
 		// 	{
-				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "(Build NE731)", 12);
+				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "(Build NE v0.1)", 12);
 		        version.scrollFactor.set();
 		        version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		        add(version);
@@ -175,20 +177,20 @@ class MainMenuState extends MusicBeatState
 	}
 
 	#if newgrounds
-	function selectLogin()
-	{
-		openNgPrompt(NgPrompt.showLogin());
-	}
+	// function selectLogin()
+	// {
+	// 	openNgPrompt(NgPrompt.showLogin());
+	// }
 
-	function selectLogout()
-	{
-		openNgPrompt(NgPrompt.showLogout());
-	}
+	// function selectLogout()
+	// {
+	// 	openNgPrompt(NgPrompt.showLogout());
+	// }
 
-	function showSavedSessionFailed()
-	{
-		openNgPrompt(NgPrompt.showSavedSessionFailed());
-	}
+	// function showSavedSessionFailed()
+	// {
+	// 	openNgPrompt(NgPrompt.showSavedSessionFailed());
+	// }
 
 	function selectDonate()
 	{
@@ -212,29 +214,29 @@ class MainMenuState extends MusicBeatState
 	 * @param prompt 
 	 * @param onClose 
 	 */
-	public function openNgPrompt(prompt:Prompt, ?onClose:Void->Void)
-	{
-		var onPromptClose = checkLoginStatus;
-		if (onClose != null)
-		{
-			onPromptClose = function()
-			{
-				checkLoginStatus();
-				onClose();
-			}
-		}
+	// public function openNgPrompt(prompt:Prompt, ?onClose:Void->Void)
+	// {
+	// 	var onPromptClose = checkLoginStatus;
+	// 	if (onClose != null)
+	// 	{
+	// 		onPromptClose = function()
+	// 		{
+	// 			checkLoginStatus();
+	// 			onClose();
+	// 		}
+	// 	}
 
-		openPrompt(prompt, onPromptClose);
-	}
+	// 	openPrompt(prompt, onPromptClose);
+	// }
 
-	function checkLoginStatus()
-	{
-		var prevLoggedIn = menuItems.has("logout");
-		if (prevLoggedIn && !NGio.isLoggedIn)
-			menuItems.resetItem("login", "logout", selectLogout);
-		else if (!prevLoggedIn && NGio.isLoggedIn)
-			menuItems.resetItem("logout", "login", selectLogin);
-	}
+	// function checkLoginStatus()
+	// {
+	// 	var prevLoggedIn = menuItems.has("logout");
+	// 	if (prevLoggedIn && !NGio.isLoggedIn)
+	// 		menuItems.resetItem("login", "logout", selectLogout);
+	// 	else if (!prevLoggedIn && NGio.isLoggedIn)
+	// 		menuItems.resetItem("logout", "login", selectLogin);
+	// }
 	#end
 
 	public function openPrompt(prompt:Prompt, onClose:Void->Void)

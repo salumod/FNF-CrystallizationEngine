@@ -19,7 +19,7 @@ import openfl.text.TextFormat;
  * @author Kirill Poletaev
  */
 
-class Fpspackshow extends TextField
+class FPS extends TextField
 
 {
 

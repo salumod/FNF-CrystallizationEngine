@@ -21,6 +21,7 @@ class CloseGameState extends MusicBeatState
 	override public function create()
 	{
 		FlxG.mouse.visible = true;
+		FlxG.mouse.load(Paths.image('gameUI/MOUSE'));
 
 		var bg:FlxSprite = new FlxSprite(Paths.image('menuDesat'));
 		bg.scrollFactor.x = 0;

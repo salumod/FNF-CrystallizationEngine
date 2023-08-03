@@ -286,6 +286,9 @@ class TitleState extends MusicBeatState
 
 		gfDance.shader = swagShader.shader;
 
+		// swagShader.colorToReplace = 0xFFF939A9;
+		// swagShader.newColor = 0xFFAE00FF;
+
 		titleText = new FlxText(100, FlxG.height * 0.8);
 		titleText.text = "Press Enter to Begin";
 		titleText.setFormat(Paths.font("statusplz.ttf"), 100);

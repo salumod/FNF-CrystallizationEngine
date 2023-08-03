@@ -201,6 +201,8 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		FlxG.mouse.visible = false;
+		
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
@@ -671,13 +673,7 @@ class PlayState extends MusicBeatState
 								add(hotrtx);
 								hotrtx.cameras = [rtxHUD];
 						}
-                        else
-						{
-							var bgrtx:FlxSprite = new FlxSprite(-1700, -400).loadGraphic(Paths.image('town/rtx/bgrtx'));
-							bgrtx.alpha = 0.9;
-							add(bgrtx);
-							bgrtx.cameras = [rtxHUD];
-						}
+
 						var fg:FlxSprite = new FlxSprite(-1600, -300).loadGraphic(Paths.image('town/fg'));
 		                fg.scrollFactor.set(0.9, 0.9);
 		                add(fg);
@@ -1024,7 +1020,7 @@ class PlayState extends MusicBeatState
 		rankTxt.alpha = 0;
 		add(rankTxt);
 
-		var version:FlxText = new FlxText(5, FlxG.height - 18, 0, "(Build NE731)", 12);
+		var version:FlxText = new FlxText(5, FlxG.height - 18, 0, "(Build NE v0.1)", 12);
 		version.scrollFactor.set();
 		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(version);
@@ -1557,7 +1553,6 @@ class PlayState extends MusicBeatState
 
 	function startSong():Void
 	{
-		FlxG.mouse.visible = false;
 		startingSong = false;
 		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
 		previousFrameTime = FlxG.game.ticks;
@@ -1990,6 +1985,7 @@ class PlayState extends MusicBeatState
 					+'\nshit: ' + shit 
 					+'\ncombo break: ' + comboBreak;
 			}
+
 			songInTime = FlxG.sound.music.time / FlxG.sound.music.length;
 
 		    // songNameTxt.text = '' + SONG.song;
@@ -2402,7 +2398,8 @@ class PlayState extends MusicBeatState
 			Highscore.saveScore(SONG.song, songScore, storyDifficulty, accuracy);
 		}
 
-        openSubState(new EndSongSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+		// paused = true;
+        // openSubState(new EndSongSubstate());
 
 				if (isStoryMode)
 					{
@@ -3006,12 +3003,16 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function comboNum(daLoop:Int) 
+	function aniCombo(daLoop:Int) 
 	{
+		amCombo.visible = true;
+		amCombo.animation.play('appear', true);
+
 		numCombo.visible= true;
 
 		var tempCombo:Int = combo;
 		var seperatedCombo:Array<Int> = [];
+        var canAppear:Bool = false;
 
 		while (tempCombo != 0)
 		{
@@ -3037,12 +3038,14 @@ class PlayState extends MusicBeatState
 				numCombo.y = numCombo.y + (20 * daLoop);
 				numCombo.animation.play('appear');
 
+				// numCombo.animation.play('disappear');
+
 				FlxTween.tween(numCombo, {alpha: 0}, 0.2, {
 					onComplete: function(tween:FlxTween)
 					{
 						numCombo.destroy();
 					},
-					startDelay: 0.7
+					startDelay: 0.5
 				});
 
 				/*var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image('num' + Std.int(i)));
@@ -3244,10 +3247,7 @@ class PlayState extends MusicBeatState
 
 		if (cameraRightSide && curBeat % 16 == 15 && combo >= 5 && boyfriend.holdTimer != 0)
 			{
-				amCombo.visible = true;
-				amCombo.animation.play('appear', true);
-
-				comboNum(1);
+				aniCombo(1);
 			}
 
 		if (curBeat % 2 == 0)
@@ -3456,13 +3456,16 @@ class PlayState extends MusicBeatState
 
 class EndSongSubstate extends FlxSubState
 {
-    public function new(x:Float, y:Float) 
+    public function new() 
     {
-		super();
+		super(0x33000000);
+    } 
 
-        var bg:FlxSprite = new FlxSprite(FlxG.width - x , FlxG.height - y).makeGraphic(FlxG.width * 10, FlxG.height *10, FlxColor.BLACK);
-        bg.alpha = 0.4;
-        add(bg);
+	override public function create()
+	{
+		// var bg:FlxSprite = new FlxSprite(FlxG.width , FlxG.height).makeGraphic(FlxG.width * 10, FlxG.height *10, FlxColor.BLACK);
+        // bg.alpha = 0.4;
+        // add(bg);
 
         var text:FlxText = new FlxText(FlxG.width * 0.1, FlxG.height * 0.1, 100,"You Win!", 70, true);
         text.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
@@ -3470,8 +3473,10 @@ class EndSongSubstate extends FlxSubState
 
         var text_2:FlxText = new FlxText(FlxG.width * 0.2, FlxG.height * 0.3, 100,"Enter -- Next", 70, true);
         text_2.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
-        add(text_2);  
-    } 
+        add(text_2);
+
+        super.create();
+	}
 
 	override function update(elapsed:Float)
 	{
