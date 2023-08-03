@@ -348,7 +348,7 @@ class ChartingState extends MusicBeatState
 		check_changeBPM = new FlxUICheckBox(10, 60, null, null, 'Change BPM', 100);
 		check_changeBPM.name = 'check_changeBPM';
 
-		stepperSectionBPM = new FlxUINumericStepper(100, 60, 1, Conductor.bpm, 1, 999, 3);
+		stepperSectionBPM = new FlxUINumericStepper(100, 80, 1, Conductor.bpm, 1, 999, 3);
 		stepperSectionBPM.value = Conductor.bpm;
 		stepperSectionBPM.name = 'section_bpm';
 
