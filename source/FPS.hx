@@ -29,7 +29,7 @@ class FPS extends TextField
 
 
 
-	public function new(inX:Float = 10.0, inY:Float = 10.0, inCol:Int = 0x000000) 
+	public function new(inX:Float = 10.0, inY:Float = 10.0, inCol:Int = 0x000000, ?size = 12) 
 
 	{
 
@@ -45,7 +45,7 @@ class FPS extends TextField
 
 		
 
-		defaultTextFormat = new TextFormat("_sans", 12, inCol);
+		defaultTextFormat = new TextFormat("_sans", size, inCol);
 
 		
 

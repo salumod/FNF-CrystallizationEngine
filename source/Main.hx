@@ -17,6 +17,7 @@ import openfl.net.NetStream;
 #if polymod
 import polymod.Polymod;
 #end
+import flixel.util.FlxColor;
 
 class Main extends Sprite
 {
@@ -69,6 +70,7 @@ class Main extends Sprite
 	private var overlay:Sprite;
 
 	// public static var fpsCounter:FPS;
+	public static var fps:FPS;
 
 	private function setupGame():Void
 	{
@@ -129,7 +131,7 @@ class Main extends Sprite
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
-		var fps:FPS = new FPS(10, 3, 0xffffff);
+		fps = new FPS(10, 3, 0xffffff);
         addChild(fps);
 		
 		#end

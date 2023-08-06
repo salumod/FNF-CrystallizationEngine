@@ -50,7 +50,7 @@ import sys.thread.Thread;
 #if polymod
 import polymod.Polymod;
 #end
-import ui.VolumeMenu;
+import ui.VolumeState;
 
 class TitleState extends MusicBeatState
 {
@@ -121,11 +121,6 @@ class TitleState extends MusicBeatState
 		loadBar.screenCenter(X);
 		add(loadBar);
 
-		new FlxTimer().start(0.7, function(tmr:FlxTimer)
-			{
-				loadBar.scale.x = FlxMath.lerp(loadBar.scale.x * 0.7, FlxG.width * 0.7, 0.50);
-			});
-		
 		if (FlxG.save.data.weekUnlocked != null)
 		{
 			// FIX LATER!!!
@@ -357,6 +352,8 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		loadBar.scale.x += elapsed * 1.2;
+
 		#if debug
 		if (FlxG.keys.justPressed.EIGHT)
 			FlxG.switchState(new CutsceneAnimTestState());

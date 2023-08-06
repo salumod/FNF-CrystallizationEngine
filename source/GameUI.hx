@@ -108,3 +108,18 @@ class GamePadOn extends FlxGroup
             add(gameButton);
         }
 }
+
+class GameMouse extends FlxGroup
+{
+
+    public function new(?mouseName:String = 'MOUSE_WHITE', ?size:Int = 2)
+    {
+        FlxG.mouse.visible = true;
+		if (FlxG.save.data.MouseColor != null)
+			FlxG.mouse.load(Paths.imageUI('MOUSE'), 2)
+		else
+			FlxG.mouse.load(Paths.imageUI('MOUSE_WHITE'), 2);
+
+        super();
+    }
+}

@@ -1,5 +1,6 @@
 package;
 
+import ui.VolumeState;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.FlxGame;
@@ -7,7 +8,7 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIState;
 import flixel.math.FlxRect;
 import flixel.util.FlxTimer;
-import ui.VolumeMenu;
+import ui.VolumeState;
 
 class MusicBeatState extends FlxUIState
 {
@@ -38,8 +39,8 @@ class MusicBeatState extends FlxUIState
 			stepHit();
 
 		FlxG.save.data.volume = FlxG.sound.volume;
-		FlxG.save.data.musicVolume = VolumeMenu.musicVolume;
-		FlxG.save.data.SFXVolume = VolumeMenu.sfxVolume;
+		FlxG.save.data.musicVolume = VolumeState.musicVolume;
+		FlxG.save.data.SFXVolume = VolumeState.sfxVolume;
         FlxG.save.flush();
 
 		super.update(elapsed);

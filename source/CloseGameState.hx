@@ -1,5 +1,6 @@
 package;
 
+import GameUI.GameMouse;
 import flixel.input.mouse.FlxMouse;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxG;
@@ -17,12 +18,13 @@ class CloseGameState extends MusicBeatState
 	var buttonNo:FlxButton;
 	var yes:FlxText;
 	var no:FlxText;
+    var mouse:GameMouse;
 
 	override public function create()
 	{
-		FlxG.mouse.visible = true;
-		FlxG.mouse.load(Paths.image('gameUI/MOUSE'));
-
+		mouse = new GameMouse();
+		add(mouse);
+		
 		var bg:FlxSprite = new FlxSprite(Paths.image('menuDesat'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.17;
@@ -38,7 +40,7 @@ class CloseGameState extends MusicBeatState
 
 		
 		buttonYes = new FlxButton(200, 470, gameExit);
-		buttonYes.loadGraphic(Paths.image('gameUI/Normal_Button'));
+		buttonYes.loadGraphic(Paths.imageUI('Normal_Button'));
 		buttonYes.setGraphicSize(Std.int(bg.width * 0.2));
 		buttonYes.updateHitbox();
 
@@ -46,7 +48,7 @@ class CloseGameState extends MusicBeatState
 		yes.setFormat(Paths.font("Funkin/Funkin.ttf"), 70, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
 		buttonNo = new FlxButton(800, 470, exitState);
-		buttonNo.loadGraphic(Paths.image('gameUI/Normal_Button'));
+		buttonNo.loadGraphic(Paths.imageUI('Normal_Button'));
 		buttonNo.setGraphicSize(Std.int(bg.width * 0.2));
 		buttonNo.updateHitbox();
 

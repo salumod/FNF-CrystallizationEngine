@@ -1,8 +1,7 @@
 package;
 
-import GamePadButton.GamePadOn;
 import cpp.Function;
-import GamePadButton.ButtonADD;
+import GameUI;
 import flixel.group.FlxGroup;
 import flixel.util.FlxSave;
 import NGio;
@@ -26,8 +25,8 @@ import ui.MenuList;
 import ui.OptionsState;
 import ui.PreferencesMenu;
 import ui.Prompt;
-import ui.VolumeMenu;
-import ui.GameplayMenu;
+import ui.VolumeState;
+import ui.GameplayState;
 
 using StringTools;
 
@@ -45,14 +44,12 @@ class MainMenuState extends MusicBeatState
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
-    var gamePad:GamePadOn;
+    var mouse:GameMouse;
 
 	override function create()
 	{
-		// FlxG.mouse.visible = false;
-		FlxG.mouse.visible = true;
-		FlxG.mouse.load(Paths.image('gameUI/MOUSE'), 2);
-
+		mouse = new GameMouse();
+		add(mouse);
 		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -144,12 +141,9 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		gamePad = new GamePadOn("ENTER", "", "", "BACK");
-		// add(gamePad);
-		
 		// if (GameplayMenu.getGameoption('watermark'))
 		// 	{
-				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "(Build NE v0.1)", 12);
+				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "(Build NE v0.2)", 12);
 		        version.scrollFactor.set();
 		        version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		        add(version);

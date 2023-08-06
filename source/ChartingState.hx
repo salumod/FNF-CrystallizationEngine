@@ -1,5 +1,6 @@
 package;
 
+import haxe.io.Path;
 import Conductor.BPMChangeEvent;
 import Section.SwagSection;
 import Song.SwagSong;
@@ -78,8 +79,13 @@ class ChartingState extends MusicBeatState
 
 	var vocals:FlxSound;
 
+	var shiftThing:Int = 1;
+
 	var leftIcon:HealthIcon;
 	var rightIcon:HealthIcon;
+    //ui
+	var uiLEFT:FlxButton;
+	var uiRIGHT:FlxButton;
 
 	override function create()
 	{
@@ -112,6 +118,19 @@ class ChartingState extends MusicBeatState
 		var gridBlackLine:FlxSprite = new FlxSprite(gridBG.x + gridBG.width / 2).makeGraphic(2, Std.int(gridBG.height), FlxColor.BLACK);
 		add(gridBlackLine);
 
+		uiLEFT = new FlxButton(FlxG.width * 0.1, FlxG.height * 0.8, "", function() {
+			changeSection(curSection - shiftThing);
+		});
+		uiLEFT.loadGraphic(Paths.imageUI("Button_UILEFT"));
+		add(uiLEFT);
+
+		uiRIGHT = new FlxButton(FlxG.width * 0.8, FlxG.height * 0.8, "",function() {
+			changeSection(curSection + shiftThing);
+		});
+		uiRIGHT.loadGraphic(Paths.imageUI("Button_UILEFT"));
+		uiRIGHT.flipX = true;
+		add(uiRIGHT);
+
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
 
@@ -132,7 +151,7 @@ class ChartingState extends MusicBeatState
 		}
 
 		FlxG.mouse.visible = true;
-		FlxG.save.bind('funkin', 'The-Funkin-Crew');
+		FlxG.save.bind('charting', 'FunkinCrew');
 
 		tempBpm = _song.bpm;
 
@@ -674,7 +693,6 @@ class ChartingState extends MusicBeatState
 			if (FlxG.keys.justPressed.DOWN)
 				Conductor.changeBPM(Conductor.bpm - 1); */
 
-		var shiftThing:Int = 1;
 		if (FlxG.keys.pressed.SHIFT)
 			shiftThing = 4;
 		if (FlxG.keys.justPressed.RIGHT || FlxG.keys.justPressed.D)

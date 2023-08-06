@@ -1,7 +1,6 @@
 package;
 
-import GamePadButton.ButtonADD;
-import GamePadButton.GamePadOn;
+import GameUI;
 #if discord_rpc
 import Discord.DiscordClient;
 #end
@@ -342,11 +341,6 @@ class FreeplayState extends MusicBeatState
 		diffText.x = Std.int(scoreBG.x + scoreBG.width / 2);
 		diffText.x -= (diffText.width / 2);
 	}
-
-	override function destroy()
-		{
-			super.destroy();
-		}
 }
 
 class SongMetadata

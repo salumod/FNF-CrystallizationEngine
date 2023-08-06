@@ -34,20 +34,14 @@ class OptionsState extends MusicBeatState
 		add(menuBG);
 
 		var options = addPage(Options, new OptionsMenu(false));
-		var gameplay = addPage(Gameplay, new GameplayMenu());
 		var preferences = addPage(Preferences, new PreferencesMenu());
 		var controls = addPage(Controls, new ControlsMenu());
-		var colors = addPage(Colors, new ColorsMenu());
-		var volume = addPage(Volume, new VolumeMenu());
 
 		if (options.hasMultipleOptions())
 		{
 			options.onExit.add(exitToMainMenu);
-			gameplay.onExit.add(switchPage.bind(Options));
 			controls.onExit.add(switchPage.bind(Options));
-			colors.onExit.add(switchPage.bind(Options));
 			preferences.onExit.add(switchPage.bind(Options));
-			volume.onExit.add(switchPage.bind(Options));
 		}
 		else
 		{
@@ -190,12 +184,13 @@ class OptionsMenu extends Page
 
 		add(items = new TextMenuList());
 
-		createItem('gameplay', function() switchPage(Gameplay));
 		createItem('preferences', function() switchPage(Preferences));
+		createItem('gameplay', function() FlxG.switchState(new GameplayState()));
 		createItem("controls", function() switchPage(Controls));
-		createItem('volume', function() switchPage(Volume));
-		createItem('note color', function() switchPage(Colors));
 		createItem('latency', function() FlxG.switchState(new LatencyState()));
+		createItem('volume', function() FlxG.switchState(new VolumeState()));
+		createItem('color', function() FlxG.switchState(new ColorsState()));
+		createItem('mods', function() FlxG.switchState(new ModState()));
 		// if (NGio.isLoggedIn)
 		// 	createItem("logout", selectLogout);
 		// else
@@ -312,10 +307,6 @@ class OptionsMenu extends Page
 enum PageName
 {
 	Options;
-	Gameplay;
 	Controls;
-	Volume;
-	Latency;
-	Colors;
 	Preferences;
 }

@@ -1,38 +1,29 @@
 package;
 
-import flixel.FlxG;
 import flixel.system.FlxAssets.FlxShader;
+
 /**
- * ...
- * @author aeveis
+ * A classic mosaic effect, just like in the old days!
+ *
+ * Usage notes:
+ * - The effect will be applied to the whole screen.
+ * - Set the x/y-values on the 'uBlocksize' vector to the desired size (setting this to 0 will make the screen go black)
  */
 
+// just for openfl 8 silly.
 class MosaicShader extends FlxShader
 {
 	@:glFragmentSource('
 		#pragma header
-		#ifdef GL_ES
-			precision mediump float;
-		#endif
-		
-		uniform vec2 size;
-		uniform vec2 stageSize;
-	
+		uniform vec2 uBlocksize;
+
 		void main()
 		{
-			vec2 uv = openfl_TextureCoordv;
-			vec2 uv1 = openfl_TextureCoordv;
-			
-			uv.x = ceil(uv.x * size.x) / size.x;
-			uv.y = ceil(uv.y * size.y) / size.y;
-			
-			gl_FragColor = texture2D(bitmap, uv);
-		}
-	')
-	public function new(p_width:Float, p_height:Float)
+			vec2 blocks = openfl_TextureSize / uBlocksize;
+			gl_FragColor = flixel_texture2D(bitmap, floor(openfl_TextureCoordv * blocks) / blocks);
+		}')
+	public function new()
 	{
 		super();
-	
-		size.value = [p_width - 1, p_height - 1];
 	}
 }

@@ -1,5 +1,6 @@
 package ui;
 
+import ui.OptionsState.OptionsMenu;
 import Controls;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -16,7 +17,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxAxes;
 import ui.AtlasText;
 
-class VolumeMenu extends ui.OptionsState.Page
+class VolumeState extends MusicBeatState
 {
 	public static var musicVolume:Float = 1;
 	public static var sfxVolume:Float = 1;
@@ -37,9 +38,16 @@ class VolumeMenu extends ui.OptionsState.Page
 	var descBg:FlxSprite;
 	var desctxt:FlxText;
 
-	public function new()
+	override function create()
 		{
-			super();
+			var menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+            menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
+            menuBG.updateHitbox();
+            menuBG.screenCenter();
+            menuBG.scrollFactor.set(0, 0);
+            add(menuBG);
+			
+			super.create();
 
 			FlxG.save.bind("volume-save-data", "The-Funkin-Crew");
 
@@ -56,7 +64,7 @@ class VolumeMenu extends ui.OptionsState.Page
 		    descBg.alpha = 0.4;
 		    add(descBg);
 		
-		    desctxt = new FlxText(descBg.x, descBg.y + 4, FlxG.width, "Press C to clear", 18);
+		    desctxt = new FlxText(descBg.x, descBg.y + 4, FlxG.width, "RESET to clear", 18);
 		    desctxt.setFormat(Paths.font("Funkin/Funkin.ttf"), 24, FlxColor.WHITE, CENTER);
 		    desctxt.borderColor = FlxColor.BLACK;
 		    desctxt.borderSize = 1;
@@ -103,8 +111,8 @@ class VolumeMenu extends ui.OptionsState.Page
 					case 'master-volume':
 						var volumeDownButton = new FlxButton(buttonX, buttonY, clickVolumeDown);
 						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickVolumeUp);
-						volumeDownButton.loadGraphic(Paths.image('gameUI/Button_Down'));
-		                volumeUpButton.loadGraphic(Paths.image('gameUI/Button_Up'));
+						volumeDownButton.loadGraphic(Paths.imageUI('Button_Down'));
+		                volumeUpButton.loadGraphic(Paths.imageUI('Button_Up'));
 						volumeDownButton.scrollFactor.set();
 						volumeUpButton.scrollFactor.set();
 				        add(volumeDownButton);
@@ -124,8 +132,8 @@ class VolumeMenu extends ui.OptionsState.Page
 				    case 'music-volume':
 						var volumeDownButton = new FlxButton(buttonX, buttonY, clickMusicVolumeDown);
 						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickMusicVolumeUp);
-						volumeDownButton.loadGraphic(Paths.image('gameUI/Button_Down'));
-		                volumeUpButton.loadGraphic(Paths.image('gameUI/Button_Up'));
+						volumeDownButton.loadGraphic(Paths.imageUI('Button_Down'));
+		                volumeUpButton.loadGraphic(Paths.imageUI('Button_Up'));
 						volumeDownButton.scrollFactor.set();
 						volumeUpButton.scrollFactor.set();
 				        add(volumeDownButton);
@@ -145,8 +153,8 @@ class VolumeMenu extends ui.OptionsState.Page
 					case 'sfx-volume':
 						var volumeDownButton = new FlxButton(buttonX, buttonY, clickSFXVolumeDown);
 						var volumeUpButton = new FlxButton(volumeDownButton.x + buttonHeight, volumeDownButton.y, clickSFXVolumeUp);
-						volumeDownButton.loadGraphic(Paths.image('gameUI/Button_Down'));
-						volumeUpButton.loadGraphic(Paths.image('gameUI/Button_Up'));
+						volumeDownButton.loadGraphic(Paths.imageUI('Button_Down'));
+						volumeUpButton.loadGraphic(Paths.imageUI('Button_Up'));
 						volumeDownButton.scrollFactor.set();
 						volumeUpButton.scrollFactor.set();
 						add(volumeDownButton);
@@ -227,8 +235,6 @@ class VolumeMenu extends ui.OptionsState.Page
 
 		override function update(elapsed:Float)
 			{
-				FlxG.save.bind("volume-save-data", "The-Funkin-Crew");
-
 				FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
 				
 				super.update(elapsed);
@@ -252,12 +258,15 @@ class VolumeMenu extends ui.OptionsState.Page
 				FlxG.save.flush();
 				updateVolume();
 
-				if (FlxG.keys.pressed.C)
+				if (controls.RESET)
 					{
 						FlxG.save.erase();
 						FlxG.sound.volume = 0.5;
 						musicVolume = 1;
 						sfxVolume = 1;
 					}
+
+				if (controls.BACK)
+					FlxG.switchState(new OptionsState());
 			}
 }
