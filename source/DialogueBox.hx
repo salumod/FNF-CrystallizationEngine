@@ -1,5 +1,6 @@
 package;
 
+import funkin.Alphabet;
 import haxe.Timer;
 import flixel.FlxG;
 import flixel.FlxSprite;

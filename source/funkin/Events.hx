@@ -1,4 +1,4 @@
-package;
+package funkin;
 import Section.SwagSection;
 import Song.SwagSong;
 import WiggleEffect.WiggleEffectType;
@@ -46,7 +46,7 @@ import openfl.filters.ShaderFilter;
 import shaderslmfao.BuildingShaders.BuildingShader;
 import shaderslmfao.BuildingShaders;
 import shaderslmfao.ColorSwap;
-import ui.PreferencesMenu;
+import ui.PreferencesState;
 #if hxCodec
 import hxcodec.VideoHandler;
 #end

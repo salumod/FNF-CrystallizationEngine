@@ -13,7 +13,7 @@ import ui.AtlasText;
 import ui.MenuList;
 import ui.TextMenuList;
 
-class ControlsMenu extends ui.OptionsState.Page
+class ControlsState extends MusicBeatState
 {
 	inline static public var COLUMNS = 2;
 	static var controlList = Control.createAll();
@@ -39,12 +39,21 @@ class ControlsMenu extends ui.OptionsState.Page
 	var currentDevice:Device = Keys;
 	var deviceListSelected = false;
 
-	public function new()
-	{
-		super();
+	var canExit:Bool = true;
 
+	override public function create()
+	{
+		super.create();
+
+		var menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
+		menuBG.updateHitbox();
+		menuBG.screenCenter();
+		menuBG.scrollFactor.set(0, 0);
+		add(menuBG);
+		
 		menuCamera = new FlxCamera();
-		FlxG.cameras.add(menuCamera, false);
+		FlxG.cameras.add(menuCamera, true);
 		menuCamera.bgColor = 0x0;
 		camera = menuCamera;
 
@@ -227,6 +236,12 @@ class ControlsMenu extends ui.OptionsState.Page
 					}
 			}
 		}
+
+		if (canExit && controls.BACK)
+		{
+			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
+			FlxG.switchState(new OptionsState());
+		}
 	}
 
 	function onInputSelect(input:Int)
@@ -286,7 +301,7 @@ class ControlsMenu extends ui.OptionsState.Page
 			FlxG.cameras.remove(menuCamera);
 	}
 
-	override function set_enabled(value:Bool)
+	public function set_enabled(value:Bool)
 	{
 		if (value == false)
 		{
@@ -300,7 +315,7 @@ class ControlsMenu extends ui.OptionsState.Page
 			if (deviceList != null)
 				deviceList.enabled = deviceListSelected;
 		}
-		return super.set_enabled(value);
+		return set_enabled(value);
 	}
 }
 
@@ -339,9 +354,9 @@ class InputItem extends TextMenuItem
 			if (list[index] != FlxKey.ESCAPE || list[index] != FlxGamepadInputID.BACK)
 				return list[index];
 
-			if (list.length > ControlsMenu.COLUMNS)
+			if (list.length > ControlsState.COLUMNS)
 				// Escape isn't mappable, show a third option, instead.
-				return list[ControlsMenu.COLUMNS];
+				return list[ControlsState.COLUMNS];
 		}
 
 		return -1;

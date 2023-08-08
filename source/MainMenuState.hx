@@ -1,7 +1,9 @@
 package;
 
+import funkin.VideoState;
+import openfl.display.BitmapData;
 import cpp.Function;
-import GameUI;
+import funkin.GameUI;
 import flixel.group.FlxGroup;
 import flixel.util.FlxSave;
 import NGio;
@@ -23,7 +25,7 @@ import lime.app.Application;
 import ui.AtlasMenuList;
 import ui.MenuList;
 import ui.OptionsState;
-import ui.PreferencesMenu;
+import ui.PreferencesState;
 import ui.Prompt;
 import ui.VolumeState;
 import ui.GameplayState;
@@ -48,8 +50,13 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-		mouse = new GameMouse();
-		add(mouse);
+		if (!(FlxG.mouse.visible))
+			{
+				mouse = new GameMouse();
+				mouse.qucklyADD();
+				add(mouse);
+			}
+			
 		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -87,7 +94,7 @@ class MainMenuState extends MusicBeatState
 		magenta.visible = false;
 		magenta.antialiasing = true;
 		magenta.color = 0xFFfd719b;
-		if (PreferencesMenu.preferences.get('flashing-menu'))
+		if (PreferencesState.preferences.get('flashing-menu'))
 			add(magenta);
 		// magenta.scrollFactor.set();
 
@@ -143,7 +150,7 @@ class MainMenuState extends MusicBeatState
 
 		// if (GameplayMenu.getGameoption('watermark'))
 		// 	{
-				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "(Build NE v0.2)", 12);
+				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "(Build NE v0.2.5)", 12);
 		        version.scrollFactor.set();
 		        version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		        add(version);

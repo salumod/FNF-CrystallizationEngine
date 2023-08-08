@@ -1,5 +1,7 @@
 package;
 
+import funkin.VideoState;
+import funkin.Alphabet;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxSprite;
@@ -34,7 +36,7 @@ import openfl.net.NetStream;
 import shaderslmfao.BuildingShaders.BuildingShader;
 import shaderslmfao.BuildingShaders;
 import shaderslmfao.ColorSwap;
-import ui.PreferencesMenu;
+import ui.PreferencesState;
 
 using StringTools;
 
@@ -100,7 +102,7 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		PreferencesMenu.initPrefs();
+		PreferencesState.initPrefs();
 		PlayerSettings.init();
 		Highscore.load();
 

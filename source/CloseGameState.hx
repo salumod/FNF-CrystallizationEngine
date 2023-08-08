@@ -1,6 +1,6 @@
 package;
 
-import GameUI.GameMouse;
+import funkin.GameUI.GameMouse;
 import flixel.input.mouse.FlxMouse;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxG;
@@ -19,12 +19,10 @@ class CloseGameState extends MusicBeatState
 	var yes:FlxText;
 	var no:FlxText;
     var mouse:GameMouse;
+    var curSelected:Int;
 
 	override public function create()
 	{
-		mouse = new GameMouse();
-		add(mouse);
-		
 		var bg:FlxSprite = new FlxSprite(Paths.image('menuDesat'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.17;
@@ -38,7 +36,6 @@ class CloseGameState extends MusicBeatState
 		txt.setFormat(Paths.font("Funkin/Funkin.ttf"), 70, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		txt.screenCenter();
 
-		
 		buttonYes = new FlxButton(200, 470, gameExit);
 		buttonYes.loadGraphic(Paths.imageUI('Normal_Button'));
 		buttonYes.setGraphicSize(Std.int(bg.width * 0.2));
@@ -55,6 +52,8 @@ class CloseGameState extends MusicBeatState
 		no = new FlxText(890, 480, 0, "NO", 20);
 		no.setFormat(Paths.font("Funkin/Funkin.ttf"), 70, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
+		yesSelect();
+		
 		gamePrompt('normal');
 		add(buttonYes);
 		add(buttonNo);
@@ -83,10 +82,38 @@ class CloseGameState extends MusicBeatState
 			prompt.animation.play('normal');
 		}
 
+	function yesSelect() 
+	{
+		no.color = FlxColor.WHITE;
+		no.alpha = 0.6;
+		yes.alpha = 1;
+		yes.color = FlxColor.YELLOW;
+	}
+
+	function noSelect() 
+	{
+		yes.color = FlxColor.WHITE;
+		yes.alpha = 0.6;
+		no.alpha = 1;
+		no.color = FlxColor.YELLOW;
+	}
+
+	function changeSelection(change:Int = 0)
+	{
+		curSelected += change;
+
+		if (curSelected <= 0)
+			yesSelect();
+		if (curSelected >= 1)
+			noSelect();
+		if (curSelected < 0)
+			curSelected = 0;
+		if (curSelected > 1)
+			curSelected = 1;
+	}
+
 	function gameExit()
 		{
-			yes.color = FlxColor.YELLOW;
-			
 			FlxTween.tween(no, {alpha: 0}, 0.4, 
 				{
 					onComplete: function(twn:FlxTween)
@@ -110,7 +137,6 @@ class CloseGameState extends MusicBeatState
 
 	function exitState() 
 	{
-		no.color = FlxColor.YELLOW;
 
 		FlxTween.tween(yes, {alpha: 0}, 0.4, 
 		{
@@ -132,6 +158,19 @@ class CloseGameState extends MusicBeatState
 
 	override function update(elapsed:Float):Void
 	{
+		if (controls.UI_LEFT)
+		{
+			changeSelection(-1);
+		}
+		if (controls.UI_RIGHT)
+		{
+			changeSelection(1);
+		}
+        if (controls.ACCEPT && curSelected == 0)
+			gameExit();
+		if (controls.ACCEPT && curSelected == 1)
+			exitState();
+
 		super.update(elapsed);
 	}
 }

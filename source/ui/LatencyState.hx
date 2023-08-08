@@ -1,5 +1,7 @@
 package ui;
 
+import funkin.Note;
+import funkin.GameUI.UIButton;
 import flixel.util.FlxColor;
 import flixel.ui.FlxButton;
 import haxe.io.Path;
@@ -20,6 +22,8 @@ class LatencyState extends MusicBeatState
 	var strumLine:FlxSprite;
 	var multiply:Float;
     var desctxt:FlxText;
+	var botton_OFFSET:UIButton;
+	var botton_BPM:UIButton;
     var checkBox:CheckboxThingie;
 	var items:TextMenuList;
     var check:Bool;
@@ -53,17 +57,17 @@ class LatencyState extends MusicBeatState
 		offsetText.scrollFactor.set();
 		add(offsetText);
 
-		buttonADD("Down", FlxG.width * 0.05, FlxG.height * 0.2, function() Conductor.offset -= 1 * multiply);
-		buttonADD("Up", FlxG.width * 0.3, FlxG.height * 0.2, function() Conductor.offset += 1 * multiply);
+		botton_OFFSET = new UIButton(FlxG.width * 0.05, FlxG.height * 0.2, FlxG.width * 0.25, function() Conductor.offset += 1 * multiply, function() Conductor.offset -= 1 * multiply);
+		add(botton_OFFSET);
+
+		botton_BPM = new UIButton(FlxG.width * 0.05, FlxG.height * 0.4, FlxG.width * 0.25 + 100, function() Conductor.bpm += 1 * multiply, function() Conductor.bpm -= 1 * multiply);
+		add(botton_BPM);
 
         //bpm
 		bpmText = new FlxText(FlxG.width * 0.1, FlxG.height * 0.4);
 		bpmText.setFormat(Paths.font("vcr.ttf"), 30);
 		bpmText.scrollFactor.set();
 		add(bpmText);
-
-		buttonADD("Down", FlxG.width * 0.05, FlxG.height * 0.4, function() Conductor.bpm -= 1 * multiply);
-		buttonADD("Up", FlxG.width * 0.3 + 100, FlxG.height * 0.4, function() Conductor.bpm += 1 * multiply);
 
 		//removing line
 		strumLine = new FlxSprite(FlxG.width * 0.7, 100).makeGraphic(FlxG.width, 5);
@@ -106,15 +110,7 @@ class LatencyState extends MusicBeatState
 
 	function soundsPlay() 
 	{
-		FlxG.sound.play(Paths.sound('soundTest'), FlxG.save.data.volume * FlxG.save.data.SFMVolume, true);
-	}
-
-	function buttonADD(string:String, x:Float = 0, y:Float = 0, ?onClick) 
-	{
-		var botton:FlxButton = new FlxButton(x, y , "", onClick);
-		botton.loadGraphic(Paths.imageUI('Button_' + string));
-		add(botton);
-		botton.scrollFactor.set();
+		FlxG.sound.playMusic(Paths.music('soundTest'), FlxG.save.data.volume * FlxG.save.data.musicVolume, true);
 	}
 
 	override function update(elapsed:Float)
@@ -152,7 +148,7 @@ class LatencyState extends MusicBeatState
 				FlxG.sound.music.fadeIn(4, 0, 0.7 * FlxG.save.data.volume * FlxG.save.data.musicVolume);
 				FlxG.switchState(new OptionsState());
 			}
-		
+
 		super.update(elapsed);
 	}
 }

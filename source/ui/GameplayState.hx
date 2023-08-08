@@ -79,7 +79,10 @@ class GameplayState extends MusicBeatState
             });
 
             if (controls.BACK)
-                FlxG.switchState(new OptionsState());
+                {
+                    FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
+                    FlxG.switchState(new OptionsState());
+                }
         }
 }
 
@@ -213,16 +216,11 @@ class SomeOption extends MusicBeatSubstate
             
                 // menuCamera.followLerp = CoolUtil.camLerpShit(0.05);
             
-                items.forEach(function(daItem:TextMenuItem)
-                {
-                    if (items.selectedItem == daItem)
-                        daItem.x = 150;
-                    else
-                        daItem.x = 120;
-                });
-
                 if (controls.BACK)
-                    close();
+                    {
+                        FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
+                        close();
+                    }
             }
 }
 
@@ -283,6 +281,9 @@ class AdjustingWindow extends MusicBeatSubstate
                 super.update(elapsed);
             
                 if (controls.BACK)
-                    close();
+                    {
+                        FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
+                        close();
+                    }
             }
 }

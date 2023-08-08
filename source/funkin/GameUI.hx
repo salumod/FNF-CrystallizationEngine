@@ -1,5 +1,6 @@
-package;
+package funkin;
 
+import flixel.addons.ui.FlxUIGroup;
 import flixel.text.FlxText;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -15,20 +16,18 @@ class GamePadButton extends FlxGroup
 {
     var gamePadButton:FlxButton;
     var icons:FlxSprite;
-    var textBox:FlxSprite;
+    var textBox:UItextBox;
 
     public function new(buttonName:String, txt:String, buttonX:Float, buttonY:Float, ?callback)
         {
             super();
 
-            textBox = new FlxSprite(buttonX + 10, buttonY + 10);
-            textBox.loadGraphic(Paths.image('gameUI/Text_Box'));
-            textBox.scrollFactor.set();
+            textBox = new UItextBox(buttonX + 10, buttonY + 10);
             add(textBox);
 
             gamePadButton = new FlxButton(buttonX, buttonY, "", callback);
             gamePadButton.scrollFactor.set();
-            gamePadButton.loadGraphic(Paths.image('gameUI/button'));
+            gamePadButton.loadGraphic(Paths.imageUI('button'));
             add(gamePadButton);
 
             var text:FlxText = new FlxText(textBox.x + 100, textBox.y + 10, 0, "", 30);
@@ -62,7 +61,7 @@ class GamePadButton extends FlxGroup
         }
 }
 
-class ButtonADD extends FlxGroup
+class GamePadButtonADD extends FlxGroup
 {
     var padOne:GamePadButton;
 	var padTwo:GamePadButton;
@@ -93,7 +92,7 @@ class ButtonADD extends FlxGroup
 
 class GamePadOn extends FlxGroup
 {
-    var gameButton:ButtonADD;
+    var gameButton:GamePadButtonADD;
 
     override public function new(one:String, two:String, three:String, four:String)
         {
@@ -104,22 +103,96 @@ class GamePadOn extends FlxGroup
             descBg.alpha = 0.4;
             add(descBg);
     
-            gameButton = new ButtonADD(one, two, three, four, FlxG.width * 0.1, descBg);
+            gameButton = new GamePadButtonADD(one, two, three, four, FlxG.width * 0.1, descBg);
             add(gameButton);
         }
 }
 
 class GameMouse extends FlxGroup
 {
-
-    public function new(?mouseName:String = 'MOUSE_WHITE', ?size:Int = 2)
+    public function new(?mouseName:String, ?size:Float = 2)
     {
         FlxG.mouse.visible = true;
-		if (FlxG.save.data.MouseColor != null)
-			FlxG.mouse.load(Paths.imageUI('MOUSE'), 2)
-		else
-			FlxG.mouse.load(Paths.imageUI('MOUSE_WHITE'), 2);
+        FlxG.mouse.load(Paths.imageUI(mouseName), size);
 
         super();
+    }
+
+    public function loadBpm(mouseName:Dynamic, ?size:Float = 1)
+    {
+        FlxG.mouse.visible = true;
+        FlxG.mouse.load(mouseName, size);
+    }
+
+    public function qucklyADD(?size:Float = 2) 
+    {
+        FlxG.mouse.visible = true;
+        if (FlxG.save.data.MouseColor != null)
+			FlxG.mouse.load(Paths.imageUI('MOUSE'), size)
+		else
+			FlxG.mouse.load(Paths.imageUI('MOUSE_WHITE'), size);
+    }
+}
+
+class UIadjust extends FlxGroup
+{
+    var uiLEFT:FlxButton;
+	var uiRIGHT:FlxButton;
+    var group:FlxGroup;
+
+    public function new(leftX:Float, leftY:Float, width:Float, ?shifting:Float, ?callback_LEFT, ?callback_RIGHT) 
+    {
+        super();
+
+        group = new FlxGroup(2);
+        add(group);
+
+        uiLEFT = new FlxButton(leftX, leftY, "", callback_LEFT);
+		uiLEFT.loadGraphic(Paths.imageUI("Button_UILEFT"));
+		group.add(uiLEFT);
+
+		uiRIGHT = new FlxButton(leftX + width, leftY + shifting, "", callback_RIGHT);
+		uiRIGHT.loadGraphic(Paths.imageUI("Button_UILEFT"));
+		uiRIGHT.flipX = true;
+		group.add(uiRIGHT);
+    }
+}
+
+class UItextBox extends FlxSprite
+{
+    var textBox:FlxSprite;
+
+    public function new(x:Float, y:Float) 
+    {
+        super();
+        
+        textBox = new FlxSprite(x, y);
+        textBox.loadGraphic(Paths.imageUI('Text_Box'));
+        textBox.scrollFactor.set();
+    }
+}
+
+class UIButton extends FlxGroup
+{
+    var botton_PLUS:FlxButton;
+    var botton_MINUS:FlxButton;
+    var botton_GROUP:FlxGroup;
+
+    public function new(x:Float = 0, y:Float = 0, width:Float, ?shifting:Float, ?callback_PLUS, ?callback_MINUS) 
+    {
+        super();
+
+        botton_GROUP = new FlxGroup(2);
+        add(botton_GROUP);
+
+        botton_PLUS = new FlxButton(x + width, y, "", callback_PLUS);
+		botton_PLUS.loadGraphic(Paths.imageUI('Button_Up'));
+        botton_PLUS.scrollFactor.set();
+		botton_GROUP.add(botton_PLUS);
+
+        botton_MINUS = new FlxButton(x, y , "", callback_MINUS);
+		botton_MINUS.loadGraphic(Paths.imageUI('Button_Down'));
+        botton_MINUS.scrollFactor.set();
+		botton_GROUP.add(botton_MINUS);
     }
 }

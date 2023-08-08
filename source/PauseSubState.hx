@@ -1,5 +1,6 @@
 package;
 
+import funkin.Alphabet;
 import Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;

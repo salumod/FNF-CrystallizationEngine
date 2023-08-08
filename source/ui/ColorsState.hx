@@ -1,7 +1,14 @@
 package ui;
 
-import cpp.vm.Debugger.StackFrame;
-import GameUI.GameMouse;
+import funkin.NoteSplash;
+import funkin.Note;
+import openfl.display.Bitmap;
+import openfl.display.LoaderInfo;
+import openfl.display.Loader;
+import openfl.events.Event;
+import openfl.net.FileReference;
+import openfl.net.FileFilter;
+import funkin.GameUI.GameMouse;
 import flixel.text.FlxText;
 import flixel.addons.ui.FlxUISubState;
 import flixel.FlxG;
@@ -76,7 +83,10 @@ class ColorsState extends MusicBeatState
 			});
 
 		if (controls.BACK)
+		{
+			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			FlxG.switchState(new OptionsState());
+		}
 
 		super.update(elapsed);
 	}
@@ -149,6 +159,7 @@ class NoteColor extends MusicBeatSubstate
 
 		if (controls.BACK)
 		{
+			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			close();
 		}
 		
@@ -213,6 +224,7 @@ class CameraShaderMenu extends MusicBeatSubstate
 
 		if (controls.BACK)
 		{
+			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			close();
 		}
 
@@ -226,7 +238,6 @@ class FPScolor extends MusicBeatSubstate
 	var camFollow:FlxObject;
 	var items:TextMenuList;
 
-	var fpsVisible:String;
 	public function new() 
 		{
 			super();
@@ -260,7 +271,8 @@ class FPScolor extends MusicBeatSubstate
 			creatFPSColorItem('Transparent', function() Main.fps.textColor = FlxColor.TRANSPARENT);
 			creatFPSColorItem('Black', function() Main.fps.textColor = FlxColor.BLACK);
 			creatFPSColorItem('White', function() Main.fps.textColor = FlxColor.WHITE);
-			creatFPSColorItem('Transparent(invisible):' + fpsVisible, function() Main.fps.visible = !Main.fps.visible);
+			creatFPSColorItem('Transparent(invisible)', function() Main.fps.visible = !Main.fps.visible);
+			
 			camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 			if (items != null)
 				camFollow.y = items.selectedItem.y;
@@ -285,13 +297,9 @@ class FPScolor extends MusicBeatSubstate
 
 		override function update(elapsed:Float)
 		{
-			if (Main.fps.visible)
-				fpsVisible = 'true';
-			else
-				fpsVisible = 'false';
-			
 			if (controls.BACK)
 			{
+				FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 				close();
 			}
 	
@@ -304,6 +312,7 @@ class MouseChoose extends MusicBeatSubstate
 	var menuCamera:FlxCamera;
 	var camFollow:FlxObject;
 	var items:TextMenuList;
+    var mouse:GameMouse;
 
 	public function new() 
 		{
@@ -324,8 +333,26 @@ class MouseChoose extends MusicBeatSubstate
 			add(bg);
 
 			add(items = new TextMenuList());
-			creatMouseItem('Black', function() {FlxG.mouse.load(Paths.imageUI('MOUSE'), 2); FlxG.save.data.MouseColor = 1;});
-			creatMouseItem('White', function() {FlxG.mouse.load(Paths.imageUI('MOUSE_WHITE'), 2); FlxG.save.data.MouseColor = null;});
+			creatMouseItem('Black', function() 
+			{
+				FlxG.save.data.MouseColor = 1;
+				mouse = new GameMouse('MOUSE');
+				add(mouse);
+			});
+			creatMouseItem('White', function() 
+			{
+				FlxG.save.data.MouseColor = null;
+				mouse = new GameMouse('MOUSE_WHITE');
+				add(mouse);
+			});
+			creatMouseItem('custom', function() 
+			{
+				// FlxG.mouse.load(Paths.imageUI('MOUSE_WHITE'), 2); FlxG.save.data.MouseColor = null;
+				var imagesFilter = new FileFilter("Images", "*.png");
+				var mouseImgReference = new FileReference();
+				mouseImgReference.browse([imagesFilter]);
+				mouseImgReference.addEventListener(Event.SELECT, _onSelect, false, 0, true);
+			});
 
 			camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 			if (items != null)
@@ -349,11 +376,41 @@ class MouseChoose extends MusicBeatSubstate
 			items.createItem(120, (120 * items.length) + 30, colorName, AtlasFont.Bold, callback);
 		}
 
+		function _onSelect(E:Event):Void
+			{
+				var fr:FileReference = cast(E.target, FileReference);
+				fr.addEventListener(Event.COMPLETE, _onLoad, false, 0, true);
+				fr.load();
+			}
+		
+		function _onLoad(E:Event):Void
+			{
+				var fr:FileReference = cast E.target;
+				fr.removeEventListener(Event.COMPLETE, _onLoad);
+		
+				var loader:Loader = new Loader();
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _onImgLoad);
+				loader.loadBytes(fr.data);
+			}
+		
+		function _onImgLoad(E:Event):Void
+			{
+				var loaderInfo:LoaderInfo = cast E.target;
+				loaderInfo.removeEventListener(Event.COMPLETE, _onImgLoad);
+				var bmp:Bitmap = cast(loaderInfo.content, Bitmap);
+
+				mouse = new GameMouse();
+				mouse.loadBpm(bmp.bitmapData);
+				add(mouse);
+			}
+
 		override function update(elapsed:Float)
 		{
+			FlxG.save.flush();
+			
 			if (controls.BACK)
 			{
-				FlxG.save.flush();
+				FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 				close();
 			}
 	

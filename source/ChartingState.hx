@@ -1,5 +1,8 @@
 package;
 
+import funkin.GameUI.GameMouse;
+import funkin.Note;
+import funkin.GameUI.UIadjust;
 import haxe.io.Path;
 import Conductor.BPMChangeEvent;
 import Section.SwagSection;
@@ -84,9 +87,9 @@ class ChartingState extends MusicBeatState
 	var leftIcon:HealthIcon;
 	var rightIcon:HealthIcon;
     //ui
-	var uiLEFT:FlxButton;
-	var uiRIGHT:FlxButton;
-
+    var uiAdjust:UIadjust;
+    var mouse:GameMouse;
+	
 	override function create()
 	{
 		curSection = lastSection;
@@ -118,18 +121,10 @@ class ChartingState extends MusicBeatState
 		var gridBlackLine:FlxSprite = new FlxSprite(gridBG.x + gridBG.width / 2).makeGraphic(2, Std.int(gridBG.height), FlxColor.BLACK);
 		add(gridBlackLine);
 
-		uiLEFT = new FlxButton(FlxG.width * 0.1, FlxG.height * 0.8, "", function() {
-			changeSection(curSection - shiftThing);
-		});
-		uiLEFT.loadGraphic(Paths.imageUI("Button_UILEFT"));
-		add(uiLEFT);
-
-		uiRIGHT = new FlxButton(FlxG.width * 0.8, FlxG.height * 0.8, "",function() {
-			changeSection(curSection + shiftThing);
-		});
-		uiRIGHT.loadGraphic(Paths.imageUI("Button_UILEFT"));
-		uiRIGHT.flipX = true;
-		add(uiRIGHT);
+		uiAdjust = new UIadjust(FlxG.width * 0.1, FlxG.height * 0.8, 100, 
+			function() {changeSection(curSection - shiftThing);},
+			function() {changeSection(curSection + shiftThing);});
+        add(uiAdjust);
 
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
@@ -150,7 +145,13 @@ class ChartingState extends MusicBeatState
 			};
 		}
 
-		FlxG.mouse.visible = true;
+		if (!(FlxG.mouse.visible))
+			{
+				mouse = new GameMouse();
+				mouse.qucklyADD();
+				add(mouse);
+			}
+
 		FlxG.save.bind('charting', 'FunkinCrew');
 
 		tempBpm = _song.bpm;

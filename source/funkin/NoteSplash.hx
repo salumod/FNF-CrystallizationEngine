@@ -1,10 +1,10 @@
-package;
+package funkin;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
 import haxe.io.Path;
 import shaderslmfao.ColorSwap;
-import ui.PreferencesMenu;
+import ui.PreferencesState;
 
 class NoteSplash extends FlxSprite
 {
@@ -29,7 +29,7 @@ class NoteSplash extends FlxSprite
 
 		setupNoteSplash(x, y, noteData);
 
-		if (PreferencesMenu.preferences.get('notesplash-alpha'))
+		if (PreferencesState.preferences.get('notesplash-alpha'))
 		    alpha = 0.75;
 
 		colorSwap = new ColorSwap();

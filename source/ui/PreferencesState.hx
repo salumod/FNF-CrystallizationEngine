@@ -11,7 +11,7 @@ import ui.AtlasText.AtlasFont;
 import ui.TextMenuList.TextMenuItem;
 import ui.CheckboxThingie;
 
-class PreferencesMenu extends ui.OptionsState.Page
+class PreferencesState extends MusicBeatState
 {
 	public static var preferences:Map<String, Dynamic> = new Map();
 
@@ -22,12 +22,19 @@ class PreferencesMenu extends ui.OptionsState.Page
 	var camFollow:FlxObject;
 	var menuBG:FlxSprite;
 
-	public function new()
+	override public function create()
 	{
-		super();
+		super.create();
+
+		var menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
+		menuBG.updateHitbox();
+		menuBG.screenCenter();
+		menuBG.scrollFactor.set(0, 0);
+		add(menuBG);
 
 		menuCamera = new SwagCamera();
-		FlxG.cameras.add(menuCamera, false);
+		FlxG.cameras.add(menuCamera, true);
 		menuCamera.bgColor = 0x0;
 		camera = menuCamera;
 
@@ -145,6 +152,12 @@ class PreferencesMenu extends ui.OptionsState.Page
 			else
 				daItem.x = 120;
 		});
+
+		if (controls.BACK)
+		{
+			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
+			FlxG.switchState(new OptionsState());
+		}
 	}
 
 	private static function preferenceCheck(prefString:String, prefValue:Dynamic):Void

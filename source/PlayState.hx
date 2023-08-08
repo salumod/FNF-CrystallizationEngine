@@ -1,5 +1,10 @@
 package;
 
+import funkin.VideoState;
+import funkin.Events;
+import funkin.BGSprite;
+import funkin.NoteSplash;
+import funkin.Note;
 import ui.GameplayState;
 import flixel.effects.particles.FlxEmitter;
 import flixel.effects.particles.FlxParticle;
@@ -52,7 +57,7 @@ import openfl.filters.ShaderFilter;
 import shaderslmfao.BuildingShaders.BuildingShader;
 import shaderslmfao.BuildingShaders;
 import shaderslmfao.ColorSwap;
-import ui.PreferencesMenu;
+import ui.PreferencesState;
 import ui.GameplayState;
 #if hxCodec
 import hxcodec.VideoHandler;
@@ -904,7 +909,7 @@ class PlayState extends MusicBeatState
 
 		strumLine = new FlxSprite(0, 50).makeGraphic(FlxG.width, 10);
 
-		if (PreferencesMenu.getPref('downscroll'))
+		if (PreferencesState.getPref('downscroll'))
 			strumLine.y = FlxG.height - 150; // 150 just random ass number lol
 
 		strumLine.scrollFactor.set();
@@ -965,7 +970,7 @@ class PlayState extends MusicBeatState
 		songNameTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
 		songNameTxt.scrollFactor.set();
 
-		if (PreferencesMenu.getPref('downscroll'))
+		if (PreferencesState.getPref('downscroll'))
 		{
 			songNameTxt.y = FlxG.height * 0.95;
 			timeBar.y = FlxG.height * 0.95;
@@ -976,7 +981,7 @@ class PlayState extends MusicBeatState
 		add(timeBG);
         add(songNameTxt);
 
-		if (!(PreferencesMenu.getPref('time-bar')))
+		if (!(PreferencesState.getPref('time-bar')))
 			{
 				timeBG.visible = false;
 				timeBar.visible = false;
@@ -994,7 +999,7 @@ class PlayState extends MusicBeatState
 		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
-		if (PreferencesMenu.getPref('downscroll'))
+		if (PreferencesState.getPref('downscroll'))
 			healthBarBG.y = FlxG.height * 0.1;
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
@@ -1013,7 +1018,7 @@ class PlayState extends MusicBeatState
 		ratingTxt.scrollFactor.set();
 		ratingTxt.size = 20;
 		add(ratingTxt);
-		if (!(PreferencesMenu.getPref('show-rating')))
+		if (!(PreferencesState.getPref('show-rating')))
 		    ratingTxt.visible = false;
 
 		iconP1 = new HealthIcon(SONG.player1, true);
@@ -1031,13 +1036,12 @@ class PlayState extends MusicBeatState
 		rankTxt.alpha = 0;
 		add(rankTxt);
 
-		var version:FlxText = new FlxText(5, FlxG.height - 18, 0, "(Build NE v0.2)", 12);
+		var version:FlxText = new FlxText(5, FlxG.height - 18, 0, "(Build NE v0.2.5)", 12);
 		version.scrollFactor.set();
 		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(version);
 
-		// if (!(GameplayMenu.getGameoption('watermark')))
-		//     version.visible = false;
+		version.visible = false;
 
 		amCombo = new FlxSprite(0, 200);
 		amCombo.frames = Paths.getSparrowAtlas('AMnotecombo');
@@ -1805,7 +1809,7 @@ class PlayState extends MusicBeatState
 			babyArrow.y -= 10;
 			babyArrow.alpha = 0;
 
-			if (!(PreferencesMenu.preferences.get('notes-alpha')))
+			if (!(PreferencesState.preferences.get('notes-alpha')))
 				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			else
 				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 0.75}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
@@ -2202,8 +2206,8 @@ class PlayState extends MusicBeatState
 		{
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if ((PreferencesMenu.getPref('downscroll') && daNote.y < -daNote.height)
-					|| (!PreferencesMenu.getPref('downscroll') && daNote.y > FlxG.height))
+				if ((PreferencesState.getPref('downscroll') && daNote.y < -daNote.height)
+					|| (!PreferencesState.getPref('downscroll') && daNote.y > FlxG.height))
 				{
 					daNote.active = false;
 					daNote.visible = false;
@@ -2216,7 +2220,7 @@ class PlayState extends MusicBeatState
 
 				var strumLineMid = strumLine.y + Note.swagWidth / 2;
 
-				if (PreferencesMenu.getPref('downscroll'))
+				if (PreferencesState.getPref('downscroll'))
 				{
 					daNote.y = (strumLine.y + (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed, 2)));
 
@@ -2293,7 +2297,7 @@ class PlayState extends MusicBeatState
 					daNote.destroy();
 				}
 
-				if (PreferencesMenu.getPref('downscroll'))
+				if (PreferencesState.getPref('downscroll'))
 					{
 						if(daNote.y > strumLine.y)
 							daNote.y = (strumLine.y + (Conductor.songPosition - daNote.strumTime) * (0.9 * FlxMath.roundDecimal(SONG.speed, 2)));
@@ -2310,13 +2314,13 @@ class PlayState extends MusicBeatState
 				// removing this so whether the note misses or not is entirely up to Note class
 				// var noteMiss:Bool = daNote.y < -daNote.height;
 
-				// if (PreferencesMenu.getPref('downscroll'))
+				// if (PreferencesState.getPref('downscroll'))
 				// 	noteMiss = daNote.y > FlxG.height;
 
 				if (daNote.isSustainNote && daNote.wasGoodHit)
 				{
-					if ((!PreferencesMenu.getPref('downscroll') && daNote.y < -daNote.height)
-						|| (PreferencesMenu.getPref('downscroll') && daNote.y > FlxG.height))
+					if ((!PreferencesState.getPref('downscroll') && daNote.y < -daNote.height)
+						|| (PreferencesState.getPref('downscroll') && daNote.y > FlxG.height))
 					{
 						daNote.active = false;
 						daNote.visible = false;
@@ -2561,7 +2565,7 @@ class PlayState extends MusicBeatState
 			});
 
 			var noteSplash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
-			if (PreferencesMenu.preferences.get('notes-alpha'))
+			if (PreferencesState.preferences.get('notes-alpha'))
 				noteSplash.alpha = 0.75;
 			noteSplash.setupNoteSplash(daNote.x, daNote.y, daNote.noteData);
 			// new NoteSplash(daNote.x, daNote.y, daNote.noteData);
@@ -3222,7 +3226,7 @@ class PlayState extends MusicBeatState
 
 		// HARDCODING FOR MILF ZOOMS!
 
-		if (PreferencesMenu.getPref('camera-zoom'))
+		if (PreferencesState.getPref('camera-zoom'))
 		{
 			if (curSong.toLowerCase() == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
 			{
@@ -3282,7 +3286,7 @@ class PlayState extends MusicBeatState
 
 		function camerasIn(beaton:Int, endbeat:Int)
 			{
-				if (PreferencesMenu.getPref('camera-zoom'))
+				if (PreferencesState.getPref('camera-zoom'))
 					{
 						if (curBeat >= beaton && curBeat < endbeat)
 						    FlxTween.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
@@ -3291,7 +3295,7 @@ class PlayState extends MusicBeatState
 
 			function camerasOn(beaton:Int, endbeat:Int, cam:Float, zoom:Float)
 				{
-					if (PreferencesMenu.getPref('camera-zoom'))
+					if (PreferencesState.getPref('camera-zoom'))
 						{
 							if (curBeat >= beaton && curBeat < endbeat && camZooming && FlxG.camera.zoom < 1.35)
 							{

@@ -1,5 +1,7 @@
 package;
 
+import funkin.FPS;
+import ui.VolumeState;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;

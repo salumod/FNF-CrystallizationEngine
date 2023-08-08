@@ -253,7 +253,7 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 			case 'monster':
-				healthColorArray = [243, 110, 245];
+				healthColorArray = [183, 216, 85];
 				tex = Paths.getSparrowAtlas('characters/Monster_Assets');
 				frames = tex;
 				quickAnimAdd('idle', 'monster idle');

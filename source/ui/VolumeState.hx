@@ -1,6 +1,6 @@
 package ui;
 
-import ui.OptionsState.OptionsMenu;
+import ui.OptionsState;
 import Controls;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -49,8 +49,6 @@ class VolumeState extends MusicBeatState
 			
 			super.create();
 
-			FlxG.save.bind("volume-save-data", "The-Funkin-Crew");
-
 			volumeTextThing(-300, 130, 'master-volume');
 			volumeTextThing(-300, 350, 'music-volume');
 			volumeTextThing(-300, 570, 'sfx-volume');
@@ -78,6 +76,34 @@ class VolumeState extends MusicBeatState
 			trace('SFX-Volume: ' + FlxG.save.data.SFXVolume);
 		}
 	
+		public static function volume()
+		{
+			if (FlxG.save.data.volume = null)
+				FlxG.sound.volume = 1;
+		    else
+			    FlxG.save.data.volume = FlxG.sound.volume;
+
+		    if (FlxG.save.data.musicVolume = null)
+			    FlxG.save.data.musicVolume = 1;
+		    else
+			    FlxG.save.data.musicVolume = musicVolume;
+
+		    if (FlxG.save.data.SFXVolume = null)
+			    FlxG.save.data.SFXVolume = 1;
+		    else
+			    FlxG.save.data.SFXVolume = sfxVolume;
+
+			FlxG.save.flush();
+		}
+		
+		public function clearData()
+		{
+			FlxG.save.erase();
+			FlxG.sound.volume = 1;
+			musicVolume = 1;
+			sfxVolume = 1;
+		}
+
 		public function volumeTextThing(x:Float, y:Float, volumeName:String)
 		{
 			volumeNameText = new FlxText(x, y, 800, '', 30);
@@ -238,35 +264,16 @@ class VolumeState extends MusicBeatState
 				FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
 				
 				super.update(elapsed);
-				
-				if (FlxG.save.data.volume = null)
-						FlxG.sound.volume = 0.5;
-						// FlxG.save.data.volume = 0.5;
-				else
-					FlxG.save.data.volume = FlxG.sound.volume;
 
-				if (FlxG.save.data.musicVolume = null)
-					FlxG.save.data.musicVolume = 1;
-				else
-					FlxG.save.data.musicVolume = musicVolume;
-
-				if (FlxG.save.data.SFXVolume = null)
-					FlxG.save.data.SFXVolume = 1;
-				else
-					FlxG.save.data.SFXVolume = sfxVolume;
-
-				FlxG.save.flush();
+				volume();
 				updateVolume();
 
 				if (controls.RESET)
-					{
-						FlxG.save.erase();
-						FlxG.sound.volume = 0.5;
-						musicVolume = 1;
-						sfxVolume = 1;
-					}
-
+					clearData();
 				if (controls.BACK)
-					FlxG.switchState(new OptionsState());
+					{
+						FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
+						FlxG.switchState(new OptionsState());
+					}
 			}
 }

@@ -1,4 +1,4 @@
-package;
+package funkin;
 
 import flixel.FlxG;
 import openfl.display.Sprite;

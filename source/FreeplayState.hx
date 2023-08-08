@@ -1,6 +1,7 @@
 package;
 
-import GameUI;
+import funkin.Alphabet;
+import funkin.GameUI;
 #if discord_rpc
 import Discord.DiscordClient;
 #end

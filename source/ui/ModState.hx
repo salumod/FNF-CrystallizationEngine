@@ -1,5 +1,6 @@
 package ui;
 
+import lime.app.Application;
 import haxe.macro.Expr.Var;
 import flixel.FlxG;
 import flixel.FlxCamera;
@@ -81,8 +82,11 @@ class ModState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		if (controls.BACK)
+		{
+			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			FlxG.switchState(new OptionsState());
-
+		}
+		
 		super.update(elapsed);
 	}
 }
