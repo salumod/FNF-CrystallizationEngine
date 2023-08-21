@@ -1,0 +1,6 @@
+package funkin;
+
+class Hscript 
+{
+    
+}

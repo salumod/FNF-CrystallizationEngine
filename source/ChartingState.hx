@@ -1,8 +1,5 @@
 package;
 
-import funkin.GameUI.GameMouse;
-import funkin.Note;
-import funkin.GameUI.UIadjust;
 import haxe.io.Path;
 import Conductor.BPMChangeEvent;
 import Section.SwagSection;
@@ -138,6 +135,7 @@ class ChartingState extends MusicBeatState
 				notes: [],
 				bpm: 150,
 				needsVoices: true,
+				loadEvent: false,
 				player1: 'bf',
 				player2: 'dad',
 				speed: 1,
@@ -145,14 +143,14 @@ class ChartingState extends MusicBeatState
 			};
 		}
 
-		if (!(FlxG.mouse.visible))
+		if (GameMouse.visMouse)
+			FlxG.mouse.visible = true;
+		else
 			{
 				mouse = new GameMouse();
-				mouse.qucklyADD();
+				mouse.quicklyADD();
 				add(mouse);
 			}
-
-		FlxG.save.bind('charting', 'FunkinCrew');
 
 		tempBpm = _song.bpm;
 
@@ -209,12 +207,18 @@ class ChartingState extends MusicBeatState
 
 		var check_voices = new FlxUICheckBox(10, 25, null, null, "Has voice track", 100);
 		check_voices.checked = _song.needsVoices;
-		// _song.needsVoices = check_voices.checked;
 		check_voices.callback = function()
-		{
-			_song.needsVoices = check_voices.checked;
-			trace('CHECKED!');
-		};
+			{
+				_song.needsVoices = check_voices.checked;
+				trace('CHECKED!');
+			};
+
+		var check_hasEvent = new FlxUICheckBox(10, 43, null, null, "Load Event Files", 100);
+		check_hasEvent.callback = function()
+			{
+				_song.loadEvent = check_hasEvent.checked;
+				trace('CHECKED of EVENT!');
+			};
 
 		var check_mute_inst = new FlxUICheckBox(10, 200, null, null, "Mute Instrumental (in editor)", 100);
 		check_mute_inst.checked = false;
@@ -274,6 +278,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(UI_songTitle);
 
 		tab_group_song.add(check_voices);
+		tab_group_song.add(check_hasEvent);
 		tab_group_song.add(check_mute_inst);
 		tab_group_song.add(saveButton);
 		tab_group_song.add(reloadSong);

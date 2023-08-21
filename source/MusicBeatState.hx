@@ -1,6 +1,5 @@
 package;
 
-import ui.VolumeState;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.FlxGame;
@@ -8,7 +7,6 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIState;
 import flixel.math.FlxRect;
 import flixel.util.FlxTimer;
-import ui.VolumeState;
 
 class MusicBeatState extends FlxUIState
 {

@@ -4,7 +4,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import haxe.io.Path;
 import shaderslmfao.ColorSwap;
-import ui.PreferencesState;
 
 class NoteSplash extends FlxSprite
 {
@@ -29,7 +28,7 @@ class NoteSplash extends FlxSprite
 
 		setupNoteSplash(x, y, noteData);
 
-		if (PreferencesState.preferences.get('notesplash-alpha'))
+		if (FlxG.save.data.ImagesEnhancement)
 		    alpha = 0.75;
 
 		colorSwap = new ColorSwap();

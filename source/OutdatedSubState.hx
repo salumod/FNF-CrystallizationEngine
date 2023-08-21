@@ -23,7 +23,7 @@ class OutdatedSubState extends MusicBeatState
 			+ " while the most recent version is "
 			+ "v" 
 			+ TitleState.onlineVersion
-			+ "! Press Space to go to itch.io, or ESCAPE to ignore this!!",
+			+ "! Press Space to go to github, or ESCAPE to ignore this!!",
 			32);
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();

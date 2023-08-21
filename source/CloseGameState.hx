@@ -23,6 +23,8 @@ class CloseGameState extends MusicBeatState
 
 	override public function create()
 	{
+		TitleState.showReading = false;
+		
 		var bg:FlxSprite = new FlxSprite(Paths.image('menuDesat'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.17;
@@ -54,7 +56,7 @@ class CloseGameState extends MusicBeatState
 
 		yesSelect();
 		
-		gamePrompt('normal');
+		gamePrompt();
 		add(buttonYes);
 		add(buttonNo);
 		add(txt);
@@ -64,7 +66,7 @@ class CloseGameState extends MusicBeatState
 		super.create();
 	}
 
-	function gamePrompt(promptAni:String = 'normal')
+	function gamePrompt(?promptAni:String = 'normal')
 		{
 			var prompt:FlxSprite = new FlxSprite();
 

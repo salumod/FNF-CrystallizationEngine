@@ -13,6 +13,7 @@ typedef SwagSong =
 	var notes:Array<SwagSection>;
 	var bpm:Float;
 	var needsVoices:Bool;
+	var loadEvent:Bool;
 	var speed:Float;
 
 	var player1:String;
@@ -26,11 +27,12 @@ class Song
 	public var notes:Array<SwagSection>;
 	public var bpm:Float;
 	public var needsVoices:Bool = true;
+	public var loadEvent:Bool = false;
 	public var speed:Float = 1;
 
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
-
+	
 	public function new(song, notes, bpm)
 	{
 		this.song = song;

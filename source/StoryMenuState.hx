@@ -1,5 +1,7 @@
 package;
 
+import openfl.Assets;
+import haxe.Json;
 import openfl.display.Preloader.DefaultPreloader;
 import openfl.display.Stage;
 #if discord_rpc
@@ -21,60 +23,24 @@ import lime.net.curl.CURLCode;
 
 using StringTools;
 
+typedef WeekJson = {
+	var weekData:Array<Dynamic>;
+	var weekStageNames:Array<String>;
+	var weekNames:Array<String>;
+}
+
+typedef ColorJson = {
+	var weekColors:Array<FlxColor>;
+	var songColors:Array<Int>;
+}
+
 class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 	var yellowBG:FlxSprite;
-	var weekData:Array<Dynamic> = [
-		['Tutorial'],
-		['Bopeebo', 'Fresh', 'Dadbattle'],
-		['Spookeez', 'South', "Monster"],
-		['Pico', 'Philly-Nice', "Blammed"],
-		['Satin-Panties', "High", "Milf"],
-		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
-		['Senpai', 'Roses', 'Thorns'],
-		['Ugh', 'Guns', 'Stress'],
-		['Score', 'Lit-Up', '2Hot']
-	];
 	var curDifficulty:Int = 1;
 
 	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true, true];
-
-	var weekCharacters:Array<Dynamic> = [
-		['dad', 'bf', 'gf'],
-		['dad', 'bf', 'gf'],
-		['spooky', 'bf', 'gf'],
-		['pico', 'bf', 'gf'],
-		['mom', 'bf', 'gf'],
-		['parents-christmas', 'bf', 'gf'],
-		['senpai', 'bf', 'gf'],
-		['tankman', 'bf', 'gf'],
-		['none', 'none', 'none']
-	];
-
-	var weekStageNames:Array<String> = [
-		'stage',
-		'stage',
-		'spooky',
-		'philly',
-		'limo',
-		'mall',
-		'school',
-		'tank',
-		'news'
-	];
-
-	var weekNames:Array<String> = [
-		"",
-		"Daddy Dearest",
-		"Spooky Month",
-		"PICO",
-		"MOMMY MUST MURDER",
-		"RED SNOW",
-		"hating simulator ft. moawling",
-		"TANKMAN",
-		"DARNELL"
-	];
 
 	var weekColors:Array<FlxColor> = [
 		0xFFF9CF51,
@@ -106,8 +72,14 @@ class StoryMenuState extends MusicBeatState
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
 
+	private var json_file:WeekJson;
+	private var color_json_file:ColorJson;
+
 	override function create()
 	{
+        json_file = haxe.Json.parse(Assets.getText('assets/data/weekList.json'));
+		color_json_file = haxe.Json.parse(Assets.getText('assets/data/colorList.json'));
+
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
@@ -144,14 +116,12 @@ class StoryMenuState extends MusicBeatState
 		grpLocks = new FlxTypedGroup<FlxSprite>();
 		add(grpLocks);
 
-		trace("Line 70");
-
 		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		for (i in 0...weekData.length)
+		for (i in 0...json_file.weekData.length)
 		{
 			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
 			weekThing.y += ((weekThing.height + 20) * i);
@@ -171,12 +141,9 @@ class StoryMenuState extends MusicBeatState
 				grpLocks.add(lock);
 			}
 		}
-		trace("Line 96");
 
 		difficultySelectors = new FlxGroup();
 		add(difficultySelectors);
-
-		trace("Line 124");
 
 		leftArrow = new FlxSprite(410, 630);
 		leftArrow.frames = Paths.getSparrowAtlas('arrow');
@@ -185,23 +152,19 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.animation.play('idle');
 		difficultySelectors.add(leftArrow);
 
-		txtDifficulty = new FlxText(leftArrow.x + 150, FlxG.height * 0.8);
+		txtDifficulty = new FlxText(leftArrow.x + 150, 0);
 		txtDifficulty.text = "NORMAL";
 		txtDifficulty.setFormat(Paths.font("Difficult.ttf"), 84);
 		changeDifficulty();
 
 		difficultySelectors.add(txtDifficulty);
 
-		rightArrow = new FlxSprite(txtDifficulty.x + txtDifficulty.width + 50, leftArrow.y);
+		rightArrow = new FlxSprite(txtDifficulty.x + txtDifficulty.width + 25, leftArrow.y);
 		rightArrow.frames = Paths.getSparrowAtlas('arrow');
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
 		rightArrow.animation.play('idle');
 		difficultySelectors.add(rightArrow);
-
-		trace("Line 150");
-
-		// add(grpWeekCharacters);
 
 		txtTracklist = new FlxText(-300, 400, 0, "Tracks", 40);
 		txtTracklist.alignment = CENTER;
@@ -214,8 +177,6 @@ class StoryMenuState extends MusicBeatState
 
 		updateText();
 
-		trace("Line 165");
-
 		super.create();
 	}
 
@@ -225,13 +186,16 @@ class StoryMenuState extends MusicBeatState
 
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.5);
 		FlxTween.cancelTweensOf(yellowBG);
-		FlxTween.color(yellowBG, .5, yellowBG.color, weekColors[curWeek], {ease: FlxEase.linear});
+		FlxTween.color(yellowBG, 5, yellowBG.color, weekColors[curWeek], {ease: FlxEase.linear});
+		// yellowBG.color = color_json_file.weekColors[curWeek];
+		// yellowBG.color = FlxColor.interpolate(yellowBG.color, color_json_file.weekColors[curWeek], CoolUtil.camLerpShit(0.045));
+
 		scoreText.text = "WEEK SCORE:" + Math.round(lerpScore);
 
-		txtWeekTitle.text = weekNames[curWeek].toUpperCase();
+		txtWeekTitle.text = json_file.weekNames[curWeek].toUpperCase();
 		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
 
-		// FlxG.watch.addQuick('font', scoreText.font);
+		FlxG.watch.addQuick('bg color', yellowBG.color);
 
 		difficultySelectors.visible = weekUnlocked[curWeek];
 
@@ -302,7 +266,7 @@ class StoryMenuState extends MusicBeatState
 				stopspamming = true;
 			}
 
-			PlayState.storyPlaylist = weekData[curWeek];
+			PlayState.storyPlaylist = json_file.weekData[curWeek];
 			PlayState.isStoryMode = true;
 			selectedWeek = true;
 
@@ -343,7 +307,7 @@ class StoryMenuState extends MusicBeatState
 		{
 			case 0:
 				txtDifficulty.text = "EASY";
-				txtDifficulty.color = FlxColor.GREEN;
+				txtDifficulty.color = FlxColor.LIME;
 				txtDifficulty.offset.x = 0;
 			case 1:
 				txtDifficulty.text = "NORMAL";
@@ -375,12 +339,12 @@ class StoryMenuState extends MusicBeatState
 	{
 		curWeek += change;
 
-		if (curWeek >= weekData.length)
+		if (curWeek >= json_file.weekData.length)
 			curWeek = 0;
 		if (curWeek < 0)
-			curWeek = weekData.length - 1;
+			curWeek = json_file.weekData.length - 1;
 
-		weekStage = new MenuStages(-1000, -500, weekStageNames[curWeek]);
+		weekStage = new MenuStages(-1000, -500, json_file.weekStageNames[curWeek]);
 		grpWeekStage.add(weekStage);
 		
 		var bullShit:Int = 0;
@@ -404,7 +368,7 @@ class StoryMenuState extends MusicBeatState
 	{
 		txtTracklist.text = "Tracks\n";
 
-		var stringThing:Array<String> = weekData[curWeek];
+		var stringThing:Array<String> = json_file.weekData[curWeek];
 
 		for (i in stringThing)
 		{

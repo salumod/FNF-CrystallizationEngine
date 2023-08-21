@@ -110,8 +110,11 @@ class GamePadOn extends FlxGroup
 
 class GameMouse extends FlxGroup
 {
+    public static var visMouse:Bool = false;
+
     public function new(?mouseName:String, ?size:Float = 2)
     {
+        visMouse = true;
         FlxG.mouse.visible = true;
         FlxG.mouse.load(Paths.imageUI(mouseName), size);
 
@@ -120,12 +123,14 @@ class GameMouse extends FlxGroup
 
     public function loadBpm(mouseName:Dynamic, ?size:Float = 1)
     {
+        visMouse = true;
         FlxG.mouse.visible = true;
         FlxG.mouse.load(mouseName, size);
     }
 
-    public function qucklyADD(?size:Float = 2) 
+    public function quicklyADD(?size:Float = 2) 
     {
+        visMouse = true;
         FlxG.mouse.visible = true;
         if (FlxG.save.data.MouseColor != null)
 			FlxG.mouse.load(Paths.imageUI('MOUSE'), size)
@@ -169,6 +174,7 @@ class UItextBox extends FlxSprite
         textBox = new FlxSprite(x, y);
         textBox.loadGraphic(Paths.imageUI('Text_Box'));
         textBox.scrollFactor.set();
+        textBox.updateHitbox();
     }
 }
 

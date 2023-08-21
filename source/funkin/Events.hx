@@ -46,7 +46,6 @@ import openfl.filters.ShaderFilter;
 import shaderslmfao.BuildingShaders.BuildingShader;
 import shaderslmfao.BuildingShaders;
 import shaderslmfao.ColorSwap;
-import ui.PreferencesState;
 #if hxCodec
 import hxcodec.VideoHandler;
 #end
@@ -56,21 +55,14 @@ using StringTools;
 #if discord_rpc
 import Discord.DiscordClient;
 #end
-class EventState extends MusicBeatState
-{
-    override function create()
-        {
-            super.create();
-        }
 
-    override function update(elapsed:Float)
-        {
-            super.update(elapsed);
-        }
-}
-
-class Events extends MusicBeatState
+class Events extends FlxSubState
 {
+    function new(event:String) 
+    {
+        super();
+    }
+
     static public function cameraFade(colornoun:String, time:Int)
     {
         trace("cameraFade");
@@ -123,7 +115,7 @@ class Events extends MusicBeatState
     static public function playAnim(character:Character, anim:String)
     {
         character.playAnim(anim, true);
-        trace(character + "playAnim: "+ anim);
+        trace(character.curCharacter + " playAnim: "+ anim);
     }
 }
 

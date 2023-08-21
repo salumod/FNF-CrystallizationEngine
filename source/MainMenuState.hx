@@ -24,11 +24,7 @@ import flixel.util.FlxTimer;
 import lime.app.Application;
 import ui.AtlasMenuList;
 import ui.MenuList;
-import ui.OptionsState;
-import ui.PreferencesState;
 import ui.Prompt;
-import ui.VolumeState;
-import ui.GameplayState;
 
 using StringTools;
 
@@ -47,16 +43,21 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
     var mouse:GameMouse;
+	var backspace:FlxSprite;
 
 	override function create()
 	{
-		if (!(FlxG.mouse.visible))
+		TitleState.showReading = false;
+		
+		if (GameMouse.visMouse)
+			FlxG.mouse.visible = true;
+		else
 			{
 				mouse = new GameMouse();
-				mouse.qucklyADD();
+				mouse.quicklyADD();
 				add(mouse);
 			}
-			
+
 		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -94,9 +95,18 @@ class MainMenuState extends MusicBeatState
 		magenta.visible = false;
 		magenta.antialiasing = true;
 		magenta.color = 0xFFfd719b;
-		if (PreferencesState.preferences.get('flashing-menu'))
+		if (FlxG.save.data.flashingMenu)
 			add(magenta);
-		// magenta.scrollFactor.set();
+     
+		backspace = new FlxSprite(FlxG.width * 0.75, FlxG.height * 0.7);
+		backspace.frames = Paths.getSparrowAtlas('backspace');
+		backspace.animation.addByIndices('normal', 'pressed', [0], "", 24, false);
+		backspace.animation.addByIndices('pressed', 'pressed', [1, 2, 3], "", 24, false);
+		backspace.animation.play('normal');
+		backspace.antialiasing = true;
+		backspace.scrollFactor.set(0, 0);
+		backspace.updateHitbox();
+        add(backspace);
 
 		menuItems = new MainMenuList();
 		add(menuItems);
@@ -104,13 +114,13 @@ class MainMenuState extends MusicBeatState
 		menuItems.onChange.add(onMenuItemChange);
 		menuItems.onAcceptPress.add(function(_)
 		{
+			FlxFlicker.flicker(backspace, 1.1,0.15, false, true);
 			FlxFlicker.flicker(magenta, 1.1, 0.15, false, true);
 		});
 
 		menuItems.enabled = false; // disable for intro
 		menuItems.createItem('story mode', function() startExitState(new StoryMenuState()));
 		menuItems.createItem('freeplay', function() startExitState(new FreeplayState()));
-		// addMenuItem('options', function () startExitState(new OptionMenu()));
 		#if CAN_OPEN_LINKS
 		var hasPopupBlocker = #if web true #else false #end;
 
@@ -120,12 +130,6 @@ class MainMenuState extends MusicBeatState
 			menuItems.createItem('donate', selectDonate);
 		#end
 		menuItems.createItem('options', function() startExitState(new OptionsState()));
-		// #if newgrounds
-		// 	if (NGio.isLoggedIn)
-		// 		menuItems.createItem("logout", selectLogout);
-		// 	else
-		// 		menuItems.createItem("login", selectLogin);
-		// #end
 
 		// center vertically
 		var spacing = 160;
@@ -148,13 +152,10 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		// if (GameplayMenu.getGameoption('watermark'))
-		// 	{
-				var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "(Build NE v0.2.5)", 12);
-		        version.scrollFactor.set();
-		        version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		        add(version);
-			// }
+		var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "NE v0.3", 12);
+	    version.scrollFactor.set();
+		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(version);
 		// NG.core.calls.event.logEvent('swag').send();
 
 		super.create();
@@ -282,6 +283,9 @@ class MainMenuState extends MusicBeatState
 
 		if (controls.BACK && menuItems.enabled && !menuItems.busy)
 		{
+			backspace.animation.play('pressed');
+		    FlxTween.tween(backspace, {alpha: 0}, 0.3, {ease: FlxEase.quadInOut});
+
 			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			// FlxG.switchState(new CloseGameState());
 		    FlxG.switchState(new TitleState());

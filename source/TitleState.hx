@@ -1,5 +1,6 @@
 package;
 
+import openfl.net.FileFilter;
 import funkin.VideoState;
 import funkin.Alphabet;
 import flixel.FlxG;
@@ -36,7 +37,6 @@ import openfl.net.NetStream;
 import shaderslmfao.BuildingShaders.BuildingShader;
 import shaderslmfao.BuildingShaders;
 import shaderslmfao.ColorSwap;
-import ui.PreferencesState;
 
 using StringTools;
 
@@ -52,10 +52,10 @@ import sys.thread.Thread;
 #if polymod
 import polymod.Polymod;
 #end
-import ui.VolumeState;
 
 class TitleState extends MusicBeatState
 {
+	public static var showReading:Bool = true;
 	public static var initialized:Bool = false;
 	var startedIntro:Bool;
 
@@ -79,6 +79,7 @@ class TitleState extends MusicBeatState
 
 	public static var onlineVersion:String;
 	private var overlay:Sprite;
+	var splitWords:Array<String>;
 
 	override public function create():Void
 	{
@@ -102,7 +103,10 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		PreferencesState.initPrefs();
+		PreferencesMenu.defaultValueInit();
+		SomeOption.defaultValueInit();
+		VolumeMenu.defaultValue();
+		
 		PlayerSettings.init();
 		Highscore.load();
 
@@ -110,18 +114,22 @@ class TitleState extends MusicBeatState
 		NGio.init();
 		#end
 
-		var funkay:FlxSprite = new FlxSprite();
-		funkay.loadGraphic(Paths.image('funkay'));
-		funkay.setGraphicSize(Std.int(FlxG.width * 1), Std.int(FlxG.height * 1));
-		funkay.updateHitbox();
-		funkay.antialiasing = true;
-		add(funkay);
-		funkay.scrollFactor.set();
-		funkay.screenCenter();
-
-		loadBar = new FlxSprite(0, FlxG.height - 20).makeGraphic(Std.int(FlxG.width * 0.5), 10, 0xFFff16d2);
-		loadBar.screenCenter(X);
-		add(loadBar);
+		if (showReading)
+		{
+			var funkay:FlxSprite = new FlxSprite();
+			funkay.loadGraphic(Paths.image('funkay'));
+			funkay.setGraphicSize(Std.int(FlxG.width * 1), Std.int(FlxG.height * 1));
+			funkay.updateHitbox();
+			funkay.antialiasing = true;
+			add(funkay);
+			funkay.scrollFactor.set();
+			funkay.screenCenter();
+	
+			loadBar = new FlxSprite(0, FlxG.height - 20).makeGraphic(Std.int(FlxG.width * 0.5), 10, 0xFFff16d2);
+			loadBar.screenCenter(X);
+			loadBar.scale.x = 0.1;
+			add(loadBar);
+		}
 
 		if (FlxG.save.data.weekUnlocked != null)
 		{
@@ -283,15 +291,35 @@ class TitleState extends MusicBeatState
 
 		gfDance.shader = swagShader.shader;
 
-		// swagShader.colorToReplace = 0xFFF939A9;
-		// swagShader.newColor = 0xFFAE00FF;
-
 		titleText = new FlxText(100, FlxG.height * 0.8);
-		titleText.text = "Press Enter to Begin";
 		titleText.setFormat(Paths.font("statusplz.ttf"), 100);
 		tweenColor = FlxTween.color(titleText, 1, FlxColor.CYAN, FlxColor.BLUE, {type: PINGPONG});
 		titleText.alpha = 0.3;
 		add(titleText);
+
+		var file_test:Array<String> = CoolUtil.coolTextFile(Paths.file("data/" + "start_text.txt"));
+
+		for (i in file_test)
+		{
+			splitWords = i.split('--');
+			titleText.text = splitWords[0];
+			titleText.x = Std.parseFloat(splitWords[1]);
+			titleText.y = Std.parseFloat(splitWords[2]);
+		}
+
+		if (file_test == null)
+			{
+				titleText.text = 'Press Enter to Begin';
+				titleText.x = 100;
+				titleText.y = FlxG.height * 0.8;
+			}
+			
+		if (splitWords[1] == null)
+			titleText.x = 100;
+		if (splitWords[2] == null)
+			titleText.y = FlxG.height * 0.8;
+        if (splitWords[0] == null)
+			titleText.text = 'Press Enter to Begin';
 
 		credGroup = new FlxGroup();
 		add(credGroup);
@@ -354,7 +382,8 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		loadBar.scale.x += elapsed * 1.2;
+		if (showReading)
+		    loadBar.scale.x += elapsed * 1.5;
 
 		#if debug
 		if (FlxG.keys.justPressed.EIGHT)
@@ -422,35 +451,44 @@ class TitleState extends MusicBeatState
 			tweenColor.cancel();
 			// FlxG.sound.music.stop();
 
-			// if (!OutdatedSubState.leftState)
-			// 	{
-			// 		var ver = "v" + Application.current.meta.get('version');
-            //         var versionHttp = "https://raw.githubusercontent.com/salumod/FNF-CrystallizationEngine/week8/onlineVersion.txt";
-			// 		var http = new haxe.Http(versionHttp);
-
-			//         http.onData = function (data:String)
-			//         {
-			// 	        onlineVersion = data.split('\n')[0].trim();
-			// 			trace(onlineVersion);
-			// 	        if(ver.trim() !=  "v" + onlineVersion) 
-			// 			    FlxG.switchState(new OutdatedSubState());
-			// 			else
-			// 				FlxG.switchState(new MainMenuState());
-			//         }
-
-			//         http.onError = function (error) {
-			// 		FlxG.switchState(new MainMenuState());
-			// 	    trace('error: $error');
-			//     }
-
-			//         http.request();
-			// 	}
-			// else
-			//    FlxG.switchState(new MainMenuState());
-			new FlxTimer().start(1, function(tmr:FlxTimer)
+			if (!OutdatedSubState.leftState)
 				{
-					FlxG.switchState(new MainMenuState());
-				});
+					var ver = "v" + Application.current.meta.get('recompiledVersion');
+                    var versionHttp = "https://raw.githubusercontent.com/salumod/secret/main/version?token=GHSAT0AAAAAACE4AIPDMPKBAMPQWUQSWVMAZGW76OQ";
+					var http = new haxe.Http(versionHttp);
+
+			        http.onData = function (data:String)
+			        {
+				        onlineVersion = data.split('\n')[0].trim();
+						trace(onlineVersion);
+				        if(ver.trim() !=  "v" + onlineVersion) 
+						    FlxG.switchState(new OutdatedSubState());
+						else
+							{
+								new FlxTimer().start(1, function(tmr:FlxTimer)
+									{
+										FlxG.switchState(new MainMenuState());
+									});
+							}
+			        }
+
+			        http.onError = function (error) 
+					{
+						new FlxTimer().start(1, function(tmr:FlxTimer)
+							{
+								FlxG.switchState(new MainMenuState());
+							});
+				        trace('error: $error');
+			        }
+			        http.request();
+				}
+			else
+				{
+					new FlxTimer().start(1, function(tmr:FlxTimer)
+						{
+							FlxG.switchState(new MainMenuState());
+						});
+				}
 		}
 
 		if (pressedEnter && !skippedIntro && initialized)

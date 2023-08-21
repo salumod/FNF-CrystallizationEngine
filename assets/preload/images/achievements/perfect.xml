@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="perfect.png">
+	<!-- Created with Adobe Animate version 23.0.0.407 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="begin0000" x="0" y="0" width="274" height="268"/>
+	<SubTexture name="begin0001" x="274" y="0" width="274" height="268"/>
+	<SubTexture name="begin0002" x="548" y="0" width="274" height="268"/>
+	<SubTexture name="begin0003" x="0" y="268" width="274" height="268"/>
+	<SubTexture name="begin0004" x="274" y="268" width="274" height="268"/>
+</TextureAtlas>

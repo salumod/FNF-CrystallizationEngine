@@ -1,6 +1,5 @@
 package;
 
-import ui.GameplayState.SomeOption;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -14,7 +13,6 @@ import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 import lime.utils.Assets as LimeAssets;
 import openfl.utils.Assets;
-import ui.GameplayState;
 
 class LoadingState extends MusicBeatState
 {
@@ -181,7 +179,7 @@ class LoadingState extends MusicBeatState
 	{
 		Paths.setCurrentLevel("week" + PlayState.storyWeek);
 		
-		if (SomeOption.getGameoption('show-loading-state'))
+		if (FlxG.save.data.CheckLoading)
 			{
 				var loaded = isSoundLoaded(getSongPath())
 			        && (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))
