@@ -2123,7 +2123,7 @@ class PlayState extends MusicBeatState
 				endSong();
 			}
         #end
-		
+
 		if (FlxG.keys.justPressed.EIGHT)
 			{
 			/* 	 8 for opponent char
@@ -3846,3 +3846,4 @@ class PlayState extends MusicBeatState
 
 	var curLight:Int = 0;
 }
+//demo version has no bin right :(
