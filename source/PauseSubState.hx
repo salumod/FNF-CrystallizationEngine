@@ -22,10 +22,11 @@ class PauseSubState extends MusicBeatSubstate
 		'Resume',
 		'Restart Song',
 		'Change Difficulty',
-		'Toggle Practice Mode',
+		'Option',
 		'Exit to menu'
 	];
 	var difficultyChoices:Array<String> = ['EASY', 'NORMAL', 'HARD', 'BACK'];
+	var optionChoices:Array<String> = ['PREFERENCES', 'GAMEPLAY', 'CONTROLS', 'LATERNCY', 'VOLUME', 'COLORS', 'MODS', 'REFRESH','BACK'];
 
 	var menuItems:Array<String> = [];
 	var curSelected:Int = 0;
@@ -71,14 +72,6 @@ class PauseSubState extends MusicBeatSubstate
 		deathCounter.setFormat(Paths.font('vcr.ttf'), 32);
 		deathCounter.updateHitbox();
 		add(deathCounter);
-
-		practiceText = new FlxText(20, 15 + 64 + 32, 0, "PRACTICE MODE", 32);
-		practiceText.scrollFactor.set();
-		practiceText.setFormat(Paths.font('vcr.ttf'), 32);
-		practiceText.updateHitbox();
-		practiceText.x = FlxG.width - (practiceText.width + 20);
-		practiceText.visible = PlayState.practiceMode;
-		add(practiceText);
 
 		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
@@ -156,14 +149,28 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.storyDifficulty = curSelected;
 
 					FlxG.resetState();
-
-				case 'Toggle Practice Mode':
-					PlayState.practiceMode = !PlayState.practiceMode;
-					practiceText.visible = PlayState.practiceMode;
-
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
 					regenMenu();
+				// case 'Option':
+				// 	menuItems = optionChoices;
+				// 	regenMenu();
+				// case 'PREFERENCES':
+				// 	openSubState(new PreferencesMenu());
+				// case 'GAMEPLAY':
+				// 	openSubState(new GameplayMenu());
+				// case 'CONTROLS':
+				// 	openSubState(new ControlsMenu());
+				// case 'LATERNCY':
+				// 	openSubState(new LatencyMenu());
+				// case 'VOLUME':
+				// 	openSubState(new VolumeMenu());
+				// case 'COLORS':
+				// 	openSubState(new ColorsMenu());
+				// case 'MODS':
+				// 	openSubState(new ModMenu());
+				// case 'REFRESH':
+				// 	FlxG.resetState();
 				case 'BACK':
 					menuItems = pauseOG;
 					regenMenu();

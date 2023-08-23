@@ -45,7 +45,6 @@ class PreferencesMenu extends MusicBeatSubstate
 		createItem('Beat Zooming', FlxG.save.data.zoomOn);
 		createItem('Auto Pause', FlxG.save.data.autoPause);
 		createItem('NoteSplash', FlxG.save.data.noteSplash);
-		createItem('rating text', FlxG.save.data.ratingText);
 		createItem('Time Bar', FlxG.save.data.timeBar);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
@@ -85,9 +84,6 @@ class PreferencesMenu extends MusicBeatSubstate
 				case 'Note Splash':
 					FlxG.save.data.noteSplash = !FlxG.save.data.noteSplash;
 					defaultValue = FlxG.save.data.noteSplash;
-				case 'rating text':
-					FlxG.save.data.ratingText = !FlxG.save.data.ratingText;
-					defaultValue = FlxG.save.data.ratingText;
 				case 'Time Bar':
 					FlxG.save.data.timeBar = !FlxG.save.data.timeBar;
 					defaultValue = FlxG.save.data.timeBar;
@@ -109,11 +105,6 @@ class PreferencesMenu extends MusicBeatSubstate
 
 	static public function defaultValueInit()
 	{
-		if (FlxG.save.data.ratingText == null)
-			{
-				FlxG.save.data.ratingText = false;
-				
-			}
 		if (FlxG.save.data.naughtyness == null)
 			{
 				FlxG.save.data.naughtyness = true;
@@ -148,7 +139,6 @@ class PreferencesMenu extends MusicBeatSubstate
 		if (FlxG.save.data.timeBar == null)
 			{
 				FlxG.save.data.timeBar = true;
-				
 			}
 
 		traceOption();
@@ -161,7 +151,6 @@ class PreferencesMenu extends MusicBeatSubstate
 		trace('naughtyness: ' + FlxG.save.data.naughtyness);
 		trace('zoomOn: ' + FlxG.save.data.zoomOn);
 		trace('autoPause: ' + FlxG.save.data.autoPause);
-		trace('ratingText: ' + FlxG.save.data.ratingText);
 		trace('note splash: ' + FlxG.save.data.noteSplash);
 		trace('timeBar: ' + FlxG.save.data.timeBar);
 	}

@@ -46,7 +46,6 @@ class OptionsState extends MusicBeatState
 		createItem('volume', function() openSubState(new VolumeMenu()));
 		createItem('color', function() openSubState(new ColorsMenu()));
 		createItem('mods', function() openSubState(new ModMenu()));
-        // createItem('reset game', function() FlxG.resetGame());
 		// if (NGio.isLoggedIn)
 		// 	createItem("logout", selectLogout);
 		// else

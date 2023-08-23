@@ -75,14 +75,6 @@ class ColorsMenu extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-		items.forEach(function(daItem:TextMenuItem)
-			{
-				if (items.selectedItem == daItem)
-					daItem.x = 150;
-				else
-					daItem.x = 120;
-			});
-
 		if (controls.BACK)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
@@ -339,12 +331,14 @@ class MouseChoose extends MusicBeatSubstate
 				FlxG.save.data.MouseColor = 1;
 				mouse = new GameMouse('MOUSE');
 				add(mouse);
+				FlxG.save.flush();
 			});
 			creatMouseItem('White', function() 
 			{
 				FlxG.save.data.MouseColor = null;
 				mouse = new GameMouse('MOUSE_WHITE');
 				add(mouse);
+				FlxG.save.flush();
 			});
 			creatMouseItem('custom', function() 
 			{
@@ -407,8 +401,6 @@ class MouseChoose extends MusicBeatSubstate
 
 		override function update(elapsed:Float)
 		{
-			FlxG.save.flush();
-			
 			if (controls.BACK)
 			{
 				FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);

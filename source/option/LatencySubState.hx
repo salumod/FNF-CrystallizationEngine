@@ -16,6 +16,7 @@ import ui.AtlasText;
 
 class LatencyMenu extends MusicBeatSubstate
 {
+	var soundText:FlxText;
 	var offsetText:FlxText;
 	var bpmText:FlxText;
 	var noteGrp:FlxTypedGroup<Note>;
@@ -24,7 +25,7 @@ class LatencyMenu extends MusicBeatSubstate
     var desctxt:FlxText;
 	var botton_OFFSET:UIButton;
 	var botton_BPM:UIButton;
-	var items:TextMenuList;
+	var curSelected:Int;
 
 	override function create()
 	{
@@ -38,6 +39,18 @@ class LatencyMenu extends MusicBeatSubstate
 		menuBG.scrollFactor.set(0, 0);
 		add(menuBG);
 		
+		//some bg
+		var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 0.45), Std.int(FlxG.height * 0.87), 0xFF000000);
+		bg.scrollFactor.set();
+		bg.alpha = 0.4;
+		add(bg);
+
+		//play sound
+		soundText = new FlxText(FlxG.width * 0.1, FlxG.height * 0.6);
+		soundText.setFormat(Paths.font("vcr.ttf"), 30);
+		soundText.scrollFactor.set();
+		soundText.text = 'play sound';
+		add(soundText);
 		//note
 		noteGrp = new FlxTypedGroup<Note>();
 		add(noteGrp);
@@ -55,10 +68,10 @@ class LatencyMenu extends MusicBeatSubstate
 		offsetText.scrollFactor.set();
 		add(offsetText);
 
-		botton_OFFSET = new UIButton(FlxG.width * 0.05, FlxG.height * 0.2, FlxG.width * 0.25, function() Conductor.offset += 1 * multiply, function() Conductor.offset -= 1 * multiply);
+		botton_OFFSET = new UIButton(FlxG.width * 0.05, FlxG.height * 0.2, FlxG.width * 0.25);
 		add(botton_OFFSET);
 
-		botton_BPM = new UIButton(FlxG.width * 0.05, FlxG.height * 0.4, FlxG.width * 0.25 + 100, function() Conductor.bpm += 1 * multiply, function() Conductor.bpm -= 1 * multiply);
+		botton_BPM = new UIButton(FlxG.width * 0.05, FlxG.height * 0.4, FlxG.width * 0.25 + 100);
 		add(botton_BPM);
 
         //bpm
@@ -79,10 +92,7 @@ class LatencyMenu extends MusicBeatSubstate
 		descBg.alpha = 0.4;
 		add(descBg);
 
-		desctxt = new FlxText(descBg.x, descBg.y + 4, FlxG.width, "Hold ACCEPT to multiply value\nRESET to reset\nPAUSE to play the test sound", 18);
-		#if !debug
-		desctxt.text = "RESET to reset\nPAUSE to play the test sound";
-		#end
+		desctxt = new FlxText(descBg.x, descBg.y + 4, FlxG.width, "RESET to reset", 18);
 		desctxt.setFormat(Paths.font("Funkin/Funkin.ttf"), 24, FlxColor.WHITE, CENTER);
 		desctxt.borderColor = FlxColor.BLACK;
 		desctxt.borderSize = 1;
@@ -91,33 +101,124 @@ class LatencyMenu extends MusicBeatSubstate
 		desctxt.screenCenter(X);
 		add(desctxt);
 
-		add(items = new TextMenuList());
-
 		//bpm used
 		Conductor.changeBPM(120);
-
+		changeSelection(0);
 		super.create();
 	}
 
-	function soundsPlay() 
+	public function changeSelection(change:Int = 0)
+	{
+		curSelected += change;
+
+		if (curSelected <= 0)
+			{
+				curSelected = 0;
+			}
+
+		if (curSelected >= 2)
+			{
+				curSelected = 2;
+			}
+
+		if (curSelected == 0)
+			{
+				offsetText.color = FlxColor.YELLOW;
+				bpmText.color = FlxColor.WHITE;
+				soundText.color = FlxColor.WHITE;
+			}
+		
+		if (curSelected == 1)
+			{
+				bpmText.color = FlxColor.YELLOW;
+				offsetText.color = FlxColor.WHITE;
+				soundText.color = FlxColor.WHITE;
+			}
+		
+		if (curSelected == 2)
+		    {
+				soundText.color = FlxColor.YELLOW;
+				bpmText.color = FlxColor.WHITE;
+				offsetText.color = FlxColor.WHITE;
+			}
+	}
+
+	function updateValue()
+	{
+		FlxG.save.data.offset = Conductor.offset;
+
+		if (curSelected == 0)
+			{
+				if (controls.UI_LEFT_P)
+					{
+						Conductor.offset -= 1;
+					}
+
+				if (controls.UI_RIGHT_P)
+					{
+						Conductor.offset += 1;
+					}
+			}
+
+		if (curSelected == 1)
+			{
+				if (controls.UI_LEFT_P)
+					{
+						Conductor.bpm -= 1;
+					}
+
+			    if (controls.UI_RIGHT_P)
+					{
+						Conductor.bpm += 1;
+					}
+			}
+
+		if (curSelected == 2)
+			{
+				if (controls.ACCEPT)
+					{
+						soundsPlay();
+					}
+			}
+
+		FlxG.save.flush();
+	}
+
+	function soundsPlay()
 	{
 		FlxG.sound.playMusic(Paths.music('soundTest'), FlxG.save.data.volume * FlxG.save.data.musicVolume, true);
 	}
 
+	static public function defaultValue()
+	{
+		if (FlxG.save.data.offset == null)
+			FlxG.save.data.offset = 0;
+		else
+			trace('offset: ' + FlxG.save.data.offset);
+
+		Conductor.offset = FlxG.save.data.offset;
+	}
+
 	override function update(elapsed:Float)
 	{
-		offsetText.text = "Offset: " + Conductor.offset + "ms";
-		bpmText.text = "BPM(FOR TEST): " + Conductor.bpm;
+		super.update(elapsed);
+
 		Conductor.songPosition = FlxG.sound.music.time - Conductor.offset;
 
-		// if (controls.ACCEPT)
-		// 	multiply = 10;
-        // else
-		// 	multiply = 1;
+		offsetText.text = "Offset: " + Conductor.offset + "ms";
+		bpmText.text = "BPM(FOR TEST): " + Conductor.bpm;
 
-		if (controls.PAUSE)
-			soundsPlay();
+		if (controls.UI_UP_P)
+			{
+				changeSelection(-1);
+			}
+		if (controls.UI_DOWN_P)
+			{
+				changeSelection(1);
+			}
 
+		updateValue();
+		
 		if (controls.RESET)
 		{
 			FlxG.sound.music.stop();
@@ -130,7 +231,9 @@ class LatencyMenu extends MusicBeatSubstate
 			daNote.x = strumLine.x + 130;
 
 			if (daNote.y < strumLine.y)
-				daNote.kill();
+				{
+					daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * 1.7);
+				}
 		});
 
 		if (controls.BACK)
@@ -139,7 +242,5 @@ class LatencyMenu extends MusicBeatSubstate
 				FlxG.sound.music.fadeIn(1, 0, FlxG.save.data.volume * FlxG.save.data.musicVolume);
 				close();
 			}
-
-		super.update(elapsed);
 	}
 }

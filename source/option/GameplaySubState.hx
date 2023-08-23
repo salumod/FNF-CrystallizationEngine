@@ -1,5 +1,6 @@
 package option;
 
+import flixel.FlxGame;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.FlxCamera;
@@ -44,9 +45,9 @@ class GameplayMenu extends MusicBeatSubstate
             createItem('Game Mechanics', function() openSubState(new SomeOption()));
             createItem('Game Mode', function() openSubState(new GameMode()));
             createItem('Adjusting', function() openSubState(new AdjustingWindow()));
-            #if debug
             createItem('Achievements', function() openSubState(new Achievements()));
-            #end
+            createItem('Clear all data', function() FlxG.save.erase());
+
             camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
             if (items != null)
                 camFollow.y = items.selectedItem.y;
@@ -73,14 +74,6 @@ class GameplayMenu extends MusicBeatSubstate
         {
             super.update(elapsed);
             
-            items.forEach(function(daItem:TextMenuItem)
-            {
-                 if (items.selectedItem == daItem)
-                    daItem.x = 150;
-                else
-                    daItem.x = 120;
-            });
-
             if (controls.BACK)
                 {
                     FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
@@ -317,8 +310,9 @@ class GameMode extends MusicBeatSubstate
             add(items = new TextMenuList());
 
             createItem('extreme mode', FlxG.save.data.extremeMode);
-            #if debug
+            createItem('practice mode', FlxG.save.data.practiceMode);
             createItem('mirror mode', FlxG.save.data.mirrorMode);
+            #if debug
             createItem('challenge mode', FlxG.save.data.challengeMode);
             #end
             if (items != null)
@@ -344,6 +338,9 @@ class GameMode extends MusicBeatSubstate
                                 case 'extreme mode':
                                     FlxG.save.data.extremeMode = !FlxG.save.data.extremeMode;
                                     defaultValue = FlxG.save.data.extremeMode;
+                                case 'practice mode':
+                                    FlxG.save.data.practiceMode = !FlxG.save.data.practiceMode;
+                                    defaultValue = FlxG.save.data.practiceMode;
                                 case 'mirror mode':
                                     FlxG.save.data.mirrorMode = !FlxG.save.data.mirrorMode;
                                     defaultValue = FlxG.save.data.mirrorMode;
@@ -385,16 +382,23 @@ class GameMode extends MusicBeatSubstate
                         }
                     else
                         {
-                           trace('found option save date!');
+                           trace('found game mode: Extreme Mode');
                         }
-            
+                    if (FlxG.save.data.practiceMode == null)
+                        {
+                            FlxG.save.data.practiceMode = false;
+                        }
+                    else
+                        {
+                            trace('found game mode: Practice Mode');
+                        }
                     if (FlxG.save.data.mirrorMode == null)
                         {
                             FlxG.save.data.mirrorMode = false;
                         }
                     else
                         {
-                            trace('found option save date!');
+                            trace('found game mode: Mirror Mode');
                         }
             
                     if (FlxG.save.data.challengeMode == null)
@@ -403,13 +407,18 @@ class GameMode extends MusicBeatSubstate
                         }
                     else
                         {
-                            trace('found option save date!');
+                            trace('found game mode: Challenge Mode');
                         }
                 }
 }
 
 class Achievements extends MusicBeatSubstate
 {
+    var menuCamera:FlxCamera;
+    var selected:Int;
+    var achievementsName:Array<String> = ['perfect', 'FC', 'beat!'];
+    var someIcon:FlxSprite;
+
     public function new() 
     {
         super();    
@@ -417,30 +426,48 @@ class Achievements extends MusicBeatSubstate
 
     override function create() 
     {
-        var achievementsName:Array<String> = ['perfect', 'FC', 'beat!'];
+        menuCamera = new SwagCamera();
+        FlxG.cameras.add(menuCamera, true);
+        menuCamera.bgColor = 0x0;
+        camera = menuCamera;
 
         var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
         bg.scrollFactor.set();
-        bg.alpha = 0.5;
+        bg.alpha = 0.8;
         add(bg);
 
         for (i in 0 ... achievementsName.length)
         {
-            addAchievements(100 * i, 100 * i, achievementsName[i]);
+            addAchievements(300 * i, 0, achievementsName[i]);
         }
+
+        menuCamera.follow(someIcon, null, 0.06);
 
         super.create();
     }
 
     public function addAchievements(x:Float, y:Float, someAchievements:String) 
     {
-        var someIcon:FlxSprite = new FlxSprite(x, y);
+        someIcon = new FlxSprite(x, y);
 		someIcon.frames = Paths.getSparrowAtlas('achievements/' + someAchievements);
 		someIcon.scrollFactor.set();
 		someIcon.animation.addByPrefix('begin', 'begin', 24, false);
 		someIcon.updateHitbox();
 		add(someIcon);
         someIcon.animation.play('begin');
+
+        switch(someAchievements)
+        {
+            case 'perfect':
+                if (!FlxG.save.data.achievements_perfect)
+                    someIcon.color = FlxColor.BLACK;
+            case 'FC':
+                if (!FlxG.save.data.achievements_FC)
+                    someIcon.color = FlxColor.BLACK;
+            case 'beat!':
+                if (!FlxG.save.data.beatDad)
+                    someIcon.color = FlxColor.BLACK;
+        }
     }
 
     override function update(elapsed:Float)

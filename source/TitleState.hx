@@ -105,9 +105,11 @@ class TitleState extends MusicBeatState
 
 		PreferencesMenu.defaultValueInit();
 		SomeOption.defaultValueInit();
+		LatencyMenu.defaultValue();
 		VolumeMenu.defaultValue();
 		
 		PlayerSettings.init();
+		PlayState.checkAchievementsValue();
 		Highscore.load();
 
 		#if newgrounds

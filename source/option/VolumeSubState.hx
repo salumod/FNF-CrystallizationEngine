@@ -222,7 +222,7 @@ class VolumeMenu extends MusicBeatSubstate
 				FlxG.save.flush();
 			}
 
-		static public function defaultValue() 
+		static public function defaultValue(clear:Bool = false) 
 		{
 			if (FlxG.save.data.volume == null)
 				FlxG.save.data.volume = 1;
@@ -238,6 +238,13 @@ class VolumeMenu extends MusicBeatSubstate
 				FlxG.save.data.SFXVolume = 1;
 			else
 				trace('SFX volume: ' + FlxG.save.data.SFXVolume);
+
+			if (clear)
+			{
+				FlxG.save.data.volume == 1;
+				FlxG.save.data.musicVolume = 1;
+				FlxG.save.data.SFXVolume = 1;
+			}
 		}
 
 		override function update(elapsed:Float)
@@ -253,9 +260,13 @@ class VolumeMenu extends MusicBeatSubstate
 						changeSelection(1);
 					}
 				super.update(elapsed);
+				
 				updateVolume();
+				
 				if (controls.RESET)
-					defaultValue();
+				{
+					defaultValue(true);
+				}
 				if (controls.BACK)
 					{
 						FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
