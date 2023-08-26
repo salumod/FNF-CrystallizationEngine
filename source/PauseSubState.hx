@@ -40,7 +40,16 @@ class PauseSubState extends MusicBeatSubstate
 
 		menuItems = pauseOG;
 
-		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
+		pauseMusic = new FlxSound();
+		if (FlxG.save.data.challengeMode)
+		{
+			pauseMusic.loadEmbedded(Paths.music('task waiting'), true, true);
+		}
+		else
+		{
+			pauseMusic.loadEmbedded(Paths.music('breakfast'), true, true);
+		}
+
 		pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
 

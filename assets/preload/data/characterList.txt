@@ -18,7 +18,5 @@ spirit
 tankman
 pico-speaker
 bf-holding-gf
-bft
-picot
 darnell
 pico-player
