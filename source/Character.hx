@@ -639,27 +639,27 @@ class Character extends FlxSprite
 	{
 		if (FlxG.save.data.mirrorMode)
 		{
-			if (curCharacter.startsWith('bf'))
-			{
+			var dadVar:Float = 4;
+		
+				if (curCharacter.startsWith('bf') || curCharacter.endsWith('player'))
+					dadVar = 6.1;
+
 				if (animation.curAnim.name.startsWith('sing'))
 					{
 						holdTimer += elapsed;
 					}
-		
-					var dadVar:Float = 4;
-		
-					if (curCharacter == 'dad')
-						dadVar = 6.1;
-					if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
-					{
-						dance();
-						holdTimer = 0;
-					}
-			}
+				else
+					holdTimer = 0;
+
+				if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
+				{
+					dance();
+					holdTimer = 0;
+				}
 		}
         else
 		{
-			if (!curCharacter.startsWith('bf'))
+			if (!curCharacter.startsWith('bf') || curCharacter.endsWith('player'))
 				{
 					if (animation.curAnim.name.startsWith('sing'))
 					{

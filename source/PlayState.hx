@@ -1,5 +1,6 @@
 package;
 
+import cpp.Random;
 import flixel.util.FlxSave;
 import haxe.io.StringInput;
 import flixel.addons.ui.FlxUILine;
@@ -117,7 +118,8 @@ class PlayState extends MusicBeatState
 	private var timeBar:FlxBar;
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
-
+	private var select_score:Int = 0;
+	private var must_score:Int = 0;
 	private var iconP1:HealthIcon;
 	private var iconP2:HealthIcon;
 	private var camHUD:FlxCamera;
@@ -127,8 +129,7 @@ class PlayState extends MusicBeatState
 	private var accuracy:Float = 0.00;
 	private var totalPlayed:Int = 0;
 	private var totalNotesHit:Float = 0;
-	private var ss:Bool = true;
-	private var rank:String = "?";
+	private var s_Rank:Bool = true;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 
@@ -1046,9 +1047,9 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		rankTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 250, healthBarBG.y + 30, 0, "", 20);
+		rankTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 180, healthBarBG.y + 30, 0, "", 20);
 		rankTxt.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		
+		rankTxt.alignment = CENTER;
 		rankTxt.scrollFactor.set();
 		rankTxt.alpha = 0;
 		add(rankTxt);
@@ -1522,68 +1523,190 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
-		inCutscene = false;
-		camHUD.visible = true;
+		var startTime:Float = 0.0;
 
-		//opp
-		generateStaticArrows(0);
-		//player
-		generateStaticArrows(1);
+		FlxG.save.data.challenge_combo = null;
+		FlxG.save.data.challenge_health = null;
+		FlxG.save.data.challenge_accuracy = null;
+		FlxG.save.data.challenge_Combo = null;
+		FlxG.save.data.challenge_Rating_Bad = null;
+		FlxG.save.data.challenge_Rating_Sick = null;
 
-		talking = false;
-		startedCountdown = true;
-		Conductor.songPosition = 0;
-		Conductor.songPosition -= Conductor.crochet * 5;
-
-		var swagCounter:Int = 0;
-
-		startTimer.start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+		if (FlxG.save.data.challengeMode)
 		{
-			// this just based on beatHit stuff but compact
-			if (swagCounter % gfSpeed == 0)
-				gf.dance();
-			if (swagCounter % 2 == 0)
+			var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+			bg.scrollFactor.set();
+			bg.updateHitbox();
+			bg.alpha = 0;
+			add(bg);
+			bg.cameras = [camHUD];
+			
+			FlxTween.tween(bg, {alpha: 0.3}, 1.0);
+
+			startTime = 7.0;
+
+			var text:FlxText = new FlxText(400, 100);
+			text.scrollFactor.set();
+			text.setFormat(Paths.font("Funkin/Funkin.ttf"), 30, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			text.alignment = CENTER;
+			text.updateHitbox();
+			text.size = 80;
+			text.alpha = 0;
+			add(text);
+            FlxTween.tween(text, {alpha: 1}, 1.0);
+
+			var task:FlxText = new FlxText(200, 1000);
+			task.scrollFactor.set();
+			task.setFormat(Paths.font("Funkin/Funkin.ttf"), 30, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			task.alignment = LEFT;
+			task.updateHitbox();
+			task.size = 60;
+			add(task); 
+			FlxTween.tween(task, {y: 200}, 1.0);
+
+			task.text = 'must complete: ';
+			text.text = 'THE TASK: ';
+			
+			var randomTask = FlxG.random.int(1, 3);
+
+			switch (randomTask)
 			{
-				if (!boyfriend.animation.curAnim.name.startsWith("sing"))
-					boyfriend.dance();
-				if (!dad.animation.curAnim.name.startsWith("sing"))
-					dad.dance();
-			}
-			else if (dad.curCharacter == 'spooky' && !dad.animation.curAnim.name.startsWith("sing"))
-				dad.dance();
-			if (generatedMusic)
-				notes.sort(sortNotes, FlxSort.DESCENDING);
-
-			var introSprPaths:Array<String> = ["ready", "set", "go"];
-			var altSuffix:String = "";
-
-			if (curStage.startsWith("school"))
-			{
-				altSuffix = '-pixel';
-				introSprPaths = ['weeb/pixelUI/ready-pixel', 'weeb/pixelUI/set-pixel', 'weeb/pixelUI/date-pixel'];
-			}
-
-			var introSndPaths:Array<String> = ["intro3" + altSuffix, "intro2" + altSuffix,
-				"intro1" + altSuffix, "introGo" + altSuffix];
-
-			if (swagCounter > 0)
-				readySetGo(introSprPaths[swagCounter - 1]);
-			FlxG.sound.play(Paths.sound(introSndPaths[swagCounter]), FlxG.save.data.volume);
-
-			/* switch (swagCounter)
-			{
-				case 0:
-					
 				case 1:
-					
+					if (FlxG.save.data.extremeMode)
+						{
+							FlxG.save.data.challenge_combo = false;
+							task.text += '\nFull combo';
+						}
+					else
+						{
+							FlxG.save.data.challenge_combo = false;
+							task.text += '\ncombo break < 3';
+						}
 				case 2:
-					
+					if (FlxG.save.data.extremeMode)
+						{
+							FlxG.save.data.challenge_health = false;
+							task.text += '\nBeat opponent with full health';
+						}
+					else
+						{
+							FlxG.save.data.challenge_health = false;
+							task.text += '\nBeat opponent with health(>50%)';
+						}
 				case 3:
-					
-			} */
+					if (FlxG.save.data.extremeMode)
+						{
+							FlxG.save.data.challenge_accuracy = false;
+							task.text += '\nRank must be greater than A+';
+						}
+					else
+						{
+							FlxG.save.data.challenge_accuracy = false;
+							task.text += '\nRank must be greater than A';
+						}
+			}
 
-			swagCounter += 1;
-		}, 4);
+			task.text += '\nSelective completion:';
+			var randomCompletion_Task = FlxG.random.int(1, 3);
+			switch (randomCompletion_Task)
+			{
+				case 1:
+					if (!FlxG.save.data.extremeMode)
+					{
+						FlxG.save.data.challenge_Combo = false;
+						task.text += '\nCombo < 300';
+					}
+					else
+						randomCompletion_Task = 2;
+				case 2:
+					task.text += '\nbad < 10';
+				FlxG.save.data.challenge_Rating_Bad = false;
+				case 3:
+					task.text += '\nsick < 50';
+				FlxG.save.data.challenge_Rating_Sick = false;
+			}
+
+			task.cameras = [camHUD];
+			text.cameras = [camHUD];
+
+			new FlxTimer().start(7.0, function(tmr:FlxTimer)
+				{
+					FlxTween.tween(bg, {alpha: 0}, 0.5, {
+						onComplete: function(tween:FlxTween)
+						{
+							bg.destroy();
+						},
+					});
+
+					FlxTween.tween(text, {y: 1000}, 0.5, {
+						onComplete: function(tween:FlxTween)
+						{
+							text.destroy();
+						},
+					});
+
+					FlxTween.tween(task, {y: 1500}, 0.5, {
+						onComplete: function(tween:FlxTween)
+						{
+							text.destroy();
+						},
+					});
+				});
+		}
+
+		new FlxTimer().start(startTime, function(tmr:FlxTimer)
+		{
+			inCutscene = false;
+			camHUD.visible = true;
+	
+			//opp
+			generateStaticArrows(0);
+			//player
+			generateStaticArrows(1);
+	
+			talking = false;
+			startedCountdown = true;
+			Conductor.songPosition = 0;
+			Conductor.songPosition -= Conductor.crochet * 5;
+	
+			var swagCounter:Int = 0;
+	
+			startTimer.start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+			{
+				// this just based on beatHit stuff but compact
+				if (swagCounter % gfSpeed == 0)
+					gf.dance();
+				if (swagCounter % 2 == 0)
+				{
+					if (!boyfriend.animation.curAnim.name.startsWith("sing"))
+						boyfriend.dance();
+					if (!dad.animation.curAnim.name.startsWith("sing"))
+						dad.dance();
+				}
+				else if (dad.curCharacter == 'spooky' && !dad.animation.curAnim.name.startsWith("sing"))
+					dad.dance();
+				if (generatedMusic)
+					notes.sort(sortNotes, FlxSort.DESCENDING);
+	
+				var introSprPaths:Array<String> = ["ready", "set", "go"];
+				var altSuffix:String = "";
+	
+				if (curStage.startsWith("school"))
+				{
+					altSuffix = '-pixel';
+					introSprPaths = ['weeb/pixelUI/ready-pixel', 'weeb/pixelUI/set-pixel', 'weeb/pixelUI/date-pixel'];
+				}
+	
+				var introSndPaths:Array<String> = ["intro3" + altSuffix, "intro2" + altSuffix,
+					"intro1" + altSuffix, "introGo" + altSuffix];
+	
+				if (swagCounter > 0)
+					readySetGo(introSprPaths[swagCounter - 1]);
+				FlxG.sound.play(Paths.sound(introSndPaths[swagCounter]), FlxG.save.data.volume);
+	
+				swagCounter += 1;
+			}, 4);
+		});
 	}
 
 	function readySetGo(path:String):Void
@@ -1738,31 +1861,13 @@ class PlayState extends MusicBeatState
 			accuracy = totalNotesHit / totalPlayed * 100;
 			if (accuracy >= 100.00)
 				{
-					if (ss && misses == 0)
+					if (misses == 0 && comboBreak == 0 && s_Rank)
 						    accuracy = 100.00;
 					else
 						{
 						    accuracy = 99.98;
 						}
 				}
-				if (ss)
-					rank = "Perfect";
-				else if (accuracy >= 95)
-					rank = "Sick";
-				else if (accuracy >= 92)
-					rank = "Great";
-				else if (accuracy >= 82)
-					rank = "Good";
-				else if (accuracy >= 70)
-					rank = "Normal";
-				else if (accuracy >= 50)
-					rank = "Bad";
-				else if (accuracy < 49)
-					rank = "Shit";
-				else if (accuracy < 10)
-					rank = "Suck";
-				else
-					rank = "Perfct";
 		}
 
 	// Now you are probably wondering why I made 2 of these very similar functions
@@ -2068,12 +2173,10 @@ class PlayState extends MusicBeatState
 				    if (comboScore != 0)
 					' + ' + comboScore
 				    + ' | Misses: ' + misses
-		            + ' | Accuracy: ' + truncateFloat(accuracy, 2) + "%"
-		            + ' | Rank: ' + rank;
+		            + ' | Accuracy: ' + truncateFloat(accuracy, 2) + "%";
 					else
 					' | Misses: ' + misses
-		            + ' | Accuracy: ' + truncateFloat(accuracy, 2) + "%"
-		            + ' | Rank: ' + rank;
+		            + ' | Accuracy: ' + truncateFloat(accuracy, 2) + "%";
 
                 FlxTween.tween(rankTxt, {alpha: 1}, 1);
 			}
@@ -2272,27 +2375,28 @@ class PlayState extends MusicBeatState
 
 			if (health <= 0 && (!FlxG.save.data.practiceMode) || FlxG.save.data.extremeMode &&  misses >= 1)
 			{
-				// boyfriend.stunned = true;
-
-				persistentUpdate = false;
-				persistentDraw = false;
-				paused = true;
-
-				vocals.stop();
-				FlxG.sound.music.stop();
-
-				// unloadAssets();
-
-				deathCounter += 1;
-
-				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-
-				// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-
-				#if discord_rpc
-				// Game Over doesn't get his own variable because it's only used here
-				DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
-				#end
+				if (!FlxG.save.data.mirrorMode)
+				{
+					persistentUpdate = false;
+					persistentDraw = false;
+					paused = true;
+	
+					vocals.stop();
+					FlxG.sound.music.stop();
+	
+					// unloadAssets();
+	
+					deathCounter += 1;
+	
+					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+	
+					// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+	
+					#if discord_rpc
+					// Game Over doesn't get his own variable because it's only used here
+					DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+					#end
+				}
 			}
 		}
 
@@ -2520,17 +2624,99 @@ class PlayState extends MusicBeatState
 		});
 	}
 
+	function checkChallenges(?done:Bool):String
+	{
+			if (!FlxG.save.data.challenge_health && FlxG.save.data.challenge_health != null)
+			{
+				if (FlxG.save.data.extremeMode)
+					{
+						if (health == 2)
+							done = true;
+						must_score = 10000;
+					}
+					else if (health >= 1)
+					{
+						done = true;
+						must_score = 10000;
+					}
+			}
+	
+			if (!FlxG.save.data.challenge_combo && FlxG.save.data.challenge_combo != null)
+			{
+				if (FlxG.save.data.extremeMode)
+					{
+						if (comboBreak == 0)
+							done = true;
+					}
+				else if (comboBreak < 3)
+				{
+					done = true;
+					must_score = 10000;
+				}
+			}
+	
+			if (!FlxG.save.data.challenge_accuracy && FlxG.save.data.challenge_accuracy != null)
+			{
+				if (FlxG.save.data.extremeMode)
+					{
+						if (accuracy >= 97.17 && accuracy < 100)
+						{
+							done = true;
+							must_score = 10000;
+						}
+					}
+				else if (accuracy >= 95 && accuracy < 97.17)
+				{
+					done = true;
+					must_score = 10000;
+				}
+			}
+
+			if (!FlxG.save.data.challenge_Combo && FlxG.save.data.challenge_Combo != null)
+			{
+				if (combo < 300)
+					select_score = 1000;
+			}
+
+			if (!FlxG.save.data.challenge_Rating_Bad && FlxG.save.data.challenge_Rating_Bad != null)
+			{
+				if (bad < 10)
+					select_score = 1000;
+			}
+
+			if (!FlxG.save.data.challenge_Rating_Sick && FlxG.save.data.challenge_Rating_Sick != null)
+			{
+				if (sick < 50)
+					select_score = 1000;
+			}
+
+		var task:String = '';
+
+		if (done)
+			task = 'Task completed';
+		else
+			task = 'Task failed';
+
+		return task;
+	}
+
 	function endSong():Void
 	{
+		var lerp_Score:Float = 0.0;
+		var lerp_Accurany:Float = 0.0;
+
 		seenCutscene = false;
 		deathCounter = 0;
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
 
-		if (SONG.validScore)
+		if (!FlxG.save.data.challengeMode)
 		{
-			Highscore.saveScore(SONG.song, songScore + comboScore, storyDifficulty, accuracy);
+			if (SONG.validScore)
+				{
+					Highscore.saveScore(SONG.song, songScore + comboScore, storyDifficulty, accuracy);
+				}
 		}
 
 		var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -2549,25 +2735,64 @@ class PlayState extends MusicBeatState
 		win_text.size = 60;
 		add(win_text);
 		FlxTween.tween(win_text, {alpha: 1}, 0.7);
-		if (health >= 0.00001 && health < 1)
-			win_text.text = 'SHADE';
-		else if (health == 2)
-			win_text.text = 'VICTORY!';
+		if (FlxG.save.data.challengeMode)
+		{
+			win_text.text = checkChallenges();
+			if (checkChallenges() == 'Task failed')
+			{
+				songScore = 0;
+				accuracy =0;
+				Highscore.saveScore(SONG.song, select_score, storyDifficulty);
+				win_text.color = FlxColor.RED;
+			}
+			else
+			{
+				Highscore.saveScore(SONG.song, songScore + comboScore + 10000 + select_score, storyDifficulty, accuracy);
+				win_text.color = FlxColor.LIME;
+			}
+				
+		}
 		else
-			win_text.text = 'WIN';
+		{
+			if (health >= 0.00001 && health < 1)
+			{
+				win_text.text = 'SHADE';
+				win_text.color = 0xFF966666;
+			}
+			else if (health == 2)
+			{
+				win_text.text = 'Complete Victory!';
+				win_text.color = FlxColor.YELLOW;
+			}
+			else
+				win_text.text = 'WIN';
+		}
 
 		var text:FlxText = new FlxText(0, 1000);
 		text.scrollFactor.set();
 		text.setFormat(Paths.font("Funkin/Funkin.ttf"), 30, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		text.alignment = LEFT;
-		text.text = 'HERE IS YOUR RATING LIST: '+
-		'\n score: ' + songScore +
-		'\n combo score: ' + comboScore +
-		'\n combo break: ' + comboBreak +
-		'\n accuracy: ' + truncateFloat(accuracy, 2) +
-		'\n -------------------' + 
-		'\n rank:';
-
+		if (!FlxG.save.data.challengeMode)
+		{
+			text.text = 'HERE IS YOUR RATING LIST: '+
+			'\n score: ' + songScore +
+			'\n combo score: ' + comboScore +
+			'\n combo break: ' + comboBreak +
+			'\n accuracy: ' + truncateFloat(accuracy, 2) + '%' +
+			'\n ---------------------' + 
+			'\n rank:';
+		}
+		else
+		{
+			text.text = 'HERE IS YOUR RATING LIST: '+
+			'\n score: ' + songScore +
+			'\n combo score: ' + comboScore +
+			'\n task score: ' + must_score + '+' + select_score +
+			'\n combo break: ' + comboBreak +
+			'\n accuracy: ' + truncateFloat(accuracy, 2) + '%' +
+			'\n ---------------------' + 
+			'\n rank:';
+		}
 		text.updateHitbox();
 		text.size = 35;
 		add(text);
@@ -2612,6 +2837,10 @@ class PlayState extends MusicBeatState
 		rank_text.size = 100;
 		rank_text.alpha = 0;
 		add(rank_text);
+
+		if (FlxG.save.data.challengeMode)
+			rank_text.y + 20;
+
 		FlxTween.tween(rank_text, {alpha: 1}, 2, {ease: FlxEase.quadIn});
 
 		var rating:FlxText = new FlxText(-500, 500);
@@ -2744,7 +2973,7 @@ class PlayState extends MusicBeatState
 			shit += 1;
 			isPerfect = false; // shitty copypaste on this literally just because im lazy and tired lol!
 			totalNotesHit += 0.10;
-			ss = false;
+			s_Rank = false;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.6)
 		{
@@ -2753,7 +2982,7 @@ class PlayState extends MusicBeatState
 			bad += 1;
 			isPerfect = false;
 			totalNotesHit += 0.35;
-			ss = false;
+			s_Rank = false;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.4)
 		{
@@ -2762,7 +2991,7 @@ class PlayState extends MusicBeatState
 			good += 1;
 			isPerfect = false;
 			totalNotesHit += 0.85;
-			ss = false;
+			s_Rank = false;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
 		{
@@ -2771,7 +3000,7 @@ class PlayState extends MusicBeatState
 			sick += 1;
 			isPerfect = false;
 			totalNotesHit += 0.9;
-			ss = false;
+			s_Rank = false;
 		}
         else
 			totalNotesHit += 1;
@@ -3111,12 +3340,25 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (boyfriend.holdTimer > Conductor.stepCrochet * 4 * 0.001 && !holdArray.contains(true))
+		if (FlxG.save.data.mirrorMode)
 		{
-			if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
-			{
-				boyfriend.dance();
-			}
+			if (dad.holdTimer > Conductor.stepCrochet * 4 * 0.001 && !holdArray.contains(true))
+				{
+					if (dad.animation.curAnim.name.startsWith('sing'))
+					{
+						dad.dance();
+					}
+				}
+		}
+		else
+		{
+			if (boyfriend.holdTimer > Conductor.stepCrochet * 4 * 0.001 && !holdArray.contains(true))
+				{
+					if (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
+					{
+						boyfriend.dance();
+					}
+				}
 		}
 
 		playerStrums.forEach(function(spr:FlxSprite)
@@ -3707,6 +3949,8 @@ class PlayState extends MusicBeatState
 		    achievements('FC', 'Full combo!', -80, -105);
 		if (curBeat == 17 && curSong == 'Bopeebo')
 		    achievements('beat!', 'GF is MINE', -10, -40, 20);
+		if (curBeat == 21 && curSong == 'Bopeebo')
+		    achievements('week8', 'Week8?!', -50, -50);
 		#end
 	}
 
@@ -3747,7 +3991,7 @@ class PlayState extends MusicBeatState
 				FlxG.save.flush();
 			}
 
-		if (rank == 'Perfect' && !FlxG.save.data.achievements_perfect && perfect != 0)
+		if (accuracy == 100 && !FlxG.save.data.achievements_perfect && perfect != 0)
 			{
 				achievements('perfect', 'perfect', -50, -75);
 				FlxG.save.data.achievements_perfect = true;
@@ -3758,6 +4002,12 @@ class PlayState extends MusicBeatState
 			{
 				achievements('beat!', 'GF is MINE', -10, -40, 20);
 				FlxG.save.data.beatDad = true;
+				FlxG.save.flush();
+			}
+		if ((curSong == 'Score' || SONG.song.toLowerCase() == 'lit-up' || curSong == '2Hot') && !FlxG.save.data.week8)
+			{
+				achievements('week8', 'Week8?!', -50, -50);
+				FlxG.save.data.week8 = true;
 				FlxG.save.flush();
 			}
 	}
@@ -3776,6 +4026,10 @@ class PlayState extends MusicBeatState
 			FlxG.save.data.beatDad = false;
 		else
 			trace('Found achievements: GF is MINE ' + FlxG.save.data.beatDad);
+		if (FlxG.save.data.week8 == null)
+			FlxG.save.data.week8 = false;
+		else
+			trace('Found achievements: week8?! ' + FlxG.save.data.week8);
 	}
 
 	function achievements(achievements:String, ?txt:String, ?icon_off_x = 0, ?icon_off_y = 0, ?txt_size:Int = 30) 

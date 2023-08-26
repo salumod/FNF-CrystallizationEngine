@@ -312,9 +312,8 @@ class GameMode extends MusicBeatSubstate
             createItem('extreme mode', FlxG.save.data.extremeMode);
             createItem('practice mode', FlxG.save.data.practiceMode);
             createItem('mirror mode', FlxG.save.data.mirrorMode);
-            #if debug
             createItem('challenge mode', FlxG.save.data.challengeMode);
-            #end
+            
             if (items != null)
                 camFollow.y = items.selectedItem.y;
     
@@ -416,7 +415,7 @@ class Achievements extends MusicBeatSubstate
 {
     var menuCamera:FlxCamera;
     var selected:Int;
-    var achievementsName:Array<String> = ['perfect', 'FC', 'beat!'];
+    var achievementsName:Array<String> = ['perfect', 'FC', 'beat!', 'week8'];
     var someIcon:FlxSprite;
 
     public function new() 
