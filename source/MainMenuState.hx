@@ -1,6 +1,5 @@
 package;
 
-import funkin.VideoState;
 import openfl.display.BitmapData;
 import cpp.Function;
 import funkin.GameUI;
@@ -47,7 +46,6 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-		TitleState.showReading = false;
 		
 		if (GameMouse.visMouse)
 			FlxG.mouse.visible = true;
@@ -66,10 +64,7 @@ class MainMenuState extends MusicBeatState
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
-		if (!FlxG.sound.music.playing)
-		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'), FlxG.save.data.volume * FlxG.save.data.musicVolume);
-		}
+		FlxG.sound.playMusic(Paths.music('freakyMenu'), FlxG.save.data.volume * FlxG.save.data.musicVolume, true);
 
 		persistentUpdate = persistentDraw = true;
 
@@ -124,10 +119,7 @@ class MainMenuState extends MusicBeatState
 		#if CAN_OPEN_LINKS
 		var hasPopupBlocker = #if web true #else false #end;
 
-		if (VideoState.seenVideo)
-			menuItems.createItem('kickstarter', selectKickstarter);
-		else
-			menuItems.createItem('donate', selectDonate);
+		menuItems.createItem('kickstarter', selectDonate);
 		#end
 		menuItems.createItem('options', function() startExitState(new OptionsState()));
 
@@ -152,7 +144,7 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "CE_ORIGHINE v0.3", 12);
+		var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "CE_ORIGHINE v0.4a", 12);
 	    version.scrollFactor.set();
 		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(version);
@@ -288,7 +280,7 @@ class MainMenuState extends MusicBeatState
 
 			FlxG.sound.play(Paths.sound('cancelMenu'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 			// FlxG.switchState(new CloseGameState());
-		    FlxG.switchState(new TitleState());
+		    FlxG.switchState(new CloseGameState());
 		}
 
 		super.update(elapsed);

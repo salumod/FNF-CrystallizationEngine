@@ -15,7 +15,7 @@ import Section.SwagSection;
 import Song.SwagSong;
 import WiggleEffect.WiggleEffectType;
 import flixel.FlxBasic;
-import flixel.FlxCamera;
+import flixel.FlxCamera;                                                                                                                                                                                                                                                                                                                                         
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxObject;
@@ -2883,7 +2883,8 @@ class PlayState extends MusicBeatState
 							switch (PlayState.storyWeek)
 							{
 								case 7:
-									FlxG.switchState(new VideoState());
+									// FlxG.switchState(new VideoState());
+									FlxG.switchState(new StoryMenuState());
 								default:
 									FlxG.switchState(new StoryMenuState());
 							}

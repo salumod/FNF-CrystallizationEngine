@@ -13,7 +13,6 @@ import funkin.FPS;
 import funkin.GameUI;
 import funkin.Note;
 import funkin.NoteSplash;
-import funkin.VideoState;
 import option.ColorsSubState;
 import option.ModSubState;
 import option.VolumeSubState;

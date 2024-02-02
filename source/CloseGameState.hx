@@ -23,8 +23,6 @@ class CloseGameState extends MusicBeatState
 
 	override public function create()
 	{
-		TitleState.showReading = false;
-		
 		var bg:FlxSprite = new FlxSprite(Paths.image('menuDesat'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.17;
@@ -145,7 +143,7 @@ class CloseGameState extends MusicBeatState
 			onComplete: function(twn:FlxTween)
 			{
 				remove(yes);
-				FlxG.switchState(new TitleState());
+				FlxG.switchState(new OpenningState());
 			}
 		});
 

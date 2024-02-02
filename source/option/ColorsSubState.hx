@@ -326,17 +326,27 @@ class MouseChoose extends MusicBeatSubstate
 			add(bg);
 
 			add(items = new TextMenuList());
-			creatMouseItem('Black', function() 
+			creatMouseItem('Default', function() 
 			{
-				FlxG.save.data.MouseColor = 1;
-				mouse = new GameMouse('MOUSE');
+				FlxG.save.data.MouseColor = null;
+				mouse = new GameMouse();
+				mouse.quicklyADD();
 				add(mouse);
 				FlxG.save.flush();
 			});
 			creatMouseItem('White', function() 
 			{
-				FlxG.save.data.MouseColor = null;
-				mouse = new GameMouse('MOUSE_WHITE');
+				FlxG.save.data.MouseColor = 0;
+				mouse = new GameMouse();
+				mouse.quicklyADD();
+				add(mouse);
+				FlxG.save.flush();
+			});
+			creatMouseItem('what', function() 
+			{
+				FlxG.save.data.MouseColor = 1;
+				mouse = new GameMouse();
+				mouse.quicklyADD();
 				add(mouse);
 				FlxG.save.flush();
 			});

@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="demo" file="Friday Night Funkin'" packageName="com.FunkinCrew.funkin" package="com.FunkinCrew.funkin" main="Main" version="0.2.8" recompiledVersion="0.3" company="FunkinCrew" />
+	<app title="CrystallizationEngine" file="FNF-CrystallizationEngine" packageName="" package="" main="Main" version="0.2.8" recompiledVersion="0.4a" company="Salumod" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />

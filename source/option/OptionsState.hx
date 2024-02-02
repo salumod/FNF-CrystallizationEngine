@@ -1,6 +1,5 @@
 package option;
 
-import funkin.VideoState;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
@@ -72,6 +71,8 @@ class OptionsState extends MusicBeatState
 			createItem("login", selectLogin);
 		#end
 		createItem("exit", exit);
+
+		FlxG.sound.playMusic(Paths.music('Keeper'), FlxG.save.data.volume * FlxG.save.data.musicVolume, true);
 	}
 
 	function createItem(name:String, callback:Void->Void, fireInstantly = false)
@@ -86,32 +87,6 @@ class OptionsState extends MusicBeatState
 	{
 		FlxG.switchState(new MainMenuState());
 	}
-
-	public function set_enabled(value:Bool)
-	{
-		items.enabled = value;
-		return set_enabled(value);
-	}
-
-	/**
-	 * True if this page has multiple options, excluding the exit option.
-	 * If false, there's no reason to ever show this page.
-	 */
-	public function hasMultipleOptions():Bool
-	{
-		return items.length > 2;
-	}
-
-	#if CAN_OPEN_LINKS
-	function selectDonate()
-	{
-		#if linux
-		Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
-		#else
-		FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
-		#end
-	}
-	#end
 
 	override function update(elapsed:Float) 
 	{

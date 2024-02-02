@@ -91,6 +91,8 @@ class PreferencesMenu extends MusicBeatSubstate
 			trace('CLICKED!: ' + defaultValue);
 			checkboxes[items.selectedIndex].daValue = defaultValue;//swag checkbox
 			trace(itemName + ' value: ' + defaultValue);
+
+			FlxG.save.flush();
 		});
 
 		createCheckbox(defaultValue);
@@ -108,37 +110,40 @@ class PreferencesMenu extends MusicBeatSubstate
 		if (FlxG.save.data.naughtyness == null)
 			{
 				FlxG.save.data.naughtyness = true;
-				
+				FlxG.save.flush();
 			}
 		if (FlxG.save.data.flashingMenu == null)
 			{
 				FlxG.save.data.flashingMenu = true;
-				
+				FlxG.save.flush();
 			}
 		if (FlxG.save.data.zoomOn == null)
 			{
 				FlxG.save.data.zoomOn = true;
-				
+				FlxG.save.flush();
 			}
 		if (FlxG.save.data.autoPause == null)
 			{
 				FlxG.save.data.autoPause = false;
-				
+				FlxG.save.flush();
 			}
         else if (FlxG.save.data.autoPause = true)
 			{
 				FlxG.autoPause = true;
+				FlxG.save.flush();
 				trace('autoPause: ' + FlxG.autoPause);
 			}
 
 		if (FlxG.save.data.noteSplash == null)
 			{
 				FlxG.save.data.noteSplash = true;
+				FlxG.save.flush();
 			}
 
 		if (FlxG.save.data.timeBar == null)
 			{
 				FlxG.save.data.timeBar = true;
+				FlxG.save.flush();
 			}
 
 		traceOption();
@@ -157,7 +162,6 @@ class PreferencesMenu extends MusicBeatSubstate
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		FlxG.save.flush();
 
 		if (controls.BACK)
 		{

@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxCamera;
 import funkin.Alphabet;
 import funkin.GameUI;
 #if discord_rpc
@@ -58,12 +59,17 @@ class FreeplayState extends MusicBeatState
 	private var iconArray:Array<HealthIcon> = [];
 	private var json:JsonSongs;
 	var bg:FlxSprite;
-	var scoreBG:FlxSprite;
 	var songWait:FlxTimer = new FlxTimer();
 	var descBg:FlxSprite;
 	var desctxt:FlxText;
 	
 	var gamePad:GamePadOn;
+    var cover_Vol1:FlxSprite;
+	var cover_Vol2:FlxSprite;
+	var cover_Vol3:FlxSprite;
+	private var camHUD:FlxCamera;
+	private var camGame:FlxCamera;
+    var CD:FlxSprite;
 
 	override function create()
 	{
@@ -82,25 +88,79 @@ class FreeplayState extends MusicBeatState
 		json = Json.parse(Assets.getText('assets/data/freeplaySonglist.json'));
 		for (i in json.init)
 			{
-				songs.push(new SongMetadata(''+Std.string(i[0]),i[1],''+Std.string(i[2])));
+				songs.push(new SongMetadata(''+ Std.string(i[0]),i[1],''+Std.string(i[2])));
 			}
 
-		if (FlxG.sound.music != null)
-		{
-			if (!FlxG.sound.music.playing)
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-		}
-
 		// LOAD MUSIC
+		FlxG.sound.playMusic(Paths.music('Freeplay Menu'), FlxG.save.data.volume * FlxG.save.data.musicVolume, true);
 
 		// LOAD CHARACTERS
 
+		camGame = new SwagCamera();
+		FlxG.cameras.reset(camGame);
+		camHUD = new FlxCamera();
+		FlxG.cameras.add(camHUD, false);
+		camHUD.bgColor = 0x00ffffff;
+
+		Conductor.changeBPM(120);
+
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg.scrollFactor.set(0, 0);
 		add(bg);
 
+		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "49324858", 32);
+		// scoreText.autoSize = false;
+		scoreText.setFormat(Paths.font("Difficult.ttf"), 32, FlxColor.WHITE, RIGHT);
+		scoreText.color = FlxColor.WHITE;
+		scoreText.scrollFactor.set(0, 0);
+		scoreText.setBorderStyle(FlxTextBorderStyle.SHADOW, FlxColor.BLACK, 4);
+		// scoreText.alignment = RIGHT;
+		scoreText.antialiasing = true;
+
+		cover_Vol1 = new FlxSprite(FlxG.width * 0.77, 0).loadGraphic(Paths.image('vol_cover/Vol.1'));
+		cover_Vol1.visible = false;
+		cover_Vol1.screenCenter();
+		cover_Vol1.setGraphicSize(630);
+		cover_Vol1.antialiasing = true;
+		cover_Vol1.alpha = 0.7;
+		add(cover_Vol1);
+
+		cover_Vol2 = new FlxSprite(FlxG.width * 0.77, 0).loadGraphic(Paths.image('vol_cover/Vol.2'));
+		cover_Vol2.visible = false;
+		cover_Vol2.screenCenter();
+		cover_Vol2.setGraphicSize(630);
+		cover_Vol2.antialiasing = true;
+		cover_Vol2.alpha = 0.7;
+		add(cover_Vol2);
+		
+		cover_Vol3 = new FlxSprite(FlxG.width * 0.77, 0).loadGraphic(Paths.image('vol_cover/Vol.3'));
+		cover_Vol3.visible = false;
+		cover_Vol3.updateHitbox();
+		cover_Vol3.screenCenter();
+		cover_Vol3.setGraphicSize(630);
+		cover_Vol3.antialiasing = true;
+		cover_Vol3.alpha = 0.7;
+		add(cover_Vol3);
+
+		CD = new FlxSprite(100, 100).loadGraphic(Paths.image('vol_CD'));
+		CD.visible = true;
+		// CD.setGraphicSize(1);
+		CD.screenCenter();
+		CD.updateHitbox();
+		CD.scrollFactor.set(0, 0);
+		add(CD);
+
+		diffText = new FlxText(scoreText.x, FlxG.height * 0.925, 0, "", 24);
+		diffText.font = scoreText.font;
+		diffText.scrollFactor.set(0, 0);
+		diffText.setBorderStyle(FlxTextBorderStyle.SHADOW, FlxColor.BLACK, 4);
+        diffText.antialiasing = true;
+		
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 		
+		grpSongs.cameras = [camHUD];
+
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
@@ -115,26 +175,20 @@ class FreeplayState extends MusicBeatState
 			// using a FlxGroup is too much fuss!
 			iconArray.push(icon);
 			add(icon);
-
+            icon.cameras = [camHUD];
+			
 			songText.x += 40;
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 			// songText.screenCenter(X);
 		}
 
-		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "49324858", 32);
-		// scoreText.autoSize = false;
-		scoreText.setFormat(Paths.font("Difficult.ttf"), 32, FlxColor.WHITE, RIGHT);
-		// scoreText.alignment = RIGHT;
-
-		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 66, 0x99000000);
-		scoreBG.antialiasing = false;
-		add(scoreBG);
-
-		diffText = new FlxText(scoreText.x, scoreText.y - 100, 0, "", 24);
-		diffText.font = scoreText.font;
-		add(diffText);
+		descBg = new FlxSprite(0, FlxG.height - 90).makeGraphic(FlxG.width, 90, 0xFF000000);
+		descBg.alpha = 0.4;
+		descBg.scrollFactor.set(0, 0);
+		add(descBg);
 
 		add(scoreText);
+		add(diffText);
 
 		changeSelection();
 		changeDiff();
@@ -146,10 +200,6 @@ class FreeplayState extends MusicBeatState
 		// selector.size = 40;
 		// selector.text = ">";
 		// add(selector);
-
-		descBg = new FlxSprite(0, FlxG.height - 90).makeGraphic(FlxG.width, 90, 0xFF000000);
-		descBg.alpha = 0.4;
-		// add(descBg);
 
 		gamePad = new GamePadOn("PLAY", "LISTEN", "CLEAR", "BACK");
 		// add(gamePad);
@@ -183,7 +233,27 @@ class FreeplayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
+		camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.95);
+		FlxG.camera.zoom = FlxMath.lerp(1.05, FlxG.camera.zoom, 0.95);
+
+		FlxG.watch.addQuick("beatShit", curBeat);
+		FlxG.watch.addQuick("stepShit", curStep);
+		FlxG.watch.addQuick("CD.x", CD.x);
+		FlxG.watch.addQuick("CD.y", CD.y);
+
+		if (FlxG.sound.music != null)
+			Conductor.songPosition = FlxG.sound.music.time;
+
 		FlxG.sound.music.volume = FlxG.save.data.volume * FlxG.save.data.musicVolume;
+
+		if (FlxG.save.data.zoomOn)
+		{
+			if (FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
+				{
+					FlxG.camera.zoom += 0.001;
+					camHUD.zoom += 0.003;
+				}
+		}
 
 		if (controls.PAUSE)
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
@@ -209,6 +279,31 @@ class FreeplayState extends MusicBeatState
 
 		positionHighscore();
 
+		if (songs[curSelected].week == 0 ||
+			songs[curSelected].week == 1 ||
+			songs[curSelected].week == 2 ||
+			songs[curSelected].week == 3 ||
+			songs[curSelected].week == 4)
+		{
+			cover_Vol1.visible = true;
+			cover_Vol2.visible = false;
+			cover_Vol3.visible = false;
+		}
+		else if (songs[curSelected].week == 5 ||
+			songs[curSelected].week == 6 ||
+			songs[curSelected].week == 7)
+		{
+			cover_Vol1.visible = false;
+			cover_Vol2.visible = true;
+			cover_Vol3.visible = false;
+		}
+		else if (songs[curSelected].week == 8)
+		{
+			cover_Vol1.visible = false;
+			cover_Vol2.visible = false;
+			cover_Vol3.visible = true;
+		}
+
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
 		var accepted = controls.ACCEPT;
@@ -219,7 +314,7 @@ class FreeplayState extends MusicBeatState
 			changeSelection(1);
 
 		if (FlxG.mouse.wheel != 0)
-			changeSelection(-Math.round(FlxG.mouse.wheel / 4));
+			changeSelection(-Math.round(FlxG.mouse.wheel / 1));
 
 		if (controls.UI_LEFT_P)
 			changeDiff(-1);
@@ -264,7 +359,7 @@ class FreeplayState extends MusicBeatState
 
 		diffText.alpha = 0.1;
 
-		FlxTween.tween(diffText, {y: 40, alpha: 1}, 0.07);
+		FlxTween.tween(diffText, {y: FlxG.height * 0.925, alpha: 1}, 0.07);
 	}
 
 	function changeSelection(change:Int = 0)
@@ -315,12 +410,11 @@ class FreeplayState extends MusicBeatState
 
 	function positionHighscore()
 	{
-		scoreText.x = FlxG.width - scoreText.width - 6;
-		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
-		scoreBG.x = FlxG.width - scoreBG.scale.x / 2;
+		scoreText.screenCenter(X);
+		scoreText.y = FlxG.height * 0.875;
 
-		diffText.x = Std.int(scoreBG.x + scoreBG.width / 2);
-		diffText.x -= (diffText.width / 2);
+		diffText.screenCenter(X);
+		diffText.y = FlxG.height * 0.925;
 	}
 }
 

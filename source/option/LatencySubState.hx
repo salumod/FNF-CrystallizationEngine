@@ -152,11 +152,13 @@ class LatencyMenu extends MusicBeatSubstate
 				if (controls.UI_LEFT_P)
 					{
 						Conductor.offset -= 1;
+						FlxG.save.flush();
 					}
 
 				if (controls.UI_RIGHT_P)
 					{
 						Conductor.offset += 1;
+						FlxG.save.flush();
 					}
 			}
 
@@ -181,7 +183,7 @@ class LatencyMenu extends MusicBeatSubstate
 					}
 			}
 
-		FlxG.save.flush();
+
 	}
 
 	function soundsPlay()
@@ -238,7 +240,7 @@ class LatencyMenu extends MusicBeatSubstate
 
 		if (controls.BACK)
 			{
-				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+				FlxG.sound.playMusic(Paths.music('Keeper'), 0);
 				FlxG.sound.music.fadeIn(1, 0, FlxG.save.data.volume * FlxG.save.data.musicVolume);
 				close();
 			}

@@ -186,9 +186,7 @@ class StoryMenuState extends MusicBeatState
 
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.5);
 		FlxTween.cancelTweensOf(yellowBG);
-		FlxTween.color(yellowBG, 5, yellowBG.color, weekColors[curWeek], {ease: FlxEase.linear});
-		// yellowBG.color = color_json_file.weekColors[curWeek];
-		// yellowBG.color = FlxColor.interpolate(yellowBG.color, color_json_file.weekColors[curWeek], CoolUtil.camLerpShit(0.045));
+		yellowBG.color = FlxColor.interpolate(yellowBG.color, weekColors[curWeek % weekColors.length], CoolUtil.camLerpShit(0.045));
 
 		scoreText.text = "WEEK SCORE:" + Math.round(lerpScore);
 
@@ -326,10 +324,10 @@ class StoryMenuState extends MusicBeatState
 		txtDifficulty.alpha = 0;
 
 		// USING THESE WEIRD VALUES SO THAT IT DOESNT FLOAT UP
-		txtDifficulty.y = leftArrow.y + 100;
+		txtDifficulty.y = leftArrow.y - 100;
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
 
-		FlxTween.tween(txtDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07);
+		FlxTween.tween(txtDifficulty, {y: leftArrow.y, alpha: 1}, 0.07);
 	}
 
 	var lerpScore:Float = 0;

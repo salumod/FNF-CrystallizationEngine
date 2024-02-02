@@ -177,6 +177,8 @@ class VolumeMenu extends MusicBeatSubstate
 							FlxG.sound.volume += 0.1;
                         if (controls.UI_LEFT_P)
 							FlxG.sound.volume -= 0.1;
+
+						FlxG.save.flush();
 					}
 					
 				if (curSelected == 1)
@@ -191,6 +193,8 @@ class VolumeMenu extends MusicBeatSubstate
 
 						if (musicVolume < 0)
 							musicVolume = 0;
+
+						FlxG.save.flush();
 					}
 
                 if (curSelected == 2)
@@ -205,6 +209,8 @@ class VolumeMenu extends MusicBeatSubstate
 
 						if (sfxVolume < 0)
 							sfxVolume = 0;
+
+						FlxG.save.flush();
 					}
 
 				FlxG.save.data.volume = FlxG.sound.volume;
@@ -218,8 +224,6 @@ class VolumeMenu extends MusicBeatSubstate
 				masterVolumeAmountText.text = Std.int(FlxG.sound.volume * 100) + "%";
 				musicAmountText.text = Std.int(musicVolume * 100) + "%";
 				sfxAmountText.text = Std.int(sfxVolume * 100) + "%";
-
-				FlxG.save.flush();
 			}
 
 		static public function defaultValue(clear:Bool = false) 

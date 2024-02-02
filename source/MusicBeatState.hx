@@ -37,7 +37,6 @@ class MusicBeatState extends FlxUIState
 			stepHit();
 
 		FlxG.save.data.volume = FlxG.sound.volume;
-        FlxG.save.flush();
 
 		super.update(elapsed);
 	}

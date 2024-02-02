@@ -37,7 +37,7 @@ class GamePadButton extends FlxGroup
             add(text);
 
             icons = new FlxSprite(gamePadButton.x + gamePadButton.width / 2 - 20, gamePadButton.y + gamePadButton.height / 2 - 20);
-            icons.frames = Paths.getSparrowAtlas('gameUI/UI');
+            icons.frames = Paths.getSparrowAtlas(#if ps4 'gameUI/UI' #else 'gameUI/PC-UI' #end);
             icons.scrollFactor.set();
             icons.animation.addByPrefix('1', 'O', 24);
             icons.animation.addByPrefix('2', '△', 24);
@@ -128,14 +128,23 @@ class GameMouse extends FlxGroup
         FlxG.mouse.load(mouseName, size);
     }
 
-    public function quicklyADD(?size:Float = 2) 
+    public function quicklyADD(?size:Float = 1) 
     {
         visMouse = true;
         FlxG.mouse.visible = true;
-        if (FlxG.save.data.MouseColor != null)
-			FlxG.mouse.load(Paths.imageUI('MOUSE'), size)
-		else
-			FlxG.mouse.load(Paths.imageUI('MOUSE_WHITE'), size);
+
+        if (FlxG.save.data.MouseColor == null)
+            FlxG.mouse.load(Paths.imageUI('cursor'), size);
+        else
+        {
+            switch (FlxG.save.data.MouseColor)
+            {
+                case 0:
+                    FlxG.mouse.load(Paths.imageUI('cursor_color2'), size);
+                case 1:
+                    FlxG.mouse.load(Paths.imageUI('null'), size);
+            }
+        }
     }
 }
 
