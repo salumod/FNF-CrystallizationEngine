@@ -22,10 +22,11 @@ class PauseSubState extends MusicBeatSubstate
 		'Resume',
 		'Restart Song',
 		'Change Difficulty',
+		'Option',
 		'Exit to menu'
 	];
 	var difficultyChoices:Array<String> = ['EASY', 'NORMAL', 'HARD', 'BACK'];
-	var optionChoices:Array<String> = ['PREFERENCES', 'GAMEPLAY', 'CONTROLS', 'LATERNCY', 'VOLUME', 'COLORS', 'MODS', 'REFRESH','BACK'];
+	var optionChoices:Array<String> = ['CONTROLS', 'LATERNCY', 'VOLUME', 'EXIT OPTION'];
 
 	var menuItems:Array<String> = [];
 	var curSelected:Int = 0;
@@ -160,25 +161,17 @@ class PauseSubState extends MusicBeatSubstate
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
 					regenMenu();
-				// case 'Option':
-				// 	menuItems = optionChoices;
-				// 	regenMenu();
-				// case 'PREFERENCES':
-				// 	openSubState(new PreferencesMenu());
-				// case 'GAMEPLAY':
-				// 	openSubState(new GameplayMenu());
-				// case 'CONTROLS':
-				// 	openSubState(new ControlsMenu());
-				// case 'LATERNCY':
-				// 	openSubState(new LatencyMenu());
-				// case 'VOLUME':
-				// 	openSubState(new VolumeMenu());
-				// case 'COLORS':
-				// 	openSubState(new ColorsMenu());
-				// case 'MODS':
-				// 	openSubState(new ModMenu());
-				// case 'REFRESH':
-				// 	FlxG.resetState();
+				case 'Option':
+					menuItems = optionChoices;
+					regenMenu();
+				case 'CONTROLS':
+					openSubState(new ControlsMenu());
+				case 'LATERNCY':
+					openSubState(new LatencyMenu());
+				case 'VOLUME':
+					openSubState(new VolumeMenu());
+				case 'EXIT OPTION':
+					FlxG.resetState();
 				case 'BACK':
 					menuItems = pauseOG;
 					regenMenu();

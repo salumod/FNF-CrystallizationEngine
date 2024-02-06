@@ -38,6 +38,10 @@ class MusicBeatState extends FlxUIState
 
 		FlxG.save.data.volume = FlxG.sound.volume;
 
+		if (FlxG.save.data.ImagesEnhancement)
+		{
+			FlxG.camera.antialiasing = true;
+		}
 		super.update(elapsed);
 	}
 

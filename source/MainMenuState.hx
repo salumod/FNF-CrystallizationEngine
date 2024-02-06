@@ -119,7 +119,7 @@ class MainMenuState extends MusicBeatState
 		#if CAN_OPEN_LINKS
 		var hasPopupBlocker = #if web true #else false #end;
 
-		menuItems.createItem('kickstarter', selectDonate);
+		menuItems.createItem('kickstarter', function() startExitState(new DonateState()));
 		#end
 		menuItems.createItem('options', function() startExitState(new OptionsState()));
 
@@ -144,7 +144,7 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "CE_ORIGHINE v0.4a", 12);
+		var version:FlxText = new FlxText(5, versionShit.y - 20, 0, "CE_ORIGHINE v0.4RC", 12);
 	    version.scrollFactor.set();
 		version.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(version);

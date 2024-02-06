@@ -98,7 +98,6 @@ class Main extends Sprite
 		#if !mobile
 		fps = new FPS(10, 3, 0xffffff);
         addChild(fps);
-		
 		#end
 		/* 
 			video = new Video();

@@ -29,6 +29,10 @@ class MusicBeatSubstate extends FlxSubState
 		if (oldStep != curStep && curStep >= 0)
 			stepHit();
 
+        if (FlxG.save.data.ImagesEnhancement)
+		{
+			FlxG.camera.antialiasing = true;
+		}
 
 		super.update(elapsed);
 	}

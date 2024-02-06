@@ -46,7 +46,6 @@ class GameplayMenu extends MusicBeatSubstate
             createItem('Game Mode', function() openSubState(new GameMode()));
             createItem('Adjusting', function() openSubState(new AdjustingWindow()));
             createItem('Achievements', function() openSubState(new Achievements()));
-            createItem('Clear all data', function() FlxG.save.erase());
 
             camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
             if (items != null)

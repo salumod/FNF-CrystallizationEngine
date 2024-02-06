@@ -992,6 +992,7 @@ class PlayState extends MusicBeatState
 		songNameTxt = new FlxText(timeBG.width * 2, FlxG.height * 0.03, "", 20);
 		songNameTxt.setFormat(Paths.font("vcr.ttf"), 25, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
 		songNameTxt.scrollFactor.set();
+		songNameTxt.alignment = CENTER;
 
 		if (FlxG.save.data.downscroll)
 		{
@@ -1146,7 +1147,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.save.data.ImagesEnhancement)
 		{
-			if (!(curSong == 'Senpai' || curSong == 'roses'))
+			if (!(curSong == 'Senpai' || curSong == 'Roses'))
 			{
 				camGame.antialiasing = true;
 				rtxHUD.antialiasing = true;
@@ -2711,6 +2712,9 @@ class PlayState extends MusicBeatState
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
 
+		FlxG.sound.music.stop();
+		vocals.stop();
+
 		if (!FlxG.save.data.challengeMode)
 		{
 			if (SONG.validScore)
@@ -2916,9 +2920,6 @@ class PlayState extends MusicBeatState
 			
 							FlxTransitionableState.skipNextTransIn = true;
 							FlxTransitionableState.skipNextTransOut = true;
-			
-							FlxG.sound.music.stop();
-							vocals.stop();
 			
 							if (SONG.song.toLowerCase() == 'eggnog')
 							{

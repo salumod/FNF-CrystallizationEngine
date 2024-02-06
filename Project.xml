@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="CrystallizationEngine" file="FNF-CrystallizationEngine" packageName="" package="" main="Main" version="0.2.8" recompiledVersion="0.4a" company="Salumod" />
+	<app title="CrystallizationEngine v0.4RC" file="FNF-CrystallizationEngine" packageName="" package="" main="Main" version="0.2.8" company="Salumod" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -101,7 +101,7 @@
 	<assets path="assets/week8"    library="week8"    exclude="*.fla|*.ogg" if="web"/>
 	<assets path="assets/week8"    library="week8"    exclude="*.fla|*.mp3" unless="web"/>
 	
-	<assets path='example_mods' rename='mods' embed='false' if= 'cpp'/>
+	<!-- <assets path='example_mods' rename='mods' embed='false' if= 'cpp'/> -->
 
 	<!-- <template path="example_mods" rename="mods" /> -->
 

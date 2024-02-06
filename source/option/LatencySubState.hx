@@ -1,5 +1,6 @@
 package option;
 
+import flixel.FlxCamera;
 import funkin.Note;
 import funkin.GameUI.UIButton;
 import flixel.util.FlxColor;
@@ -26,7 +27,8 @@ class LatencyMenu extends MusicBeatSubstate
 	var botton_OFFSET:UIButton;
 	var botton_BPM:UIButton;
 	var curSelected:Int;
-
+	var menuCamera:FlxCamera;
+	
 	override function create()
 	{
 		FlxG.sound.music.fadeOut(FlxG.save.data.volume * FlxG.save.data.musicVolume, 0);
@@ -39,6 +41,11 @@ class LatencyMenu extends MusicBeatSubstate
 		menuBG.scrollFactor.set(0, 0);
 		add(menuBG);
 		
+		menuCamera = new FlxCamera();
+		FlxG.cameras.add(menuCamera, true);
+		menuCamera.bgColor = 0x0;
+		camera = menuCamera;
+
 		//some bg
 		var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 0.45), Std.int(FlxG.height * 0.87), 0xFF000000);
 		bg.scrollFactor.set();
@@ -189,6 +196,14 @@ class LatencyMenu extends MusicBeatSubstate
 	function soundsPlay()
 	{
 		FlxG.sound.playMusic(Paths.music('soundTest'), FlxG.save.data.volume * FlxG.save.data.musicVolume, true);
+	}
+
+	override function destroy()
+	{
+		super.destroy();
+
+		if (FlxG.cameras.list.contains(menuCamera))
+			FlxG.cameras.remove(menuCamera);
 	}
 
 	static public function defaultValue()

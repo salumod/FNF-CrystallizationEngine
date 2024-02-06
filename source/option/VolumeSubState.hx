@@ -38,6 +38,8 @@ class VolumeMenu extends MusicBeatSubstate
 	var desctxt:FlxText;
 	var curSelected:Int;
 
+	var menuCamera:FlxCamera;
+
 	override function create()
 		{
 			super.create();
@@ -52,6 +54,11 @@ class VolumeMenu extends MusicBeatSubstate
 			menuBG.screenCenter();
 			menuBG.scrollFactor.set(0, 0);
 			add(menuBG);
+			
+			menuCamera = new FlxCamera();
+			FlxG.cameras.add(menuCamera, true);
+			menuCamera.bgColor = 0x0;
+			camera = menuCamera;
 			
 			//some text
 			masterVolumeText = new FlxText(-300, 130, 800, '', 30);
@@ -249,6 +256,14 @@ class VolumeMenu extends MusicBeatSubstate
 				FlxG.save.data.musicVolume = 1;
 				FlxG.save.data.SFXVolume = 1;
 			}
+		}
+
+		override function destroy()
+		{
+			super.destroy();
+		
+			if (FlxG.cameras.list.contains(menuCamera))
+				FlxG.cameras.remove(menuCamera);
 		}
 
 		override function update(elapsed:Float)

@@ -69,6 +69,7 @@ class FreeplayState extends MusicBeatState
 	var cover_Vol3:FlxSprite;
 	private var camHUD:FlxCamera;
 	private var camGame:FlxCamera;
+	private var topCam:FlxCamera;
     var CD:FlxSprite;
 
 	override function create()
@@ -98,9 +99,14 @@ class FreeplayState extends MusicBeatState
 
 		camGame = new SwagCamera();
 		FlxG.cameras.reset(camGame);
+		
 		camHUD = new FlxCamera();
-		FlxG.cameras.add(camHUD, false);
 		camHUD.bgColor = 0x00ffffff;
+		FlxG.cameras.add(camHUD, false);
+		
+		topCam = new FlxCamera();
+		topCam.bgColor = 0x00ffffff;
+		FlxG.cameras.add(topCam, false);
 
 		Conductor.changeBPM(120);
 
@@ -190,6 +196,10 @@ class FreeplayState extends MusicBeatState
 		add(scoreText);
 		add(diffText);
 
+		descBg.cameras = [topCam];
+		scoreText.cameras = [topCam];
+		diffText.cameras = [topCam];
+
 		changeSelection();
 		changeDiff();
 
@@ -250,13 +260,13 @@ class FreeplayState extends MusicBeatState
 		{
 			if (FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
 				{
-					FlxG.camera.zoom += 0.001;
+					FlxG.camera.zoom += 0.015;
 					camHUD.zoom += 0.003;
 				}
 		}
 
-		if (controls.PAUSE)
-			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+		// if (controls.PAUSE)
+		// 	FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
 
 		if (controls.RESET)
 			{

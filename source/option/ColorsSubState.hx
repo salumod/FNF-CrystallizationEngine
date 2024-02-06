@@ -50,7 +50,7 @@ class ColorsMenu extends MusicBeatSubstate
 		add(items = new TextMenuList());
 		creatColorItem('Note Colors', function() openSubState(new NoteColor()));
 		creatColorItem('Fps Colors', function() openSubState(new FPScolor()));
-		creatColorItem('Mouse Colors', function() openSubState(new MouseChoose()));
+		creatColorItem('Cursor Colors', function() openSubState(new CursorChoose()));
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
 			camFollow.y = items.selectedItem.y;
@@ -300,7 +300,7 @@ class FPScolor extends MusicBeatSubstate
 		}
 }
 
-class MouseChoose extends MusicBeatSubstate
+class CursorChoose extends MusicBeatSubstate
 {
 	var menuCamera:FlxCamera;
 	var camFollow:FlxObject;

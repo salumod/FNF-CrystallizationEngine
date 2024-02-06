@@ -42,14 +42,12 @@ class OptionsState extends MusicBeatState
 		createItem('gameplay', function() openSubState(new GameplayMenu()));
 		createItem("controls", function() openSubState(new ControlsMenu()));
 		createItem('latency', function() openSubState(new LatencyMenu()));
+		createItem('colors', function() openSubState(new ColorsMenu()));
 		createItem('volume', function() openSubState(new VolumeMenu()));
-		createItem('color', function() openSubState(new ColorsMenu()));
+		#if debug
 		createItem('mods', function() openSubState(new ModMenu()));
-		// if (NGio.isLoggedIn)
-		// 	createItem("logout", selectLogout);
-		// else
-		// 	createItem("login", selectLogin);
-		
+		#end
+
 		camFollow = new FlxObject(FlxG.width / 2, 0, 70, 70);
 		if (items != null)
 			camFollow.y = items.selectedItem.y;

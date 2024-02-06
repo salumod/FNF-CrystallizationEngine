@@ -33,7 +33,6 @@ class DialogueBox extends FlxSpriteGroup
 	var portraitLeft:FlxSprite;
 	var portraitRight:FlxSprite;
 
-	// var handSelect:FlxSprite;
 	var bgFade:FlxSprite;
 
 	var pixelCharactershit:String = 'weeb/dialogue/portrait/';
@@ -122,9 +121,6 @@ class DialogueBox extends FlxSpriteGroup
 			case 'senpai' | 'roses':
 				hasDialog = true;
 				box = new FlxSprite(-20, 45);
-				// box.frames = Paths.getSparrowAtlas(pixelBoxshit + 'dialogueBox-pixel');
-				// box.animation.addByPrefix('normalOpen', 'Text Box Appear', 24, false);
-				// box.animation.addByIndices('normal', 'Text Box Appear', [4], "", 24);
 				box.frames = Paths.getSparrowAtlas('weeb/dialogue/Text_Boxes');
 				box.animation.addByPrefix('normalOpen', 'Text Box Appear', 24, false);
 				box.animation.addByIndices('normal', 'Text Box Appear', [4], "", 24);
@@ -182,23 +178,6 @@ class DialogueBox extends FlxSpriteGroup
 		pixelPortraitLeft.screenCenter(X);
 		portraitLeft.screenCenter(X);
 
-		// if (PlayState.SONG.song.toLowerCase() == 'senpai' || PlayState.SONG.song.toLowerCase() == 'roses' || PlayState.SONG.song.toLowerCase() == 'thorns')
-		// {
-		//     handSelect = new FlxSprite(1042, 590).loadGraphic(Paths.image('weeb/pixelUI/hand_textbox'));
-		// 	handSelect.setGraphicSize(Std.int(handSelect.width * 6 * 0.9));
-		// 	handSelect.updateHitbox();
-		// 	handSelect.visible = false;
-		// 	add(handSelect);
-		// }
-		// else
-		// {
-		// 	handSelect = new FlxSprite(960, 610).loadGraphic(Paths.image('dialogue/hand_textbox'));
-		// 	handSelect.setGraphicSize(Std.int(handSelect.width));
-		// 	handSelect.updateHitbox();
-		// 	handSelect.visible = false;
-		// 	add(handSelect);
-		// }
-
 		talkingRight = !talkingRight;
 
 		var pixelFont:String = 'Pixel Arial 11 Bold';
@@ -240,6 +219,9 @@ class DialogueBox extends FlxSpriteGroup
 	override function update(elapsed:Float)
 	{
 
+		if (box.animation.curAnim.name == 'click' && box.animation.curAnim.finished)
+			box.animation.play('normal');
+
 		// HARD CODING CUZ IM STUPDI
 		if (PlayState.SONG.song.toLowerCase() == 'thorns')
 		{
@@ -257,6 +239,7 @@ class DialogueBox extends FlxSpriteGroup
 						{
 							box.animation.play('normal');
 							dialogueOpened = true;
+							trace('oneOpen');
 						}
 				}
 		default:
@@ -282,14 +265,13 @@ class DialogueBox extends FlxSpriteGroup
 				
 			FlxG.sound.play(Paths.sound('clickText'), FlxG.save.data.volume * FlxG.save.data.SFXVolume);
 
-			if (box.animation.curAnim != null)
-				{
-					box.animation.play('click');
-					trace('clicked');
-				}
-
-			// if (box.animation.curAnim.name == 'click' && box.animation.curAnim.finished)
-			// 	box.animation.play('normal');
+			if (PlayState.SONG.song.toLowerCase() == 'senpai' || 
+				PlayState.SONG.song.toLowerCase() == 'roses' ||
+			    PlayState.SONG.song.toLowerCase() == 'thorns')
+			{
+				box.animation.play('click');
+				trace('clicked');
+			}
 
 			if (dialogueList[1] == null && dialogueList[0] != null)
 			{
@@ -325,7 +307,7 @@ class DialogueBox extends FlxSpriteGroup
 				startDialogue();
 			}
 		}
-		else if (FlxG.keys.justPressed.ENTER && dialogueStarted)
+		else if (FlxG.keys.justPressed.ANY && dialogueStarted)
 			swagDialogue.skip();
 		
 		if (FlxG.keys.justPressed.BACKSPACE)
@@ -342,8 +324,6 @@ class DialogueBox extends FlxSpriteGroup
 			box.animation.play('wait');
 			trace('waitDialogue');
 		}
-		else
-			box.animation.play('normal');
 	}
 
 	function startDialogue():Void
@@ -357,7 +337,7 @@ class DialogueBox extends FlxSpriteGroup
 		swagDialogue.resetText(dialogueList[0]);
 		swagDialogue.start(0.04);
 
-		new FlxTimer().start(6, function(tmr:FlxTimer)
+		new FlxTimer().start(3, function(tmr:FlxTimer)
 		{
 		    waitDialogue();
 			return;
@@ -384,8 +364,18 @@ class DialogueBox extends FlxSpriteGroup
 
 		if (box.animation.curAnim != null)
 			{
-			    box.animation.play('normal');
-				trace('play Anim: normal');
+				if (PlayState.SONG.song.toLowerCase() == 'senpai' || 
+					PlayState.SONG.song.toLowerCase() == 'roses' ||
+					PlayState.SONG.song.toLowerCase() == 'thorns')
+				{
+					if (box.animation.curAnim.name == 'click' && box.animation.curAnim.finished)
+					{
+					    box.animation.play('normal');
+                        trace('pixel set');
+					}
+				}
+				else
+			        box.animation.play('normal');
 			}
 
 		switch (curCharacter)
